@@ -17,7 +17,6 @@ class UserSeeder extends Seeder
             'email' => 'ndegwavincent7@gmail.com',
             'password' => '1234',
             'user_type' => 'Super Admin',
-
         ]);
     }
 }
