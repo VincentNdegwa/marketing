@@ -32,7 +32,10 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
+    
+        if(Auth::user()->isSuperAdmin()){
+            return redirect()->intended(route('dashboard-admin', absolute: false));
+        }
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
