@@ -4,29 +4,51 @@ import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
+import { Link, usePage } from '@inertiajs/vue3';
+import { Boxes, LayoutGrid, Users } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
-const mainNavItems: NavItem[] = [
-    {
+const page = usePage<SharedData>();
+const user_type = page.props.auth.user.user_type;
+
+const mainNavItems: NavItem[] = [];
+if (user_type == 'Super Admin') {
+    mainNavItems.push(
+        {
+            title: 'Dashboard',
+            href: '/dashboard-admin',
+            icon: LayoutGrid,
+        },
+        {
+            title: 'Clients',
+            href: '/',
+            icon: Users,
+        },
+        {
+            title: 'Modules',
+            href: '/',
+            icon: Boxes,
+        },
+    );
+} else {
+    mainNavItems.push({
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
-    },
-];
+    });
+}
 
 const footerNavItems: NavItem[] = [
-    {
-        title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits',
-        icon: BookOpen,
-    },
+    // {
+    //     title: 'Github Repo',
+    //     href: 'https://github.com/laravel/vue-starter-kit',
+    //     icon: Folder,
+    // },
+    // {
+    //     title: 'Documentation',
+    //     href: 'https://laravel.com/docs/starter-kits',
+    //     icon: BookOpen,
+    // },
 ];
 </script>
 
