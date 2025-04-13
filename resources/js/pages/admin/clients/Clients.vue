@@ -11,6 +11,7 @@ import { ref } from 'vue';
 
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import Menu from 'primevue/menu';
 
 
 defineProps<{
@@ -42,6 +43,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const showDialog = ref(false);
 const editMode = ref(false);
+const menu = ref();
+let currentUser = ref();
 
 const form = useForm({
     id: '',
@@ -89,6 +92,12 @@ function deleteUser(id: number) {
     }
 }
 
+const toggle = (event, data) => {
+    currentUser.value = data;
+    menu.value.toggle(event);
+    
+};
+
 </script>
 
 <template>
@@ -114,26 +123,35 @@ function deleteUser(id: number) {
                     <Column field="name" header="Name"></Column>
                     <Column field="email" header="Email" ></Column>
                     <Column field="user_type" header="Type" ></Column>
-                    <Column header="Actions" :exportable="false">
+                    <Column header="Actions" :exportable="false" style="width: 5rem">
                         <template #body="slotProps">
-                            <div class="space-x-2">
-                                <Button variant="outline" size="sm" @click="openEditDialog(slotProps.data)">
-                                    <i class="pi pi-pencil mr-1"></i>
-                                    Edit
-                                </Button>
+                            <div class="flex justify-center">
                                 <Button 
-                                    v-if="slotProps.data.user_type !== 'Super Admin'" 
-                                    variant="destructive" 
-                                    size="sm" 
-                                    @click="deleteUser(slotProps.data.id)"
-                                >
-                                    <i class="pi pi-trash mr-1"></i>
-                                    Delete
-                                </Button>
+                                    type="button" 
+                                    icon="pi pi-ellipsis-v" 
+                                    @click="toggle($event, slotProps.data)"
+                                    aria-haspopup="true" 
+                                    text
+                                    rounded
+                                />
                             </div>
                         </template>
                     </Column>
                 </DataTable>
+
+                <Menu ref="menu" :model="[
+                    {
+                        label: 'Edit',
+                        icon: 'pi pi-pencil',
+                        command: () => openEditDialog(currentUser)
+                    },
+                    {
+                        label: 'Delete',
+                        icon: 'pi pi-trash',
+                        class: 'text-red-500',
+                        command: () => deleteUser(currentUser?.id)
+                    }
+                ]" :popup="true" />
             </div>
         </div>
 
