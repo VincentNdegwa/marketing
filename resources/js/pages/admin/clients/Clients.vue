@@ -4,6 +4,9 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
 import { ref } from 'vue';
 
 import DataTable from 'primevue/datatable';
@@ -102,7 +105,6 @@ function deleteUser(id: number) {
                     :value="users.data" 
                     tableStyle="min-width: 50rem"
                     stripedRows
-                    showGridlines
                     paginator
                     :rows="10"
                     :rowsPerPageOptions="[5, 10, 20, 50]"
@@ -143,22 +145,22 @@ function deleteUser(id: number) {
                 </DialogHeader>
 
                 <form @submit.prevent="handleSubmit" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Name</label>
-                        <input type="text" v-model="form.name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500" required />
-                        <div v-if="form.errors.name" class="text-red-500 text-sm mt-1">{{ form.errors.name }}</div>
+                    <div class="space-y-2" >
+                        <Label>Name</Label>
+                        <Input v-model="form.name" required />
+                        <small v-if="form.errors.name" class="text-red-500 text-sm mt-1">{{ form.errors.name }}</small>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" v-model="form.email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500" required />
-                        <div v-if="form.errors.email" class="text-red-500 text-sm mt-1">{{ form.errors.email }}</div>
+                    <div class="space-y-2">
+                        <Label >Email</Label>
+                        <Input v-model="form.email" required />
+                        <small v-if="form.errors.email" class="text-red-500 text-sm mt-1">{{ form.errors.email }}</small>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Password {{ editMode ? '(leave blank to keep current)' : '' }}</label>
-                        <input type="password" v-model="form.password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500" :required="!editMode" />
-                        <div v-if="form.errors.password" class="text-red-500 text-sm mt-1">{{ form.errors.password }}</div>
+                    <div class="space-y-2">
+                        <Label >Password {{ editMode ? '(leave blank to keep current)' : '' }}</Label>
+                        <Input type="password" v-model="form.password" :required="!editMode" />
+                        <small v-if="form.errors.password" class="text-red-500 text-sm mt-1">{{ form.errors.password }}</small>
                     </div>
 
                     <DialogFooter>
