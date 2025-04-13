@@ -1,18 +1,17 @@
 <script setup lang="ts">
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 import { ref } from 'vue';
 
-import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
 import Menu from 'primevue/menu';
-
 
 defineProps<{
     users: {
@@ -44,7 +43,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const showDialog = ref(false);
 const editMode = ref(false);
 const menu = ref();
-let currentUser = ref();
+const currentUser = ref();
 
 const form = useForm({
     id: '',
@@ -58,6 +57,19 @@ function openCreateDialog() {
     form.reset();
     showDialog.value = true;
 }
+const menu_item = [
+    {
+        label: 'Edit',
+        icon: 'pi pi-pencil',
+        command: () => openEditDialog(currentUser.value),
+    },
+    {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        class: 'text-red-500',
+        command: () => deleteUser(currentUser.value?.id),
+    },
+];
 
 function openEditDialog(user: any) {
     editMode.value = true;
@@ -95,25 +107,21 @@ function deleteUser(id: number) {
 const toggle = (event, data) => {
     currentUser.value = data;
     menu.value.toggle(event);
-    
 };
-
 </script>
 
 <template>
     <Head title="Admin Users" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-6">
-            <div class="flex justify-between items-center mb-6">
+            <div class="mb-6 flex items-center justify-between">
                 <h1 class="text-2xl font-semibold">Admin Users</h1>
                 <Button @click="openCreateDialog">Add Admin User</Button>
             </div>
 
             <div class="card">
-                <DataTable 
-                    :value="users.data" 
-                    tableStyle="min-width: 50rem"
-                    stripedRows
+                <DataTable
+                    :value="users.data"
                     paginator
                     :rows="10"
                     :rowsPerPageOptions="[5, 10, 20, 50]"
@@ -121,37 +129,20 @@ const toggle = (event, data) => {
                     currentPageReportTemplate="{first} to {last} of {totalRecords}"
                 >
                     <Column field="name" header="Name"></Column>
-                    <Column field="email" header="Email" ></Column>
-                    <Column field="user_type" header="Type" ></Column>
+                    <Column field="email" header="Email"></Column>
+                    <Column field="user_type" header="Type"></Column>
                     <Column header="Actions" :exportable="false" style="width: 5rem">
                         <template #body="slotProps">
                             <div class="flex justify-center">
-                                <Button 
-                                    type="button" 
-                                    icon="pi pi-ellipsis-v" 
-                                    @click="toggle($event, slotProps.data)"
-                                    aria-haspopup="true" 
-                                    text
-                                    rounded
-                                />
+                                <Button type="button" @click="toggle($event, slotProps.data)" aria-haspopup="true" aria-controls="overlay_menu">
+                                    <i class="pi pi-ellipsis-v"></i>
+                                </Button>
                             </div>
                         </template>
                     </Column>
                 </DataTable>
 
-                <Menu ref="menu" :model="[
-                    {
-                        label: 'Edit',
-                        icon: 'pi pi-pencil',
-                        command: () => openEditDialog(currentUser)
-                    },
-                    {
-                        label: 'Delete',
-                        icon: 'pi pi-trash',
-                        class: 'text-red-500',
-                        command: () => deleteUser(currentUser?.id)
-                    }
-                ]" :popup="true" />
+                <Menu ref="menu" id="overlay_menu" :model="menu_item" :popup="true" />
             </div>
         </div>
 
@@ -163,22 +154,22 @@ const toggle = (event, data) => {
                 </DialogHeader>
 
                 <form @submit.prevent="handleSubmit" class="space-y-4">
-                    <div class="space-y-2" >
+                    <div class="space-y-2">
                         <Label>Name</Label>
                         <Input v-model="form.name" required />
-                        <small v-if="form.errors.name" class="text-red-500 text-sm mt-1">{{ form.errors.name }}</small>
+                        <small v-if="form.errors.name" class="mt-1 text-sm text-red-500">{{ form.errors.name }}</small>
                     </div>
 
                     <div class="space-y-2">
-                        <Label >Email</Label>
+                        <Label>Email</Label>
                         <Input v-model="form.email" required />
-                        <small v-if="form.errors.email" class="text-red-500 text-sm mt-1">{{ form.errors.email }}</small>
+                        <small v-if="form.errors.email" class="mt-1 text-sm text-red-500">{{ form.errors.email }}</small>
                     </div>
 
                     <div class="space-y-2">
-                        <Label >Password {{ editMode ? '(leave blank to keep current)' : '' }}</Label>
+                        <Label>Password {{ editMode ? '(leave blank to keep current)' : '' }}</Label>
                         <Input type="password" v-model="form.password" :required="!editMode" />
-                        <small v-if="form.errors.password" class="text-red-500 text-sm mt-1">{{ form.errors.password }}</small>
+                        <small v-if="form.errors.password" class="mt-1 text-sm text-red-500">{{ form.errors.password }}</small>
                     </div>
 
                     <DialogFooter>
