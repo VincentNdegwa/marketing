@@ -16,24 +16,24 @@ if (user_type == 'Super Admin') {
     mainNavItems.push(
         {
             title: 'Dashboard',
-            href: '/dashboard-admin',
+            href: 'dashboard.admin',
             icon: LayoutGrid,
         },
         {
             title: 'Clients',
-            href: '/',
+            href: 'clients.index',
             icon: Users,
         },
         {
             title: 'Modules',
-            href: '/',
+            href: 'dashboard.admin',
             icon: Boxes,
         },
     );
 } else {
     mainNavItems.push({
         title: 'Dashboard',
-        href: '/dashboard',
+        href: 'dashboard.admin',
         icon: LayoutGrid,
     });
 }
