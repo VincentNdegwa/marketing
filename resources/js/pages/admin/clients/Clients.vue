@@ -104,7 +104,7 @@ function deleteUser(id: number) {
     }
 }
 
-const toggle = (event, data) => {
+const toggle = (event: Event, data: any) => {
     currentUser.value = data;
     menu.value.toggle(event);
 };
