@@ -6,11 +6,11 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import getModulePaths from './vite-module-loader';
 
+
 export default defineConfig(async () => {
-    // Get module paths asynchronously
     const modulePaths = await getModulePaths();
     console.log('Module paths:', modulePaths);
-    
+
     return {
         plugins: [
             laravel({
@@ -18,14 +18,14 @@ export default defineConfig(async () => {
                 ssr: 'resources/js/ssr.ts',
                 refresh: true,
             }),
-        tailwindcss(),
-        vue({
-            template: {
-                transformAssetUrls: {
-                    base: null,
-                    includeAbsolute: false,
+            tailwindcss(),
+            vue({
+                template: {
+                    transformAssetUrls: {
+                        base: null,
+                        includeAbsolute: false,
+                    },
                 },
-            },
             }),
         ],
         resolve: {
@@ -34,7 +34,7 @@ export default defineConfig(async () => {
                 'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
                 '@modules': path.resolve(__dirname, './Modules'),
                 '@blog': path.resolve(__dirname, './Modules/Blog/Resources/js'),
-                '@css': path.resolve(__dirname,'./resources/css')
+                '@css': path.resolve(__dirname, './resources/css'),
             },
         },
         // Make sure all modules can access the main application's routes and components

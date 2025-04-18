@@ -92,7 +92,7 @@ class BlogController extends Controller
             'updated_at' => '2025-04-15T14:30:00'
         ];
         
-        return Inertia::render('Blog/Show', [
+        return Inertia::module('blog/Show', [
             'post' => $post
         ]);
     }
@@ -113,7 +113,7 @@ class BlogController extends Controller
             'updated_at' => '2025-04-15T14:30:00'
         ];
         
-        return Inertia::render('Blog/Edit', [
+        return Inertia::module('blog/Edit', [
             'post' => $post
         ]);
     }

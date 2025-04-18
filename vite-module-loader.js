@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-async function getModulePaths(paths = [], modulesPath = 'Modules') {
+async function getModulePaths(modulesPath = 'Modules') {
   modulesPath = path.join(__dirname, modulesPath);
 
   const moduleStatusesPath = path.join(__dirname, 'modules_statuses.json');

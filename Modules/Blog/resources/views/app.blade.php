@@ -8,7 +8,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts and Styles -->
-    @vite(['Modules/Blog/Resources/js/app.ts'], 'build-blog')
+    @routes
+    @vite(['Modules/Blog/Resources/js/app.ts'])
     @inertiaHead
 </head>
 <body class="font-sans antialiased">

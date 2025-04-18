@@ -1,16 +1,6 @@
 {
   "extends": "../../../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@blog/*": ["./*"],
-      "@/*": ["../../../../resources/js/*"]
-    },
-    "types": [] 
-  },
-  "include": [
-    "./**/*.ts",
-    "./**/*.d.ts",
-    "./**/*.vue"
-  ]
+    "types": ["../../../../resources/js/types", "vue"]
+  }
 }

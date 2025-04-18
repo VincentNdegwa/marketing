@@ -16,7 +16,25 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        parent::boot(); 
+        parent::boot();
+
+        $this->mapApiRoutes();
+        $this->mapWebRoutes();
+        
+        // // Make sure the module has access to all routes from the main application
+        // // This ensures that routes like 'dashboard' are available in the Blog module
+        // $this->app->booted(function () {
+        //     // Get the Ziggy config from the main application
+        //     $ziggy = config('ziggy', []);
+            
+        //     // Ensure the Ziggy config includes all routes
+        //     if (isset($ziggy['except'])) {
+        //         unset($ziggy['except']);
+        //     }
+            
+        //     // Update the Ziggy config
+        //     config(['ziggy' => $ziggy]);
+        // });
     }
 
     /**

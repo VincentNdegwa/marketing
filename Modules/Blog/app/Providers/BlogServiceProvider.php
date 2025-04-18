@@ -59,17 +59,13 @@ class BlogServiceProvider extends ServiceProvider
      */
     protected function registerAssets(): void
     {
-        // Register Vite build for the module
+        // Use the main application's build directory instead of a module-specific one
+        // This is necessary when using a centralized Vite configuration
         Vite::macro('module', function (string $module, string|array $entry) {
-            $modulePath = base_path("Modules/{$module}");
-            
-            return Vite::useHotFile("Modules/{$module}/hot")
-                ->useBuildDirectory("build-{$module}")
-                ->withEntryPoints($entry)
-                ->useManifestFilename("manifest-{$module}.json")
-                ->createAssetPathResolver(function (string $path) use ($modulePath) {
-                    return $modulePath . '/' . $path;
-                });
+            // Use the main build directory and manifest
+            return Vite::useHotFile('hot')
+                ->useBuildDirectory('build')
+                ->withEntryPoints($entry);
         });
     }
     
