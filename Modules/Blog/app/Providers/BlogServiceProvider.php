@@ -44,6 +44,12 @@ class BlogServiceProvider extends ServiceProvider
         
         // Register the Blog Inertia middleware
         $router = $this->app->make(Router::class);
+        
+        // Register the Blog menu listener
+        $this->app->make('events')->listen(
+            \App\Events\MenuEvent::class,
+            \Modules\Blog\app\Listeners\BlogMenuListener::class
+        );
     }
 
     /**

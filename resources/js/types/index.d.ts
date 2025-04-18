@@ -17,6 +17,13 @@ export interface NavItem {
     icon?: LucideIcon;
     isActive?: boolean;
 }
+export interface ServerNavItem {
+    title: string;
+    href: string;
+    icon?: string;
+    isActive?: boolean;
+}
+
 
 export interface SharedData extends PageProps {
     name: string;
@@ -24,6 +31,7 @@ export interface SharedData extends PageProps {
     auth: Auth;
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
+    menu: ServerNavItem[];
 }
 
 export interface User {

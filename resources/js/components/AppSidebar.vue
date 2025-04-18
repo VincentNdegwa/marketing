@@ -3,40 +3,31 @@ import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
-import { Link, usePage } from '@inertiajs/vue3';
-import { Boxes, LayoutGrid, Users } from 'lucide-vue-next';
+import { usePage } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import { Boxes, LayoutGrid, Users, FileText, FolderTree, Settings } from 'lucide-vue-next';
+import type { NavItem, SharedData } from '../types';
 import AppLogo from './AppLogo.vue';
 
 const page = usePage<SharedData>();
-const user_type = page.props.auth.user.user_type;
+const menuItems = page.props.menu || [];
 
-const mainNavItems: NavItem[] = [];
-if (user_type == 'Super Admin') {
-    mainNavItems.push(
-        {
-            title: 'Dashboard',
-            href: 'dashboard.admin',
-            icon: LayoutGrid,
-        },
-        {
-            title: 'Clients',
-            href: 'clients.index',
-            icon: Users,
-        },
-        {
-            title: 'Modules',
-            href: 'dashboard.admin',
-            icon: Boxes,
-        },
-    );
-} else {
-    mainNavItems.push({
-        title: 'Dashboard',
-        href: 'dashboard.admin',
-        icon: LayoutGrid,
-    });
-}
+// Map icon strings to actual icon components
+const iconMap = {
+    'LayoutGrid': LayoutGrid,
+    'Users': Users,
+    'Boxes': Boxes,
+    'FileText': FileText,
+    'FolderTree': FolderTree,
+    'Settings': Settings,
+    'User': Users // Use Users icon for User until we import the specific User icon
+};
+
+const mainNavItems: NavItem[] = menuItems.map(item => ({
+    title: item.title,
+    href: item.href,
+    icon: item.icon && iconMap[item.icon as keyof typeof iconMap] ? iconMap[item.icon as keyof typeof iconMap] : LayoutGrid,
+}));
 
 const footerNavItems: NavItem[] = [
     // {
