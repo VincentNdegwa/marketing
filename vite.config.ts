@@ -4,11 +4,12 @@ import path from 'path';
 import tailwindcss from "@tailwindcss/vite";
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import { getModulePaths } from './vite-module-loader';
 
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/js/app.ts'],
+            input: ['resources/js/app.ts', ...getModulePaths()],
             ssr: 'resources/js/ssr.ts',
             refresh: true,
         }),
