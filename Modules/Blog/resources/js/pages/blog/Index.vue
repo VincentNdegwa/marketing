@@ -1,18 +1,29 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-
+import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { BlogPost } from '../../types'
 
 defineProps<{
   posts: BlogPost[]
 }>();
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Dashboard',
+        href: 'dashboard',
+    },
+    {
+        title: 'Blogs',
+        href: 'blog.index',
+    },
+];
 </script>
 
 <template>
   <div>
     <Head title="Blog" />
-    <AppLayout :breadcrumbs="[]" >
+    <AppLayout :breadcrumbs="breadcrumbs" >
       
       <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
