@@ -1,4 +1,4 @@
-import '../css/app.css';
+import '@css/app.css';
 
 import 'primeicons/primeicons.css'
 
@@ -8,7 +8,8 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
-import { initializeTheme } from './composables/useAppearance';
+import { route } from 'ziggy-js';
+import { initializeTheme } from '@/composables/useAppearance';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 
@@ -54,5 +55,4 @@ createInertiaApp({
     },
 });
 
-// This will set light / dark mode on page load...
 initializeTheme();

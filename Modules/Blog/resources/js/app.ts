@@ -1,5 +1,7 @@
-// Import CSS if needed
-// import '../css/module.css';
+import '@css/app.css';
+
+import 'primeicons/primeicons.css'
+
 
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -7,13 +9,13 @@ import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
 import { route } from 'ziggy-js';
+import { initializeTheme } from '@/composables/useAppearance';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 
-// Import the Blog component for direct use in Blade templates
-import BlogComponent from './components/BlogComponent.vue';
 
-// Extend ImportMeta interface for Vite
+
+// Extend ImportMeta interface for Vite...
 declare module 'vite/client' {
   interface ImportMetaEnv {
     readonly VITE_APP_NAME: string;
@@ -26,28 +28,7 @@ declare module 'vite/client' {
   }
 }
 
-// Register components for direct use in Blade templates
-const app = createApp({});
-app.component('blog-component', BlogComponent);
-
-// Mount the app if there's a specific element for this module (for Blade usage)
-const blogElement = document.getElementById('blog-module');
-if (blogElement) {
-  app.use(PrimeVue, {
-    theme: {
-      preset: Aura,
-      options: {
-        prefix: 'p',
-        darkModeSelector: '.dark',
-        cssLayer: false
-      }
-    }
-  });
-  app.mount(blogElement);
-}
-
-// Setup for Inertia pages
-const appName = import.meta.env.VITE_APP_NAME || 'Blog Module';
+const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
@@ -74,5 +55,4 @@ createInertiaApp({
   },
 });
 
-// Export components for use in other parts of the application
-export { BlogComponent };
+initializeTheme();

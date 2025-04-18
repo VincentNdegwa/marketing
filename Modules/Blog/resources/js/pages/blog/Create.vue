@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AppLayout from '../../../../resources/js/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '../types';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -18,7 +18,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 const title = ref('');
 const content = ref('');
 const excerpt = ref('');
-const image = ref(null);
 
 const submitForm = () => {
     // In a real application, this would submit the form using Inertia or an API call

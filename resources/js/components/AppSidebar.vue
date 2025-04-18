@@ -50,6 +50,7 @@ const footerNavItems: NavItem[] = [
     //     icon: BookOpen,
     // },
 ];
+
 </script>
 
 <template>
@@ -58,7 +59,7 @@ const footerNavItems: NavItem[] = [
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="route('dashboard')">
+                        <Link :href="route(user_type=='Super Admin'?'dashboard.admin':'dashboard')">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>

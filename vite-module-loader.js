@@ -1,11 +1,11 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { pathToFileURL } from 'url';
 
-async function collectModuleAssetsPaths(paths, modulesPath) {
+async function getModulePaths(paths = [], modulesPath = 'Modules') {
   modulesPath = path.join(__dirname, modulesPath);
 
   const moduleStatusesPath = path.join(__dirname, 'modules_statuses.json');
+  const result = [];
 
   try {
     // Read module_statuses.json
@@ -17,35 +17,20 @@ async function collectModuleAssetsPaths(paths, modulesPath) {
 
     for (const moduleDir of moduleDirectories) {
       if (moduleDir === '.DS_Store') {
-        // Skip .DS_Store directory
         continue;
       }
 
       // Check if the module is enabled (status is true)
       if (moduleStatuses[moduleDir] === true) {
-        const viteConfigPath = path.join(modulesPath, moduleDir, 'vite.config.js');
-
-        try {
-          await fs.access(viteConfigPath);
-          // Convert to a file URL for Windows compatibility
-          const moduleConfigURL = pathToFileURL(viteConfigPath);
-
-          // Import the module-specific Vite configuration
-          const moduleConfig = await import(moduleConfigURL.href);
-
-          if (moduleConfig.paths && Array.isArray(moduleConfig.paths)) {
-            paths.push(...moduleConfig.paths);
-          }
-        } catch (error) {
-          // vite.config.js does not exist, skip this module
-        }
+        // Add the module's app.ts file to the result
+        result.push(`Modules/${moduleDir}/Resources/js/app.ts`);
       }
     }
   } catch (error) {
     console.error(`Error reading module statuses or module configurations: ${error}`);
   }
 
-  return paths;
+  return result;
 }
 
-export default collectModuleAssetsPaths;
+export default getModulePaths;

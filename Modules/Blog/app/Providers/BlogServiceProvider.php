@@ -3,7 +3,10 @@
 namespace Modules\Blog\app\Providers;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Routing\Router;
+use Inertia\Inertia;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -26,6 +29,8 @@ class BlogServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
+        $this->registerAssets();
+        $this->registerInertia();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
     }
 
@@ -36,6 +41,9 @@ class BlogServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+        
+        // Register the Blog Inertia middleware
+        $router = $this->app->make(Router::class);
     }
 
     /**
@@ -46,6 +54,45 @@ class BlogServiceProvider extends ServiceProvider
         // $this->commands([]);
     }
 
+    /**
+     * Register assets for the module.
+     */
+    protected function registerAssets(): void
+    {
+        // Register Vite build for the module
+        Vite::macro('module', function (string $module, string|array $entry) {
+            $modulePath = base_path("Modules/{$module}");
+            
+            return Vite::useHotFile("Modules/{$module}/hot")
+                ->useBuildDirectory("build-{$module}")
+                ->withEntryPoints($entry)
+                ->useManifestFilename("manifest-{$module}.json")
+                ->createAssetPathResolver(function (string $path) use ($modulePath) {
+                    return $modulePath . '/' . $path;
+                });
+        });
+    }
+    
+    /**
+     * Register Inertia related components and middleware.
+     */
+    protected function registerInertia(): void
+    {
+        // Set the root view for Inertia responses from this module
+        Inertia::setRootView('blog::app');
+        
+        // Register a macro to extend Inertia::render with module-specific functionality
+        if (!Inertia::hasMacro('module')) {
+            Inertia::macro('module', function ($component, $props = []) {
+                // Ensure the root view is set correctly for this module
+                Inertia::setRootView('blog::app');
+                
+                // Then render the component
+                return Inertia::render($component, $props);
+            });
+        }
+    }
+    
     /**
      * Register command Schedules.
      */

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import AppLayout from '../../../../resources/js/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '../types';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
+
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

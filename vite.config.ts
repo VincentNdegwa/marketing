@@ -4,15 +4,20 @@ import path from 'path';
 import tailwindcss from "@tailwindcss/vite";
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
-import { getModulePaths } from './vite-module-loader';
+import getModulePaths from './vite-module-loader';
 
-export default defineConfig({
-    plugins: [
-        laravel({
-            input: ['resources/js/app.ts', ...getModulePaths()],
-            ssr: 'resources/js/ssr.ts',
-            refresh: true,
-        }),
+export default defineConfig(async () => {
+    // Get module paths asynchronously
+    const modulePaths = await getModulePaths();
+    console.log('Module paths:', modulePaths);
+    
+    return {
+        plugins: [
+            laravel({
+                input: ['resources/js/app.ts', ...modulePaths],
+                ssr: 'resources/js/ssr.ts',
+                refresh: true,
+            }),
         tailwindcss(),
         vue({
             template: {
@@ -21,12 +26,20 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
-        }),
-    ],
-    resolve: {
-        alias: {
-            '@': path.resolve(__dirname, './resources/js'),
-            'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
+            }),
+        ],
+        resolve: {
+            alias: {
+                '@': path.resolve(__dirname, './resources/js'),
+                'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
+                '@modules': path.resolve(__dirname, './Modules'),
+                '@blog': path.resolve(__dirname, './Modules/Blog/Resources/js'),
+                '@css': path.resolve(__dirname,'./resources/css')
+            },
         },
-    },
+        // Make sure all modules can access the main application's routes and components
+        optimizeDeps: {
+            include: ['ziggy-js'],
+        },
+    };
 });

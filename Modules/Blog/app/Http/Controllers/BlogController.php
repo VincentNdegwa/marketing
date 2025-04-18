@@ -3,52 +3,49 @@
 namespace Modules\Blog\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    // No need for constructor anymore as the root view is set in the service provider
+    
     public function index()
     {
-        // For traditional Blade template rendering
-        if (request()->wantsJson() || request()->header('X-Inertia')) {
-            // Sample blog posts data (in a real app, fetch from database)
-            $posts = [
-                [
-                    'id' => 1,
-                    'title' => 'Getting Started with Laravel Modules',
-                    'excerpt' => 'Learn how to organize your Laravel application using modules...',
-                    'image' => null,
-                    'created_at' => '2025-04-15T14:30:00',
-                    'updated_at' => '2025-04-15T14:30:00'
-                ],
-                [
-                    'id' => 2,
-                    'title' => 'Integrating Vue.js with Laravel Modules',
-                    'excerpt' => 'A comprehensive guide to using Vue.js in your modular Laravel app...',
-                    'image' => null,
-                    'created_at' => '2025-04-16T10:15:00',
-                    'updated_at' => '2025-04-16T10:15:00'
-                ],
-                [
-                    'id' => 3,
-                    'title' => 'Building Scalable Applications with Laravel',
-                    'excerpt' => 'Best practices for creating maintainable and scalable Laravel applications...',
-                    'image' => null,
-                    'created_at' => '2025-04-17T09:45:00',
-                    'updated_at' => '2025-04-17T09:45:00'
-                ]
-            ];
-            
-            return Inertia::render('Index', [
-                'posts' => $posts
-            ]);
-        }
+        $posts = [
+            [
+                'id' => 1,
+                'title' => 'Getting Started with Laravel Modules',
+                'excerpt' => 'Learn how to organize your Laravel application using modules...',
+                'image' => null,
+                'created_at' => '2025-04-15T14:30:00',
+                'updated_at' => '2025-04-15T14:30:00'
+            ],
+            [
+                'id' => 2,
+                'title' => 'Integrating Vue.js with Laravel Modules',
+                'excerpt' => 'A comprehensive guide to using Vue.js in your modular Laravel app...',
+                'image' => null,
+                'created_at' => '2025-04-16T10:15:00',
+                'updated_at' => '2025-04-16T10:15:00'
+            ],
+            [
+                'id' => 3,
+                'title' => 'Building Scalable Applications with Laravel',
+                'excerpt' => 'Best practices for creating maintainable and scalable Laravel applications...',
+                'image' => null,
+                'created_at' => '2025-04-17T09:45:00',
+                'updated_at' => '2025-04-17T09:45:00'
+            ]
+        ];
         
-        return view('blog::index');
+        // Now render the Vue component - this is just the component name, not a Blade view path
+        return Inertia::module('blog/Index', [
+            'posts' => $posts
+        ]);
     }
 
     /**
@@ -56,11 +53,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        if (request()->wantsJson() || request()->header('X-Inertia')) {
-            return Inertia::render('Create');
-        }
-        
-        return view('blog::create');
+        return Inertia::module('blog/Create');
     }
 
     /**
@@ -99,13 +92,9 @@ class BlogController extends Controller
             'updated_at' => '2025-04-15T14:30:00'
         ];
         
-        if (request()->wantsJson() || request()->header('X-Inertia')) {
-            return Inertia::render('Show', [
-                'post' => $post
-            ]);
-        }
-        
-        return view('blog::show', ['post' => $post]);
+        return Inertia::render('Blog/Show', [
+            'post' => $post
+        ]);
     }
 
     /**
@@ -124,13 +113,9 @@ class BlogController extends Controller
             'updated_at' => '2025-04-15T14:30:00'
         ];
         
-        if (request()->wantsJson() || request()->header('X-Inertia')) {
-            return Inertia::render('Edit', [
-                'post' => $post
-            ]);
-        }
-        
-        return view('blog::edit', ['post' => $post]);
+        return Inertia::render('Blog/Edit', [
+            'post' => $post
+        ]);
     }
 
     /**
