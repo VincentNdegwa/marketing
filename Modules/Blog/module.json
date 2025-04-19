@@ -4,8 +4,7 @@
     "description": "",
     "keywords": [],
     "priority": 0,
-    "providers": [
-        "Modules\\Blog\\app\\Providers\\BlogServiceProvider"
-    ],
-    "files": []
+    "providers": ["Modules\\Blog\\app\\Providers\\BlogServiceProvider"],
+    "files": [],
+    "namespace": "Modules\\Blog\\app"
 }

@@ -19,16 +19,16 @@ class BaseMenuListener
         Log::info("Base Menu", ["event" => $event]);
 
         
-        $menu->add([
-            'title' => 'Dashboard',
-            'icon' => 'LayoutGrid',
-            'href' => 'dashboard',
-            'order' => 10,
-            'module' => 'Base',
-        ]);
-
+        
         // Add client specific menu items
         if ($event instanceof ClientMenuEvent) {
+            $menu->add([
+                'title' => 'Dashboard',
+                'icon' => 'LayoutGrid',
+                'href' => 'dashboard',
+                'order' => 10,
+                'module' => 'Base',
+            ]);
             $menu->add([
                 'title' => 'My Profile',
                 'icon' => 'User',

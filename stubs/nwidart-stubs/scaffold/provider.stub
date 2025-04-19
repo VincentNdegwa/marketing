@@ -16,6 +16,8 @@ class $CLASS$ extends ServiceProvider
 
     protected string $nameLower = '$LOWER_NAME$';
 
+    protected string $InertiaName = $nameLower."::app"
+
     /**
      * Boot the application events.
      */
@@ -44,6 +46,35 @@ class $CLASS$ extends ServiceProvider
     protected function registerCommands(): void
     {
         // $this->commands([]);
+    }
+
+        /**
+     * Register assets for the module.
+     */
+    protected function registerAssets(): void
+    {
+        Vite::macro('module', function (string $module, string|array $entry) {
+            // Use the main build directory and manifest
+            return Vite::useHotFile('hot')
+                ->useBuildDirectory('build')
+                ->withEntryPoints($entry);
+        });
+    }
+    
+    /**
+     * Register Inertia related components and middleware.
+     */
+    protected function registerInertia(): void
+    {
+        Inertia::setRootView($InertiaName);
+        
+        if (!Inertia::hasMacro('module')) {
+            Inertia::macro('module', function ($component, $props = []) {
+                Inertia::setRootView($InertiaName);
+                
+                return Inertia::render($component, $props);
+            });
+        }
     }
 
     /**
