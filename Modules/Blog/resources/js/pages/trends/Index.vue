@@ -1,24 +1,34 @@
 <template>
-    <div class="p-6 bg-white rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold mb-4">Blog Trends</h1>
-        <p class="mb-4">This is the trends/Index.vue component in the Blog module.</p>
-        
-        <div class="mb-4">
-            <inertia-link :href="route('trends.create')" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                Create New Trend
-            </inertia-link>
+    <AppLayout :breadcrumbs="breadcrumbs">
+        <div class="p-6 bg-white rounded-lg shadow-md">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold">Blog Trends</h1>
+                <Link 
+                    :href="route('trends.create')" 
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                    Create New Trend
+                </Link>
+            </div>
+            
+            <!-- Trends list would go here -->
+            <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg text-center">
+                <p class="text-gray-500 dark:text-gray-400">No trends found. Create your first trend to get started.</p>
+            </div>
         </div>
-        
-        <div class="bg-gray-100 p-4 rounded-lg">
-            <h2 class="text-lg font-semibold mb-2">Page Resolution Information:</h2>
-            <pre class="bg-gray-800 text-white p-3 rounded overflow-x-auto">
-                Path: trends/Index
-                Component: Modules/Blog/Resources/js/pages/trends/Index.vue
-            </pre>
-        </div>
-    </div>
+    </AppLayout>
 </template>
 
-<script setup>
-import { Link as InertiaLink } from '@inertiajs/vue3';
+<script setup lang="ts">
+import AppLayout from '@/layouts/AppLayout.vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import type { BreadcrumbItem } from '@/types';
+import { route } from 'ziggy-js';
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Blog Trends',
+        href: 'trends.index',
+    },
+];
 </script>
