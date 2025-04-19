@@ -75,7 +75,7 @@ class BaseMenuListener
                 'order' => 30,
                 'ignore_if' => [],
                 'depend_on' => [],
-                'href' => 'dashboard.admin',
+                'href' => 'admin.modules',
                 'module' => $module,
                 'permission' => 'manage-modules'
             ]);
