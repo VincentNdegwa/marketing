@@ -21,7 +21,7 @@ class MenuListener
             'order' => 2,
             'ignore_if' => [],
             'depend_on' => [],
-            'route' => 'home',
+            'href' => 'home',
             'module' => $module,
             'permission' => 'manage-dashboard'
         ]);
