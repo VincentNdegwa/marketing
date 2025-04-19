@@ -29,8 +29,5 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(\App\Events\SuperAdminMenuEvent::class, \App\Listeners\BaseMenuListener::class);
         Event::listen(\App\Events\ClientMenuEvent::class, \App\Listeners\BaseMenuListener::class);
         
-        // Register the Blog module's menu listener
-        Event::listen(\App\Events\MenuEvent::class, \Modules\Blog\app\Listeners\BlogMenuListener::class);
-        Event::listen(\App\Events\ClientMenuEvent::class, \Modules\Blog\app\Listeners\BlogMenuListener::class);
     }
 }
