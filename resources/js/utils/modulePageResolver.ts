@@ -10,23 +10,28 @@ import moduleStatuses from '../../../modules_statuses.json';
  * 
  * To add a new module:
  * 1. Add it to modules_statuses.json
- * 2. Add an entry in REGISTERED_MODULES with the appropriate import.meta.glob statement
+ * 2. Add an import statement for the module's pages
  */
-
-// ==============================
-// Configuration and Setup
-// ==============================
 
 // Get active modules from modules_statuses.json
 const ACTIVE_MODULES = Object.keys(moduleStatuses).filter(module => moduleStatuses[module as keyof typeof moduleStatuses]);
 console.log('Active modules:', ACTIVE_MODULES);
 
-// Register all possible modules (required for Vite static analysis)
-// Add new modules here when they are created
-const REGISTERED_MODULES: Record<string, Record<string, () => Promise<DefineComponent>>> = {
-  'blog': import.meta.glob<DefineComponent>('../../../Modules/Blog/Resources/js/pages/**/*.vue'),
-  // 'commerce': import.meta.glob<DefineComponent>('../../../Modules/Commerce/Resources/js/pages/**/*.vue'),
+// Import pages for each module
+// Add new modules here when you create them
+const BLOG_PAGES = import.meta.glob<DefineComponent>('../../../Modules/Blog/Resources/js/pages/**/*.vue');
+// const COMMERCE_PAGES = import.meta.glob<DefineComponent>('../../../Modules/Commerce/Resources/js/pages/**/*.vue');
+
+// Create a mapping of module names to their page imports
+const MODULE_PAGES_MAP: Record<string, Record<string, () => Promise<DefineComponent>>> = {
+  'blog': BLOG_PAGES,
+  // 'commerce': COMMERCE_PAGES,
 };
+
+// Log available pages for each module
+// Object.entries(MODULE_PAGES_MAP).forEach(([moduleName, pages]) => {
+//   console.log(`${moduleName} pages:`, Object.keys(pages));
+// });
 
 // Import main application pages
 const MAIN_APP_PAGES = import.meta.glob<DefineComponent>('../pages/**/*.vue');
@@ -54,23 +59,51 @@ function processMainAppPages() {
 }
 
 /**
- * Processes pages for a specific module with multiple name formats for flexible resolution
+ * Creates a normalized map of module pages with automatic subfolder discovery
  */
-function processModulePages(moduleName: string, pages: Record<string, () => Promise<DefineComponent>>) {
-  const moduleNameLower = moduleName.toLowerCase();
-  const result: Record<string, () => Promise<DefineComponent>> = {};
+function processModulePages() {
+  const result: Record<string, Record<string, () => Promise<DefineComponent>>> = {};
   
-  Object.entries(pages).forEach(([path, importFn]) => {
-    // Extract filename without extension (e.g., 'Index' from 'path/to/Index.vue')
-    const pathParts = path.split('/');
-    const fileName = pathParts[pathParts.length - 1].replace('.vue', '');
+  // Process each active module
+  Object.entries(MODULE_PAGES_MAP).forEach(([moduleNameLower, modulePages]) => {
+    // Skip inactive modules
+    if (!ACTIVE_MODULES.some(m => m.toLowerCase() === moduleNameLower)) return;
     
-    // Add multiple formats for flexible resolution
-    result[fileName] = importFn;                                  // Format: "Index"
-    result[`${moduleNameLower}/${fileName}`] = importFn;         // Format: "blog/Index"
-    result[`${moduleName}/${fileName}`] = importFn;              // Format: "Blog/Index"
-    result[fileName.toLowerCase()] = importFn;                   // Format: "index"
-    result[`${moduleNameLower}/${fileName.toLowerCase()}`] = importFn; // Format: "blog/index"
+    result[moduleNameLower] = {};
+    const allPaths: string[] = [];
+    
+    // Process each page in this module
+    Object.entries(modulePages).forEach(([path, importFn]) => {
+      // Extract page path from the full path
+      const pathMatch = path.match(/\/pages\/(.+)\.vue$/);
+      if (!pathMatch) return;
+      
+      const pagePath = pathMatch[1];
+      allPaths.push(pagePath);
+      const moduleName = moduleNameLower.charAt(0).toUpperCase() + moduleNameLower.slice(1);
+      const pageNameOnly = pagePath.split('/').pop() || '';
+      
+      // Add various formats for flexible lookup
+      result[moduleNameLower][pagePath] = importFn;                                    // folder/Page
+      result[moduleNameLower][pagePath.toLowerCase()] = importFn;                      // folder/page
+      result[moduleNameLower][`${moduleName}/${pagePath}`] = importFn;                // Blog/folder/Page
+      result[moduleNameLower][`${moduleNameLower}/${pagePath.toLowerCase()}`] = importFn; // blog/folder/page
+      result[moduleNameLower][pageNameOnly] = importFn;                               // Page
+      result[moduleNameLower][pageNameOnly.toLowerCase()] = importFn;                 // page
+    });
+    
+    // Process subfolders for direct access
+    const subfolders = new Set(allPaths.filter(p => p.includes('/')).map(p => p.split('/')[0]));
+    
+    // Create direct mappings for each subfolder
+    subfolders.forEach(subfolder => {
+      const subfolderLower = subfolder.toLowerCase();
+      allPaths.filter(path => path.startsWith(`${subfolder}/`)).forEach(fullPath => {
+        const pageName = fullPath.substring(subfolder.length + 1);
+        result[moduleNameLower][`${subfolder}/${pageName}`] = result[moduleNameLower][fullPath];
+        result[moduleNameLower][`${subfolderLower}/${pageName.toLowerCase()}`] = result[moduleNameLower][fullPath];
+      });
+    });
   });
   
   return result;
@@ -85,24 +118,7 @@ const mainPageMap = processMainAppPages();
 console.log('Main app pages:', Object.keys(mainPageMap));
 
 // Process module pages (only for active modules)
-const modulePageMap: Record<string, Record<string, () => Promise<DefineComponent>>> = {};
-
-ACTIVE_MODULES.forEach(moduleName => {
-  const moduleNameLower = moduleName.toLowerCase();
-  
-  // Check if this module is registered
-  if (REGISTERED_MODULES[moduleNameLower]) {
-    // Process and store the module's pages
-    modulePageMap[moduleNameLower] = processModulePages(
-      moduleName, 
-      REGISTERED_MODULES[moduleNameLower]
-    );
-    console.log(`${moduleName} module pages:`, Object.keys(modulePageMap[moduleNameLower]));
-  } else {
-    console.warn(`Module ${moduleName} is active but not registered in modulePageResolver.`);
-    modulePageMap[moduleNameLower] = {}; // Initialize empty to avoid errors
-  }
-});
+const modulePageMap = processModulePages();
 
 // ==============================
 // Page Resolution Function
@@ -308,10 +324,10 @@ export function resolveModulePage(name: string): Promise<DefineComponent> {
   }
   
   // Try path matching in module pages
-  for (const moduleNameLower of Object.keys(REGISTERED_MODULES)) {
+  for (const moduleNameLower of Object.keys(modulePageMap)) {
     if (!ACTIVE_MODULES.some(m => m.toLowerCase() === moduleNameLower)) continue;
     
-    for (const [path, importFn] of Object.entries(REGISTERED_MODULES[moduleNameLower])) {
+    for (const [path, importFn] of Object.entries(modulePageMap[moduleNameLower])) {
       if (path.includes(name) || path.toLowerCase().includes(nameLower)) {
         console.log(`Found in ${moduleNameLower} module (path match): ${path}`);
         return importFn();

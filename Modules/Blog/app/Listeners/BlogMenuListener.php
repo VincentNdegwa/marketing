@@ -26,21 +26,21 @@ class BlogMenuListener
                 'order' => 40, 
                 'module' => $module,
             ]);
-            // $menu->add([
-            //     'title' => 'Blog Categories',
-            //     'icon' => 'FolderTree',
-            //     'route' => 'blog.categories.index',
-            //     'order' => 45,
-            //     'module' => $module,
-            // ]);
+            $menu->add([
+                'title' => 'Blog Categories',
+                'icon' => 'FolderTree',
+                'href' => 'blogs-category.index',
+                'order' => 45,
+                'module' => $module,
+            ]);
             
-            // $menu->add([
-            //     'title' => 'Blog Settings',
-            //     'icon' => 'Settings',
-            //     'route' => 'blog.settings',
-            //     'order' => 50,
-            //     'module' => $module,
-            // ]);
+            $menu->add([
+                'title' => 'Blog Trend',
+                'icon' => 'Settings',
+                'href' => 'trends.index',
+                'order' => 50,
+                'module' => $module,
+            ]);
         }
     }
 }
