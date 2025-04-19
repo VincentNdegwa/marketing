@@ -13,15 +13,30 @@ export interface BreadcrumbItem {
 
 export interface NavItem {
     title: string;
-    href: string;
+    href: string|null;
     icon?: LucideIcon;
     isActive?: boolean;
+    name?: string;
+    parent?: string | null;
+    order?: number;
+    ignore_if?: string[];
+    depend_on?: string[];
+    module?: string;
+    permission?: string;
+    children?: NavItem[];
 }
 export interface ServerNavItem {
     title: string;
-    href: string;
+    href: string|null;
     icon?: string;
     isActive?: boolean;
+    name?: string;
+    parent?: string | null;
+    order?: number;
+    ignore_if?: string[];
+    depend_on?: string[];
+    module?: string;
+    permission?: string;
 }
 
 

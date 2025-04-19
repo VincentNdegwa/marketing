@@ -11,8 +11,8 @@ import AppLogo from './AppLogo.vue';
 
 const page = usePage<SharedData>();
 const menuItems = page.props.menu || [];
+const user_type = page.props.user_type || '';
 
-// Map icon strings to actual icon components
 const iconMap = {
     'LayoutGrid': LayoutGrid,
     'Users': Users,
@@ -20,14 +20,55 @@ const iconMap = {
     'FileText': FileText,
     'FolderTree': FolderTree,
     'Settings': Settings,
-    'User': Users // Use Users icon for User until we import the specific User icon
+    'User': Users
 };
 
-const mainNavItems: NavItem[] = menuItems.map(item => ({
+const transformedMenuItems: NavItem[] = menuItems.map(item => ({
     title: item.title,
     href: item.href,
     icon: item.icon && iconMap[item.icon as keyof typeof iconMap] ? iconMap[item.icon as keyof typeof iconMap] : LayoutGrid,
+    name: item.name,
+    parent: item.parent,
+    order: item.order,
+    ignore_if: item.ignore_if,
+    depend_on: item.depend_on,
+    module: item.module,
+    permission: item.permission,
+    isActive: false,
+    children: [] as NavItem[]
 }));
+
+const menuItemsMap = new Map<string, NavItem>();
+
+transformedMenuItems.forEach(item => {
+    if (item.name) {
+        menuItemsMap.set(item.name, { ...item, children: [] });
+    }
+});
+
+const mainNavItems: NavItem[] = [];
+transformedMenuItems.forEach(item => {
+    if (!item.parent) {
+        mainNavItems.push(menuItemsMap.get(item.name || '') || item);
+    } else {
+        const parent = menuItemsMap.get(item.parent);
+        if (parent && parent.children) {
+            parent.children.push(item);
+        } else {
+            mainNavItems.push(item);
+        }
+    }
+});
+
+// Sort by order property
+mainNavItems.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+// Sort children by order property
+mainNavItems.forEach(item => {
+    if (item.children && item.children.length > 0) {
+        item.children.sort((a, b) => (a.order || 0) - (b.order || 0));
+    }
+});
 
 const footerNavItems: NavItem[] = [
     // {

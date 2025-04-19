@@ -22,45 +22,62 @@ class BaseMenuListener
         
         // Add client specific menu items
         if ($event instanceof ClientMenuEvent) {
+            $module = 'Base';
+            $menu = $event->menu;
             $menu->add([
                 'title' => 'Dashboard',
                 'icon' => 'LayoutGrid',
-                'href' => 'dashboard',
+                'name' => 'dashboard',
+                'parent' => null,
                 'order' => 10,
-                'module' => 'Base',
-            ]);
-            $menu->add([
-                'title' => 'My Profile',
-                'icon' => 'User',
-                'href' => 'profile.edit',
-                'order' => 50,
-                'module' => 'Base',
+                'ignore_if' => [],
+                'depend_on' => null,
+                'href' => 'dashboard',
+                'module' => $module,
+                'permission' => 'manage-dashboard'
             ]);
         }
 
         // Add super admin specific menu items
         if ($event instanceof SuperAdminMenuEvent) {
+            $module = 'Base';
+            $menu = $event->menu;
             $menu->add([
                 'title' => 'Admin Dashboard',
                 'icon' => 'LayoutGrid',
-                'href' => 'dashboard.admin',
+                'name' => 'admin-dashboard',
+                'parent' => null,
                 'order' => 1,
-                'module' => 'Base',
+                'ignore_if' => [],
+                'depend_on' => [],
+                'href' => 'dashboard.admin',
+                'module' => $module,
+                'permission' => 'manage-admin-dashboard'
             ]);
             $menu->add([
                 'title' => 'Clients',
                 'icon' => 'Users',
-                'href' => 'clients.index',
+                'name' => 'clients',
+                'parent' => null,
                 'order' => 20,
-                'module' => 'Base',
+                'ignore_if' => [],
+                'depend_on' => [],
+                'href' => 'clients.index',
+                'module' => $module,
+                'permission' => 'manage-clients'
             ]);
 
             $menu->add([
                 'title' => 'Modules',
                 'icon' => 'Boxes',
-                'href' => 'dashboard.admin',
+                'name' => 'modules',
+                'parent' => null,
                 'order' => 30,
-                'module' => 'Base',
+                'ignore_if' => [],
+                'depend_on' => [],
+                'href' => 'dashboard.admin',
+                'module' => $module,
+                'permission' => 'manage-modules'
             ]);
         }
     }
