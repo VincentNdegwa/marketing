@@ -6,6 +6,7 @@ use App\Events\ClientMenuEvent;
 use App\Events\MenuEvent;
 use App\Events\SuperAdminMenuEvent;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Modules\$MODULE$\app\Listeners\MenuListener;
 
 class $CLASS$ extends ServiceProvider
 {
@@ -15,15 +16,15 @@ class $CLASS$ extends ServiceProvider
      * @var array<string, array<int, string>>
      */
     protected $listen = [
-        MenuEvent::class => [
-            'Modules\\$STUDLY_NAME$\\app\\Listeners\\MenuListener',
-        ],
         ClientMenuEvent::class => [
-            'Modules\\$STUDLY_NAME$\\app\\Listeners\\MenuListener',
+            MenuListener::class
+        ],
+        MenuEvent::class => [
+            MenuListener::class
         ],
         SuperAdminMenuEvent::class => [
-            'Modules\\$STUDLY_NAME$\\app\\Listeners\\MenuListener',
-        ],
+            MenuListener::class
+        ]
     ];
 
     /**

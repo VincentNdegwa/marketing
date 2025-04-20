@@ -49,24 +49,6 @@ class MenuListener
         ]);
     }
     
-    /**
-     * Register menu items for company users
-     */
-    private function registerCompanyMenu($menu, $module): void
-    {
-        $menu->add([
-            'title' => '$STUDLY_NAME$',
-            'icon' => 'FileText',
-            'name' => '$LOWER_NAME$',
-            'parent' => null,
-            'order' => 40,
-            'ignore_if' => [],
-            'depend_on' => [],
-            'href' => '$LOWER_NAME$.index',
-            'module' => $module,
-            'permission' => 'manage-$LOWER_NAME$'
-        ]);
-    }
     
     /**
      * Register menu items for admin users
