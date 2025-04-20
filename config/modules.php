@@ -76,6 +76,8 @@ return [
             ],
             'listener/MenuListener' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE'],
             'seeders/PermissionTableSeeder' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE'],
+            'event-provider' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'NAMESPACE', 'CLASS'],
+            'scaffold/provider' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'NAMESPACE', 'CLASS'],
         ],
         'gitkeep' => true,
     ],

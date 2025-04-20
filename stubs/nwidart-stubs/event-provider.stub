@@ -6,7 +6,6 @@ use App\Events\ClientMenuEvent;
 use App\Events\MenuEvent;
 use App\Events\SuperAdminMenuEvent;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Modules\$MODULE$\app\Listeners\MenuListener;
 
 class $CLASS$ extends ServiceProvider
 {
@@ -15,18 +14,41 @@ class $CLASS$ extends ServiceProvider
      *
      * @var array<string, array<int, string>>
      */
-    protected $listen = [
-        ClientMenuEvent::class => [
-            MenuListener::class
-        ],
-        MenuEvent::class => [
-            MenuListener::class
-        ],
-        SuperAdminMenuEvent::class => [
-            MenuListener::class
-        ]
-    ];
-
+    protected $listen = [];
+    
+    /**
+     * Register any events for your application.
+     */
+    public function boot(): void
+    {
+        parent::boot();
+        
+        // Register menu listeners
+        $this->registerMenuListeners();
+    }
+    
+    /**
+     * Register menu event listeners.
+     */
+    protected function registerMenuListeners(): void
+    {
+        // Register the menu listener for all menu event types
+        $this->app->make('events')->listen(
+            MenuEvent::class,
+            'Modules\\$STUDLY_NAME$\\app\\Listeners\\MenuListener'
+        );
+        
+        $this->app->make('events')->listen(
+            ClientMenuEvent::class,
+            'Modules\\$STUDLY_NAME$\\app\\Listeners\\MenuListener'
+        );
+        
+        $this->app->make('events')->listen(
+            SuperAdminMenuEvent::class,
+            'Modules\\$STUDLY_NAME$\\app\\Listeners\\MenuListener'
+        );
+    }
+    
     /**
      * Indicates if events should be discovered.
      *
