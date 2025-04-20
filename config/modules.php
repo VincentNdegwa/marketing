@@ -24,8 +24,8 @@ return [
     |
     */
     'stubs' => [
-        'enabled' => false,
-        'path' => base_path('vendor/nwidart/laravel-modules/src/Commands/stubs'),
+        'enabled' => true,
+        'path' => base_path('stubs/nwidart-stubs'),
         'files' => [
             'routes/web' => 'routes/web.php',
             'routes/api' => 'routes/api.php',
@@ -37,6 +37,8 @@ return [
             'assets/sass/app' => 'resources/assets/sass/app.scss',
             'vite' => 'vite.config.js',
             'package' => 'package.json',
+            'listener/MenuListener' => 'app/Listeners/MenuListener.php',
+            'seeders/PermissionTableSeeder' => 'database/seeders/PermissionTableSeeder.php',
         ],
         'replacements' => [
             /**
@@ -72,6 +74,8 @@ return [
                 'PROVIDER_NAMESPACE',
                 'APP_FOLDER_NAME',
             ],
+            'listener/MenuListener' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE'],
+            'seeders/PermissionTableSeeder' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE'],
         ],
         'gitkeep' => true,
     ],
@@ -140,7 +144,7 @@ return [
             'jobs' => ['path' => 'app/Jobs', 'generate' => false, 'namespace' => 'app\Jobs'],
             'helpers' => ['path' => 'app/Helpers', 'generate' => false, 'namespace' => 'app\Helpers'],
             'interfaces' => ['path' => 'app/Interfaces', 'generate' => false, 'namespace' => 'app\Interfaces'],
-            'listener' => ['path' => 'app/Listeners', 'generate' => false, 'namespace' => 'app\Listeners'],
+            'listener' => ['path' => 'app/Listeners', 'generate' => true, 'namespace' => 'app\Listeners'],
             'model' => ['path' => 'app/Models', 'generate' => false, 'namespace' => 'app\Models'],
             'notifications' => ['path' => 'app/Notifications', 'generate' => false, 'namespace' => 'app\Notifications'],
             'observer' => ['path' => 'app/Observers', 'generate' => false, 'namespace' => 'app\Observers'],

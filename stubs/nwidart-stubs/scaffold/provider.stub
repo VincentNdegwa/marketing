@@ -3,7 +3,9 @@
 namespace $NAMESPACE$;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -16,7 +18,7 @@ class $CLASS$ extends ServiceProvider
 
     protected string $nameLower = '$LOWER_NAME$';
 
-    protected string $InertiaName = $nameLower."::app"
+    protected string $InertiaName = '$LOWER_NAME$::app';
 
     /**
      * Boot the application events.
@@ -28,6 +30,8 @@ class $CLASS$ extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
+        $this->registerAssets();
+        $this->registerInertia();
         $this->loadMigrationsFrom(module_path($this->name, '$MIGRATIONS_PATH$'));
     }
 
