@@ -32,20 +32,27 @@ class $CLASS$ extends ServiceProvider
      */
     protected function registerMenuListeners(): void
     {
+        // Get the module name from the namespace
+        $namespace = explode('\\', __NAMESPACE__);
+        $moduleName = $namespace[1] ?? '$STUDLY_NAME$';
+        
+        // Build the listener class name dynamically
+        $listenerClass = "Modules\\{$moduleName}\\app\\Listeners\\MenuListener";
+        
         // Register the menu listener for all menu event types
         $this->app->make('events')->listen(
             MenuEvent::class,
-            'Modules\\$STUDLY_NAME$\\app\\Listeners\\MenuListener'
+            $listenerClass
         );
         
         $this->app->make('events')->listen(
             ClientMenuEvent::class,
-            'Modules\\$STUDLY_NAME$\\app\\Listeners\\MenuListener'
+            $listenerClass
         );
         
         $this->app->make('events')->listen(
             SuperAdminMenuEvent::class,
-            'Modules\\$STUDLY_NAME$\\app\\Listeners\\MenuListener'
+            $listenerClass
         );
     }
     
