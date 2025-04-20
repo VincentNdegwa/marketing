@@ -1,13 +1,13 @@
 <template>
   <Password
-    v-model="modelValue"
+    v-model="internalValue"
     v-bind="props"
-    :class="customClass"
+    inputClass="!w-full !flex-1"
   />
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, computed,watch } from 'vue'
+import { computed } from 'vue'
 import Password from 'primevue/password'
 
 const props = defineProps({
@@ -33,12 +33,12 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
+const internalValue = computed({
+  get: () => props.modelValue,
+  set: (val) => emit('update:modelValue', val)
+})
+
 const customClass = computed(() => ({
   'p-invalid': props.invalid
 }))
-
-watch(
-  () => props.modelValue,
-  (value) => emit('update:modelValue', value)
-)
 </script>

@@ -2,13 +2,18 @@
 import InputText from 'primevue/inputtext'
 import { ref, computed } from 'vue'
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
 import { useVModel } from '@vueuse/core'
 
 const props = defineProps<{
   defaultValue?: string | number,
   modelValue?: string | number,
-  class?: HTMLAttributes['class']
+  class?: HTMLAttributes['class'],
+  type?: string,
+  required?: boolean,
+  autofocus?: boolean,
+  tabindex?: number,
+  autocomplete?: string,
+  placeholder?: string,
 }>()
 const emits = defineEmits<{
   (e: 'update:modelValue', payload: string | number): void
@@ -28,5 +33,7 @@ const stringModel = computed({
 </script>
 
 <template>
-  <InputText type="text" v-model="stringModel" />
+  <InputText :type="props.type" v-model="stringModel" :class="props.class" :required="props.required"
+    :autofocus="props.autofocus" :tabindex="props.tabindex" :autocomplete="props.autocomplete"
+    :placeholder="props.placeholder" />
 </template>
