@@ -134,7 +134,7 @@ const toggle = (event: Event, data: any) => {
                     <Column header="Actions" :exportable="false" style="width: 5rem">
                         <template #body="slotProps">
                             <div class="flex justify-center">
-                                <Button type="button" @click="toggle($event, slotProps.data)" aria-haspopup="true" aria-controls="overlay_menu">
+                                <Button type="button" size="sm" @click="toggle($event, slotProps.data)" aria-haspopup="true" aria-controls="overlay_menu">
                                     <i class="pi pi-ellipsis-v"></i>
                                 </Button>
                             </div>
