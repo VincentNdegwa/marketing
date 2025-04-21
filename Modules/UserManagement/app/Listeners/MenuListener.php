@@ -33,26 +33,45 @@ class MenuListener
     private function registerClientMenu($menu, $module): void
     {
         $menu->add([
-            'title' => 'UserManagement',
-            'icon' => 'FileText',
+            'title' => 'User Management',
+            'icon' => 'Users',
             'name' => 'usermanagement',
             'parent' => null,
-            'order' => 40,
+            'order' => 5,
+            'ignore_if' => [],
+            'depend_on' => [],
+            'href' => null,
+            'module' => $module,
+            'permission' => 'usermanagement.view',
+        ]);
+        $menu->add([
+            'title' => 'User',
+            'icon' => 'User',
+            'name' => 'users',
+            'parent' => 'usermanagement',
+            'order' => 1,
             'ignore_if' => [],
             'depend_on' => [],
             'href' => 'usermanagement.index',
             'module' => $module,
-            'permission' => 'usermanagement.manage',
+            'permission' => 'usermanagement.view',
+        ]);
+        $menu->add([
+            'title' => 'Roles',
+            'icon' => 'KeyRound',
+            'name' => 'roles',
+            'parent' => 'usermanagement',
+            'order' => 2,
+            'ignore_if' => [],
+            'depend_on' => [],
+            'href' => 'usermanagement.index',
+            'module' => $module,
+            'permission' => 'role.view',
         ]);
     }
 
-    /**
-     * Register menu items for admin users
-     */
     private function registerAdminMenu($menu, $module): void {}
 
-    /**
-     * Register default menu items
-     */
+
     private function registerDefaultMenu($menu, $module): void {}
 }

@@ -41,8 +41,8 @@ return [
             'assets/sass/app' => 'resources/assets/sass/app.scss',
             'vite' => 'vite.config.js',
             'package' => 'package.json',
-            'listener/MenuListener' => 'app/Listeners/MenuListener.php',
-            'seeders/PermissionTableSeeder' => 'database/seeders/PermissionTableSeeder.php',
+            'listener/MenuListener' => 'App/Listeners/MenuListener.php',
+            'seeders/PermissionTableSeeder' => 'App/Database/Seeders/PermissionTableSeeder.php',
         ],
         'replacements' => [
             /**
@@ -178,10 +178,10 @@ return [
             // config/
             'config' => ['path' => 'config', 'generate' => true],
 
-            // database/
-            'factory' => ['path' => 'database/factories', 'generate' => true, 'namespace' => 'App\Database\Factories'],
-            'migration' => ['path' => 'database/migrations', 'generate' => true, 'namespace' => 'App\Database\Migrations'],
-            'seeder' => ['path' => 'database/seeders', 'generate' => true, 'namespace' => 'App\Database\Seeders'],
+            // app/Database/
+            'factory' => ['path' => 'app/Database/Factories', 'generate' => true, 'namespace' => 'App\Database\Factories'],
+            'migration' => ['path' => 'app/Database/Migrations', 'generate' => true, 'namespace' => 'App\Database\Migrations'],
+            'seeder' => ['path' => 'app/Database/Seeders', 'generate' => true, 'namespace' => 'App\Database\Seeders'],
 
             // lang/
             'lang' => ['path' => 'lang', 'generate' => false],

@@ -17,6 +17,7 @@ class Permission extends PermissionModel
         'display_name',
         'description',
         'business_id',
+        'module',
     ];
 
     /**

@@ -1,0 +1,18 @@
+php artisan module:run-seeder UserManagement PermissionTableSeeder
+
+## Run Seeder
+php artisan module:run-seeder {MODULE_NAME} {SEEDER_CLASS}
+eg
+   `php artisan module:run-seeder UserManagement PermissionTableSeeder`
+
+## PSR-4 Autoloading
+php artisan modules:update-autoloading
+composer dump-autoload
+
+## Running pint
+
+./vendor/bin/pint
+npm run lint
+
+## Registering Pages for modules
+php artisan modules:register-pages

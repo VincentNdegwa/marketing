@@ -2,43 +2,106 @@
 
 namespace Modules\$STUDLY_NAME$\App\Database\Seeders;
 
-use App\Models\Role;
+use App\Models\Business;
 use App\Models\Permission;
-use Illuminate\Database\Seeder;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
 class PermissionTableSeeder extends Seeder
 {
-     public function run()
+    public function run()
     {
         Model::unguard();
         Artisan::call('cache:clear');
         $module = '$STUDLY_NAME$';
 
-        $permissions  = [
-            // Please add the permissions for your module here.
+        // Define module permissions
+        $permissions = [
+            // Example permission format - add your module permissions here
+            /*
+            [
+                'name' => '$LOWER_NAME$.view',
+                'display_name' => 'View $STUDLY_NAME$',
+                'description' => 'Can view $STUDLY_NAME$ module'
+            ],
+            [
+                'name' => '$LOWER_NAME$.create',
+                'display_name' => 'Create $STUDLY_NAME$',
+                'description' => 'Can create in $STUDLY_NAME$ module'
+            ],
+            [
+                'name' => '$LOWER_NAME$.edit',
+                'display_name' => 'Edit $STUDLY_NAME$',
+                'description' => 'Can edit in $STUDLY_NAME$ module'
+            ],
+            [
+                'name' => '$LOWER_NAME$.delete',
+                'display_name' => 'Delete $STUDLY_NAME$',
+                'description' => 'Can delete in $STUDLY_NAME$ module'
+            ]
+            */
         ];
 
-        $company_role = Role::where('name','company')->first();
-        foreach ($permissions as $key => $value)
-        {
-            $check = Permission::where('name',$value)->where('module',$module)->exists();
-            if($check == false)
-            {
-                $permission = Permission::create(
-                    [
-                        'name' => $value,
-                        'guard_name' => 'web',
-                        'module' => $module,
-                        'created_by' => 0,
-                        "created_at" => date('Y-m-d H:i:s'),
-                        "updated_at" => date('Y-m-d H:i:s')
-                    ]
-                );
-                if(!$company_role->hasPermission($value))
-                {
-                    $company_role->givePermission($permission);
+        // Get the superadmin role (system-wide)
+        $superadminRole = Role::where('name', 'superadmin')->first();
+        
+        // Get all admin roles across all businesses
+        $adminRoles = Role::where('name', 'admin')->get();
+        
+        // Get all businesses
+        $businesses = Business::all();
+        
+        // Create system-wide permissions for the superadmin
+        foreach ($permissions as $permissionData) {
+            // Check if the permission already exists
+            $permissionExists = Permission::where('name', $permissionData['name'])
+                ->whereNull('business_id')
+                ->exists();
+                
+            if (!$permissionExists) {
+                // Create system-wide permission (null business_id)
+                $permission = Permission::create([
+                    'name' => $permissionData['name'],
+                    'display_name' => $permissionData['display_name'],
+                    'description' => $permissionData['description'],
+                    'business_id' => null, // System-wide permission
+                    'module' => $module
+                ]);
+                
+                // Attach permission to superadmin role
+                if ($superadminRole) {
+                    $superadminRole->attachPermission($permission);
+                }
+            }
+        }
+        
+        // Create business-specific permissions for each business
+        foreach ($businesses as $business) {
+            foreach ($permissions as $permissionData) {
+                // Check if the permission already exists for this business
+                $permissionExists = Permission::where('name', $permissionData['name'])
+                    ->where('business_id', $business->id)
+                    ->exists();
+                    
+                if (!$permissionExists) {
+                    // Create business-specific permission
+                    $permission = Permission::create([
+                        'name' => $permissionData['name'],
+                        'display_name' => $permissionData['display_name'],
+                        'description' => $permissionData['description'],
+                        'business_id' => $business->id,
+                        'module' => $module
+                    ]);
+                    
+                    // Find the admin role for this business
+                    $businessAdminRole = $adminRoles->where('business_id', $business->id)->first();
+                    
+                    // Attach permission to business admin role
+                    if ($businessAdminRole) {
+                        $businessAdminRole->attachPermission($permission, $business->id);
+                    }
                 }
             }
         }
