@@ -1,5 +1,4 @@
 {
     "Blog": true,
-    "UserManagement": true,
-    "Commerce": true
+    "UserManagement": true
 }

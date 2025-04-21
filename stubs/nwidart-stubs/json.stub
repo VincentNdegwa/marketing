@@ -7,5 +7,9 @@
     "providers": [
         "$MODULE_NAMESPACE$\\$STUDLY_NAME$\\$PROVIDER_NAMESPACE$\\$STUDLY_NAME$ServiceProvider"
     ],
-    "files": []
+    "files": [],
+    "depends_on": [],
+    "common": 1,
+    "icon_url": "",
+    "version": "1.0.1"
 }

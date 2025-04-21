@@ -12,7 +12,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: 'usermanagement.index',
     },
 ];
-
 </script>
 
 <template>

@@ -7,5 +7,9 @@
     "providers": [
         "Modules\\UserManagement\\App\\Providers\\UserManagementServiceProvider"
     ],
-    "files": []
+    "files": [],
+    "depends_on": [],
+    "common":1,
+    "icon_url":"",
+    "version": "1.0.1"
 }
