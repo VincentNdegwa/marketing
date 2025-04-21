@@ -72,7 +72,7 @@ class PermissionTableSeeder extends Seeder
                 
                 // Attach permission to superadmin role
                 if ($superadminRole) {
-                    $superadminRole->attachPermission($permission);
+                    $superadminRole->givePermissions($permission);
                 }
             }
         }
@@ -100,7 +100,7 @@ class PermissionTableSeeder extends Seeder
                     
                     // Attach permission to business admin role
                     if ($businessAdminRole) {
-                        $businessAdminRole->attachPermission($permission, $business->id);
+                        $businessAdminRole->givePermissions($permission, $business->id);
                     }
                 }
             }

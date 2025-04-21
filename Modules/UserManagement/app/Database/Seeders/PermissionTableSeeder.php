@@ -102,7 +102,7 @@ class PermissionTableSeeder extends Seeder
 
                 if ($superadminRole && isset($permission)) {
                     try {
-                        $superadminRole->attachPermission($permission);
+                        $superadminRole->givePermissions([$permission]);
                         Log::info('Attached permission to superadmin role: ' . $permissionData['name']);
                     } catch (\Exception $e) {
                         Log::error('Failed to attach permission to superadmin: ' . $e->getMessage());
@@ -135,7 +135,7 @@ class PermissionTableSeeder extends Seeder
 
                     if ($businessAdminRole && isset($permission)) {
                         try {
-                            $businessAdminRole->attachPermission($permission, $business->id);
+                            $businessAdminRole->givePermissions([$permission]);
                             Log::info('Attached permission to business admin role: ' . $permissionData['name'] . ' for business ID: ' . $business->id);
                         } catch (\Exception $e) {
                             Log::error('Failed to attach permission to business admin: ' . $e->getMessage());
