@@ -93,6 +93,7 @@ class User extends Authenticatable implements LaratrustUser
     public function businesses(): BelongsToMany
     {
         return $this->belongsToMany(Business::class, 'user_business')
+            ->using(UserBusiness::class)
             ->withPivot('is_default')
             ->withTimestamps();
     }

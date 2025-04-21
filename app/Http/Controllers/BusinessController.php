@@ -183,14 +183,12 @@ class BusinessController extends Controller
     {
         $user = Auth::user();
 
-        // Check if user has access to this business
         if (! $user->businesses->contains($business->id)) {
             abort(403, 'Unauthorized access.');
         }
 
         $user->setDefaultBusiness($business->id);
 
-        // Store the current business ID in the session
         session(['current_business_id' => $business->id]);
 
         return redirect()->back()

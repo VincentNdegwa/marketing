@@ -75,6 +75,8 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'menu' => $menuItems,
+            'businesses' => $user ? $user->businesses()->get() : [],
+            'current_business'=>session()->get('current_business_id')
         ];
     }
 }

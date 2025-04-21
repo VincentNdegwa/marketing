@@ -16,7 +16,6 @@ Route::get('dashboard', function () {
     $currentBusinessId = session('current_business_id');
     $user = Auth::user();
 
-    // If no current business in session, use the user's default business
     if (! $currentBusinessId && $user) {
         $defaultBusiness = $user->defaultBusiness();
         if ($defaultBusiness) {
@@ -25,9 +24,7 @@ Route::get('dashboard', function () {
         }
     }
 
-    return Inertia::render('Dashboard', [
-        'currentBusinessId' => $currentBusinessId,
-    ]);
+    return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::prefix('super-admin')->middleware(['auth', 'verified', 'super'])->group(function () {
