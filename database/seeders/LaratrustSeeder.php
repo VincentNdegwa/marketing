@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Business;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Modules\Business\app\Models\Business;
 
 class LaratrustSeeder extends Seeder
 {
