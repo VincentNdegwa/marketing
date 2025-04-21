@@ -8,6 +8,7 @@
       "@modules/*": ["../../Modules/*"]
     },
     "types": ["vite/client"]
+  },
   "include": [
     "Resources/js/**/*.ts",
     "Resources/js/**/*.d.ts",

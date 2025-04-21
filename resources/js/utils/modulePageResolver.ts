@@ -19,12 +19,10 @@ console.log('Active modules:', ACTIVE_MODULES);
 
 // Import pages for each module
 // Add new modules here when you create them
-const BLOG_PAGES = import.meta.glob<DefineComponent>('../../../Modules/Blog/Resources/js/pages/**/*.vue');
 const USERMANAGEMENT_PAGES = import.meta.glob<DefineComponent>('../../../Modules/UserManagement/Resources/js/pages/**/*.vue');
 
 // Create a mapping of module names to their page imports
 const MODULE_PAGES_MAP: Record<string, Record<string, () => Promise<DefineComponent>>> = {
-  'blog': BLOG_PAGES,
   'usermanagement': USERMANAGEMENT_PAGES
 };
 
