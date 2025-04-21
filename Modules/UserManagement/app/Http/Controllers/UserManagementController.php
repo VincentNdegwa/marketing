@@ -34,7 +34,7 @@ class UserManagementController extends Controller
      */
     public function show($id)
     {
-        return view('usermanagement::show');
+        return Inertia::module('usermanagement/Show');
     }
 
     /**
@@ -42,7 +42,7 @@ class UserManagementController extends Controller
      */
     public function edit($id)
     {
-        return view('usermanagement::edit');
+        return Inertia::module('usermanagement/Edit');
     }
 
     /**

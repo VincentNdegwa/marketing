@@ -88,6 +88,7 @@ class UserManagementServiceProvider extends ServiceProvider
         // Set the root view for this module
         Inertia::setRootView('usermanagement::app');
         
+        // Only register the macro if it doesn't exist yet
         if (!Inertia::hasMacro('module')) {
             Inertia::macro('module', function ($component, $props = []) {
                 Inertia::setRootView('usermanagement::app');
