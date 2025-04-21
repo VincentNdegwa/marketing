@@ -17,10 +17,10 @@ class BusinessController extends Controller
     {
         $user = Auth::user();
         $businesses = $user->businesses;
-        
+
         return Inertia::render('Admin/Businesses/Index', [
             'businesses' => $businesses,
-            'defaultBusinessId' => $user->defaultBusiness()?->id
+            'defaultBusinessId' => $user->defaultBusiness()?->id,
         ]);
     }
 
@@ -56,12 +56,12 @@ class BusinessController extends Controller
         ]);
 
         $user = Auth::user();
-        
+
         // If this is the user's first business, make it the default
         $isDefault = $user->businesses()->count() === 0;
-        
+
         $user->businesses()->attach($business, ['is_default' => $isDefault]);
-        
+
         // Assign appropriate roles to the user for this business
         if ($user->isSuperAdmin()) {
             // Find the admin role for this business or create it
@@ -69,10 +69,10 @@ class BusinessController extends Controller
                 ['name' => 'admin', 'business_id' => $business->id],
                 [
                     'display_name' => 'Administrator',
-                    'description' => 'User with access to most system features'
+                    'description' => 'User with access to most system features',
                 ]
             );
-            
+
             $user->roles()->attach($adminRole, ['business_id' => $business->id]);
         }
 
@@ -87,12 +87,12 @@ class BusinessController extends Controller
     {
         // Check if user has access to this business
         $user = Auth::user();
-        if (!$user->isSuperAdmin() && !$user->businesses->contains($business->id)) {
+        if (! $user->isSuperAdmin() && ! $user->businesses->contains($business->id)) {
             abort(403, 'Unauthorized access.');
         }
-        
+
         return Inertia::render('Admin/Businesses/Show', [
-            'business' => $business
+            'business' => $business,
         ]);
     }
 
@@ -103,12 +103,12 @@ class BusinessController extends Controller
     {
         // Check if user has access to this business
         $user = Auth::user();
-        if (!$user->isSuperAdmin() && !$user->businesses->contains($business->id)) {
+        if (! $user->isSuperAdmin() && ! $user->businesses->contains($business->id)) {
             abort(403, 'Unauthorized access.');
         }
-        
+
         return Inertia::render('Admin/Businesses/Edit', [
-            'business' => $business
+            'business' => $business,
         ]);
     }
 
@@ -119,10 +119,10 @@ class BusinessController extends Controller
     {
         // Check if user has access to this business
         $user = Auth::user();
-        if (!$user->isSuperAdmin() && !$user->businesses->contains($business->id)) {
+        if (! $user->isSuperAdmin() && ! $user->businesses->contains($business->id)) {
             abort(403, 'Unauthorized access.');
         }
-        
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -153,10 +153,10 @@ class BusinessController extends Controller
     {
         // Check if user has access to this business
         $user = Auth::user();
-        if (!$user->isSuperAdmin()) {
+        if (! $user->isSuperAdmin()) {
             abort(403, 'Unauthorized access.');
         }
-        
+
         // Check if this is the user's default business
         if ($user->defaultBusiness() && $user->defaultBusiness()->id === $business->id) {
             // Find another business to set as default
@@ -165,54 +165,54 @@ class BusinessController extends Controller
                 $user->setDefaultBusiness($newDefault->id);
             }
         }
-        
+
         // Detach all users from this business
         $business->users()->detach();
-        
+
         // Delete the business
         $business->delete();
 
         return redirect()->route('businesses.index')
             ->with('success', 'Business deleted successfully.');
     }
-    
+
     /**
      * Set the specified business as the default for the authenticated user.
      */
     public function setDefault(Business $business)
     {
         $user = Auth::user();
-        
+
         // Check if user has access to this business
-        if (!$user->businesses->contains($business->id)) {
+        if (! $user->businesses->contains($business->id)) {
             abort(403, 'Unauthorized access.');
         }
-        
+
         $user->setDefaultBusiness($business->id);
-        
+
         // Store the current business ID in the session
         session(['current_business_id' => $business->id]);
-        
+
         return redirect()->back()
             ->with('success', 'Default business updated successfully.');
     }
-    
+
     /**
      * Switch to the specified business context.
      */
     public function switchBusiness(Business $business)
     {
         $user = Auth::user();
-        
+
         // Check if user has access to this business
-        if (!$user->businesses->contains($business->id)) {
+        if (! $user->businesses->contains($business->id)) {
             abort(403, 'Unauthorized access.');
         }
-        
+
         // Store the current business ID in the session
         session(['current_business_id' => $business->id]);
-        
+
         return redirect()->route('dashboard')
-            ->with('success', 'Switched to ' . $business->name);
+            ->with('success', 'Switched to '.$business->name);
     }
 }

@@ -63,7 +63,7 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
-                'is_superadmin'=> $request->user()->isSuperAdmin()
+                'is_superadmin' => $request->user()->isSuperAdmin(),
             ],
             'ziggy' => [
                 ...(new Ziggy)->toArray(),

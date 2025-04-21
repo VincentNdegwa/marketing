@@ -3,19 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Laratrust\Contracts\LaratrustUser;
-use Illuminate\Notifications\Notifiable;
-use Laratrust\Traits\HasRolesAndPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laratrust\Contracts\LaratrustUser;
+use Laratrust\Traits\HasRolesAndPermissions;
 
 class User extends Authenticatable implements LaratrustUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRolesAndPermissions, SoftDeletes;
+    use HasFactory, HasRolesAndPermissions, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -74,19 +73,14 @@ class User extends Authenticatable implements LaratrustUser
     /**
      * Check if the user is a Super Admin (system-wide administrator)
      * There should only be one Super Admin in the system
-     * 
-     * @return bool
      */
     public function isSuperAdmin(): bool
     {
         return $this->hasRole('superadmin');
     }
-    
+
     /**
      * Check if the user is an Admin for a specific business
-     * 
-     * @param int $businessId
-     * @return bool
      */
     public function isAdminForBusiness(int $businessId): bool
     {
@@ -102,7 +96,7 @@ class User extends Authenticatable implements LaratrustUser
             ->withPivot('is_default')
             ->withTimestamps();
     }
-    
+
     /**
      * Get the user's default business.
      *
@@ -112,12 +106,9 @@ class User extends Authenticatable implements LaratrustUser
     {
         return $this->businesses()->wherePivot('is_default', true)->first();
     }
-    
+
     /**
      * Set a business as the default for this user.
-     *
-     * @param int $businessId
-     * @return bool
      */
     public function setDefaultBusiness(int $businessId): bool
     {
@@ -125,7 +116,7 @@ class User extends Authenticatable implements LaratrustUser
             $this->businesses()->pluck('businesses.id')->toArray(),
             ['is_default' => false]
         );
-        
+
         // Then set the specified business as default
         return $this->businesses()->updateExistingPivot($businessId, ['is_default' => true]);
     }
@@ -133,7 +124,6 @@ class User extends Authenticatable implements LaratrustUser
     /**
      * Get roles for a specific business
      *
-     * @param int $businessId
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function rolesForBusiness(int $businessId)
@@ -144,7 +134,6 @@ class User extends Authenticatable implements LaratrustUser
     /**
      * Get permissions for a specific business
      *
-     * @param int $businessId
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function permissionsForBusiness(int $businessId)
@@ -154,10 +143,6 @@ class User extends Authenticatable implements LaratrustUser
 
     /**
      * Check if user has a specific role in a business
-     *
-     * @param string $role
-     * @param int $businessId
-     * @return bool
      */
     public function hasRoleInBusiness(string $role, int $businessId): bool
     {
@@ -166,10 +151,6 @@ class User extends Authenticatable implements LaratrustUser
 
     /**
      * Check if user has a specific permission in a business
-     *
-     * @param string $permission
-     * @param int $businessId
-     * @return bool
      */
     public function hasPermissionInBusiness(string $permission, int $businessId): bool
     {

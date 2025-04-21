@@ -8,9 +8,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
-use Laratrust\Middleware\Role;
-use Laratrust\Middleware\Permission;
 use Laratrust\Middleware\Ability;
+use Laratrust\Middleware\Permission;
+use Laratrust\Middleware\Role;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(

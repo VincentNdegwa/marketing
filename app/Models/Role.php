@@ -16,7 +16,7 @@ class Role extends RoleModel
         'name',
         'display_name',
         'description',
-        'business_id'
+        'business_id',
     ];
 
     /**
@@ -30,8 +30,7 @@ class Role extends RoleModel
     /**
      * Scope a query to only include roles for a specific business.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param int $businessId
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeForBusiness($query, int $businessId)

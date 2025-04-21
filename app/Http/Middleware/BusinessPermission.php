@@ -16,19 +16,19 @@ class BusinessPermission
      */
     public function handle(Request $request, Closure $next, string $permission, ?int $businessId = null): Response
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login');
         }
 
         $user = Auth::user();
-        
+
         // If businessId is not provided, try to get it from the session
-        if (!$businessId && session()->has('current_business_id')) {
+        if (! $businessId && session()->has('current_business_id')) {
             $businessId = session('current_business_id');
         }
-        
+
         // If still no businessId, check if user has the permission in any business
-        if (!$businessId) {
+        if (! $businessId) {
             if ($user->isSuperAdmin() || $user->hasPermission($permission)) {
                 return $next($request);
             }

@@ -15,6 +15,6 @@ class Team extends TeamModel
         'name',
         'display_name',
         'description',
-        'business_id'
+        'business_id',
     ];
 }

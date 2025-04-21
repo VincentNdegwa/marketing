@@ -21,10 +21,10 @@ class LaratrustSetupTables extends Migration
             $table->string('description')->nullable();
             $table->unsignedBigInteger('business_id')->nullable();
             $table->timestamps();
-            
+
             $table->foreign('business_id')->references('id')->on('businesses')
                 ->onUpdate('cascade')->onDelete('cascade');
-                
+
             $table->unique(['name', 'business_id']);
         });
 
@@ -36,10 +36,10 @@ class LaratrustSetupTables extends Migration
             $table->string('description')->nullable();
             $table->unsignedBigInteger('business_id')->nullable();
             $table->timestamps();
-            
+
             $table->foreign('business_id')->references('id')->on('businesses')
                 ->onUpdate('cascade')->onDelete('cascade');
-                
+
             // Make name unique per business (allows same permission name in different businesses)
             $table->unique(['name', 'business_id']);
         });
