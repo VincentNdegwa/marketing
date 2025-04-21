@@ -2,12 +2,12 @@
 
 namespace Modules\UserManagement\App\Database\Seeders;
 
-use App\Models\Role;
 use App\Models\Permission;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Modules\Business\App\Models\Business;
 
 class PermissionTableSeeder extends Seeder
@@ -25,88 +25,87 @@ class PermissionTableSeeder extends Seeder
             [
                 'name' => 'usermanagement.view',
                 'display_name' => 'View Users',
-                'description' => 'Can view users'
+                'description' => 'Can view users',
             ],
             [
                 'name' => 'usermanagement.create',
                 'display_name' => 'Create Users',
-                'description' => 'Can create new users'
+                'description' => 'Can create new users',
             ],
             [
                 'name' => 'usermanagement.edit',
                 'display_name' => 'Edit Users',
-                'description' => 'Can edit existing users'
+                'description' => 'Can edit existing users',
             ],
             [
                 'name' => 'usermanagement.delete',
                 'display_name' => 'Delete Users',
-                'description' => 'Can delete users'
+                'description' => 'Can delete users',
             ],
 
             // Role Management
             [
                 'name' => 'role.view',
                 'display_name' => 'View Roles',
-                'description' => 'Can view roles'
+                'description' => 'Can view roles',
             ],
             [
                 'name' => 'role.create',
                 'display_name' => 'Create Roles',
-                'description' => 'Can create new roles'
+                'description' => 'Can create new roles',
             ],
             [
                 'name' => 'role.edit',
                 'display_name' => 'Edit Roles',
-                'description' => 'Can edit existing roles'
+                'description' => 'Can edit existing roles',
             ],
             [
                 'name' => 'role.delete',
                 'display_name' => 'Delete Roles',
-                'description' => 'Can delete roles'
+                'description' => 'Can delete roles',
             ],
 
             // Permission Management
             [
                 'name' => 'permission.manage',
                 'display_name' => 'Manage Permissions',
-                'description' => 'Access to manage and assign permissions'
+                'description' => 'Access to manage and assign permissions',
             ],
         ];
 
-
         $superadminRole = Role::where('name', 'superadmin')->first();
-        Log::info('SuperAdmin role found: ' . ($superadminRole ? 'Yes' : 'No'));
+        Log::info('SuperAdmin role found: '.($superadminRole ? 'Yes' : 'No'));
 
         $adminRoles = Role::where('name', 'admin')->get();
-        Log::info('Admin roles found: ' . $adminRoles->count());
+        Log::info('Admin roles found: '.$adminRoles->count());
 
         $businesses = Business::all();
-        Log::info('Businesses found: ' . $businesses->count());
+        Log::info('Businesses found: '.$businesses->count());
         foreach ($permissions as $permissionData) {
             $permissionExists = Permission::where('name', $permissionData['name'])
                 ->whereNull('business_id')
                 ->exists();
 
-            if (!$permissionExists) {
+            if (! $permissionExists) {
                 try {
                     $permission = Permission::create([
                         'name' => $permissionData['name'],
                         'display_name' => $permissionData['display_name'],
                         'description' => $permissionData['description'],
                         'business_id' => null,
-                        'module' => $module
+                        'module' => $module,
                     ]);
-                    Log::info('Created system permission: ' . $permissionData['name']);
+                    Log::info('Created system permission: '.$permissionData['name']);
                 } catch (\Exception $e) {
-                    Log::error('Failed to create system permission: ' . $e->getMessage());
+                    Log::error('Failed to create system permission: '.$e->getMessage());
                 }
 
                 if ($superadminRole && isset($permission)) {
                     try {
                         $superadminRole->givePermissions([$permission]);
-                        Log::info('Attached permission to superadmin role: ' . $permissionData['name']);
+                        Log::info('Attached permission to superadmin role: '.$permissionData['name']);
                     } catch (\Exception $e) {
-                        Log::error('Failed to attach permission to superadmin: ' . $e->getMessage());
+                        Log::error('Failed to attach permission to superadmin: '.$e->getMessage());
                     }
                 }
             }
@@ -118,18 +117,18 @@ class PermissionTableSeeder extends Seeder
                     ->where('business_id', $business->id)
                     ->exists();
 
-                if (!$permissionExists) {
+                if (! $permissionExists) {
                     try {
                         $permission = Permission::create([
                             'name' => $permissionData['name'],
                             'display_name' => $permissionData['display_name'],
                             'description' => $permissionData['description'],
                             'business_id' => $business->id,
-                            'module' => $module
+                            'module' => $module,
                         ]);
-                        Log::info('Created business permission: ' . $permissionData['name'] . ' for business ID: ' . $business->id);
+                        Log::info('Created business permission: '.$permissionData['name'].' for business ID: '.$business->id);
                     } catch (\Exception $e) {
-                        Log::error('Failed to create business permission: ' . $e->getMessage());
+                        Log::error('Failed to create business permission: '.$e->getMessage());
                     }
 
                     $businessAdminRole = $adminRoles->where('business_id', $business->id)->first();
@@ -137,9 +136,9 @@ class PermissionTableSeeder extends Seeder
                     if ($businessAdminRole && isset($permission)) {
                         try {
                             $businessAdminRole->givePermissions([$permission]);
-                            Log::info('Attached permission to business admin role: ' . $permissionData['name'] . ' for business ID: ' . $business->id);
+                            Log::info('Attached permission to business admin role: '.$permissionData['name'].' for business ID: '.$business->id);
                         } catch (\Exception $e) {
-                            Log::error('Failed to attach permission to business admin: ' . $e->getMessage());
+                            Log::error('Failed to attach permission to business admin: '.$e->getMessage());
                         }
                     }
                 }

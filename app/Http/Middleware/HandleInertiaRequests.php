@@ -2,11 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Foundation\Inspiring;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -44,7 +44,7 @@ class HandleInertiaRequests extends Middleware
         // This middleware is just for sharing data with Inertia
         $menuItems = [];
         $user = $request->user();
-        
+
         if ($user) {
             $menu = new \App\Classes\Menu($user);
 
@@ -55,7 +55,7 @@ class HandleInertiaRequests extends Middleware
                 \Illuminate\Support\Facades\Log::info('Dispatching ClientMenuEvent');
                 event(new \App\Events\ClientMenuEvent($menu));
             }
-            
+
             // Get the menu items after the events have been processed
             $menuItems = $menu->getItems();
             // \Illuminate\Support\Facades\Log::info('Menu items', ['items' => $menuItems]);
@@ -76,7 +76,7 @@ class HandleInertiaRequests extends Middleware
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'menu' => $menuItems,
             'businesses' => $user ? $user->businesses()->get() : [],
-            'current_business'=>session()->get('current_business_id')
+            'current_business' => session()->get('current_business_id'),
         ];
     }
 }

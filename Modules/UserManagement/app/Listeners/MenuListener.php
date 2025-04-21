@@ -68,11 +68,10 @@ class MenuListener
             'module' => $module,
             'permission' => 'role.view',
         ]);
-        
+
     }
 
     private function registerAdminMenu($menu, $module): void {}
-
 
     private function registerDefaultMenu($menu, $module): void {}
 }

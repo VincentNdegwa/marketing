@@ -2,9 +2,6 @@
 
 namespace Modules\Business\App\Providers;
 
-use App\Events\ClientMenuEvent;
-use App\Events\MenuEvent;
-use App\Events\SuperAdminMenuEvent;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -15,7 +12,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array<string, array<int, string>>
      */
     protected $listen = [];
-    
+
     /**
      * Register any events for your application.
      */
@@ -23,8 +20,7 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
     }
-    
-    
+
     /**
      * Indicates if events should be discovered.
      *

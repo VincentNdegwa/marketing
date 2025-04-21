@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 use Modules\Business\App\Models\Business;
+
 class PermissionTableSeeder extends Seeder
 {
     public function run()
@@ -21,27 +22,27 @@ class PermissionTableSeeder extends Seeder
             [
                 'name' => 'business.view',
                 'display_name' => 'View Business',
-                'description' => 'Can view Business module'
+                'description' => 'Can view Business module',
             ],
             [
                 'name' => 'business.create',
                 'display_name' => 'Create Business',
-                'description' => 'Can create in Business module'
+                'description' => 'Can create in Business module',
             ],
             [
                 'name' => 'business.edit',
                 'display_name' => 'Edit Business',
-                'description' => 'Can edit in Business module'
+                'description' => 'Can edit in Business module',
             ],
             [
                 'name' => 'business.delete',
                 'display_name' => 'Delete Business',
-                'description' => 'Can delete in Business module'
+                'description' => 'Can delete in Business module',
             ],
             [
                 'name' => 'business.manage',
                 'display_name' => 'Manage Business',
-                'description' => 'Can manage Business settings, add users, and set default business'
+                'description' => 'Can manage Business settings, add users, and set default business',
             ],
         ];
 
@@ -59,14 +60,14 @@ class PermissionTableSeeder extends Seeder
                 ->whereNull('business_id')
                 ->exists();
 
-            if (!$permissionExists) {
+            if (! $permissionExists) {
                 // Create system-wide permission (null business_id)
                 $permission = Permission::create([
                     'name' => $permissionData['name'],
                     'display_name' => $permissionData['display_name'],
                     'description' => $permissionData['description'],
                     'business_id' => null, // System-wide permission
-                    'module' => $module
+                    'module' => $module,
                 ]);
 
                 // Attach permission to superadmin role
@@ -84,14 +85,14 @@ class PermissionTableSeeder extends Seeder
                     ->where('business_id', $business->id)
                     ->exists();
 
-                if (!$permissionExists) {
+                if (! $permissionExists) {
                     // Create business-specific permission
                     $permission = Permission::create([
                         'name' => $permissionData['name'],
                         'display_name' => $permissionData['display_name'],
                         'description' => $permissionData['description'],
                         'business_id' => $business->id,
-                        'module' => $module
+                        'module' => $module,
                     ]);
 
                     // Find the admin role for this business

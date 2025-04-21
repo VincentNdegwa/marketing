@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Business;
-use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -21,7 +20,7 @@ class LaratrustSeeder extends Seeder
             'email' => 'admin@system.com',
             'is_active' => true,
         ]);
-        
+
         // Create a Client Business
         $clientBusiness = Business::create([
             'name' => 'Client Business',
@@ -38,7 +37,6 @@ class LaratrustSeeder extends Seeder
             'description' => 'User with access to all system features',
         ]);
 
-        
         // Create admin role for the client business
         $clientAdmin = Role::create([
             'name' => 'admin',
@@ -56,7 +54,7 @@ class LaratrustSeeder extends Seeder
                 'password' => Hash::make('password'),
             ]);
         }
-        
+
         // Create a client admin user
         $clientAdminUser = User::where('email', 'admin@client.com')->first();
         if (! $clientAdminUser) {
@@ -72,10 +70,10 @@ class LaratrustSeeder extends Seeder
 
         // Also give superadmin access to client business as admin
         $superadminUser->roles()->attach($clientAdmin->id, ['business_id' => $clientBusiness->id]);
-        
+
         // Assign client admin role to client admin user
         $clientAdminUser->roles()->attach($clientAdmin->id, ['business_id' => $clientBusiness->id]);
-        
+
         // Associate users with businesses
         $superadminUser->businesses()->attach($systemBusiness->id, ['is_default' => true]);
         $superadminUser->businesses()->attach($clientBusiness->id);
