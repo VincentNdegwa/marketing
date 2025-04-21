@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace Modules\Business\App\Models;
+
+// use Modules\Business\Database\Factories\UserBusinessFactory;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 

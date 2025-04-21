@@ -88,6 +88,12 @@ return [
             'tsconfig' => ['LOWER_NAME', 'STUDLY_NAME'],
             'assets/js/pages/Index' => ['LOWER_NAME', 'STUDLY_NAME'],
             'seeder' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'NAMESPACE', 'CLASS'],
+            'migration/create' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'NAMESPACE', 'CLASS'],
+            'migration/add' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'NAMESPACE', 'CLASS'],
+            'migration/delete' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'NAMESPACE', 'CLASS'],
+            'migration/drop' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'NAMESPACE', 'CLASS'],
+            'migration/plain' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'NAMESPACE', 'CLASS'],
+
         ],
         'gitkeep' => true,
     ],
@@ -122,7 +128,7 @@ return [
         | the migration files?
         |
         */
-        'migration' => base_path('database/migrations'),
+        'migration' => base_path('app/Database/Migrations'),
 
         /*
         |--------------------------------------------------------------------------
@@ -175,13 +181,12 @@ return [
             'filter' => ['path' => 'app/Http/Middleware', 'generate' => false, 'namespace' => 'App\Http\Middleware'],
             'request' => ['path' => 'app/Http/Requests', 'generate' => false, 'namespace' => 'App\Http\Requests'],
 
-            // config/
             'config' => ['path' => 'config', 'generate' => true],
-
-            // app/Database/
+            'command' => ['path' => 'app/Console', 'generate' => false],
+            'channels' => ['path' => 'app/Broadcasting', 'generate' => false],
+            'migration' => ['path' => 'app/Database/Migrations', 'generate' => true, 'namespace' => 'App\\Database\\Migrations'],
+            'seeder' => ['path' => 'app/Database/Seeders', 'generate' => true],
             'factory' => ['path' => 'app/Database/Factories', 'generate' => true, 'namespace' => 'App\Database\Factories'],
-            'migration' => ['path' => 'app/Database/Migrations', 'generate' => true, 'namespace' => 'App\Database\Migrations'],
-            'seeder' => ['path' => 'app/Database/Seeders', 'generate' => true, 'namespace' => 'App\Database\Seeders'],
 
             // lang/
             'lang' => ['path' => 'lang', 'generate' => false],

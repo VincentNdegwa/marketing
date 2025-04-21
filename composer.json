@@ -33,6 +33,7 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Modules\\": "Modules/",
+            "Modules\\Business\\App\\": "Modules/Business/app/",
             "Modules\\UserManagement\\App\\": "Modules/UserManagement/app/"
         }
     },

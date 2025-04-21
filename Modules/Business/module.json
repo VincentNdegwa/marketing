@@ -1,11 +1,11 @@
 {
-    "name": "$STUDLY_NAME$",
-    "alias": "$LOWER_NAME$",
+    "name": "Business",
+    "alias": "business",
     "description": "",
     "keywords": [],
     "priority": 0,
     "providers": [
-        "$MODULE_NAMESPACE$\\$STUDLY_NAME$\\$PROVIDER_NAMESPACE$\\$STUDLY_NAME$ServiceProvider"
+        "Modules\\Business\\App\\Providers\\BusinessServiceProvider"
     ],
     "files": [],
     "depends_on": ["UserManagement"],

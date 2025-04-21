@@ -3,13 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laratrust\Contracts\LaratrustUser;
+use Illuminate\Notifications\Notifiable;
+use Modules\Business\App\Models\Business;
 use Laratrust\Traits\HasRolesAndPermissions;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Business\App\Models\UserBusiness;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements LaratrustUser
 {

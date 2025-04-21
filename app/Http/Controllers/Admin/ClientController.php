@@ -16,8 +16,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $users = User::where('user_type', 'Admin')
-            ->latest()
+        $users = User::latest()
             ->paginate(10);
 
         return Inertia::render('admin/clients/Clients', [

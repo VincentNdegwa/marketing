@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laratrust\Models\Role as RoleModel;
+use Modules\Business\App\Models\Business;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Role extends RoleModel
 {

@@ -43,8 +43,19 @@ class UpdateModuleAutoloading extends Command
         // Get current autoload PSR-4 entries
         $psr4 = $composerJson['autoload']['psr-4'] ?? [];
         
-        // Keep track of existing entries
-        $existingEntries = [];
+        // Ensure base entries exist
+        $psr4['App\\'] = 'app/';
+        $psr4['Database\\Factories\\'] = 'database/factories/';
+        $psr4['Database\\Seeders\\'] = 'database/seeders/';
+        $psr4['Modules\\'] = 'Modules/';
+        
+        // Remove any existing module-specific entries to avoid duplicates
+        foreach ($psr4 as $namespace => $path) {
+            // Use a simpler string check instead of regex to avoid escaping issues
+            if (strpos($namespace, 'Modules\\') === 0 && strpos($namespace, '\\App\\') !== false) {
+                unset($psr4[$namespace]);
+            }
+        }
         
         // Add/update module entries
         foreach ($modules as $modulePath) {
@@ -52,11 +63,10 @@ class UpdateModuleAutoloading extends Command
             
             // Check if module has app directory
             if (File::isDirectory("$modulePath/app")) {
-                $namespace = "Modules\\\\$moduleName\\\\App\\\\";
+                $namespace = "Modules\\$moduleName\\App\\";
                 $path = "Modules/$moduleName/app/";
                 
                 $psr4[$namespace] = $path;
-                $existingEntries[] = $namespace;
                 
                 $this->info("Added autoloading for $moduleName: $namespace => $path");
             }
@@ -65,10 +75,28 @@ class UpdateModuleAutoloading extends Command
         // Update composer.json
         $composerJson['autoload']['psr-4'] = $psr4;
         
-        // Write back to composer.json
-        File::put($composerJsonPath, json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        // Write back to composer.json with consistent formatting
+        File::put(
+            $composerJsonPath, 
+            json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+        );
         
         $this->info('Module autoloading entries updated successfully.');
         $this->info('Run "composer dump-autoload" to apply changes.');
+        
+        if ($this->confirm('Would you like to run composer dump-autoload now?', true)) {
+            $this->info('Running composer dump-autoload...');
+            $this->newLine();
+            exec('composer dump-autoload', $output, $returnCode);
+            
+            if ($returnCode === 0) {
+                foreach ($output as $line) {
+                    $this->line($line);
+                }
+                $this->info('Autoload files regenerated successfully!');
+            } else {
+                $this->error('Failed to run composer dump-autoload. Please run it manually.');
+            }
+        }
     }
 }

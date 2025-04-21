@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Business\App\Models\Business;
 use Laratrust\Models\Permission as PermissionModel;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Permission extends PermissionModel
 {

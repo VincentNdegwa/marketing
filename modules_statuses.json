@@ -1,3 +1,5 @@
 {
-    "UserManagement": true
+    "UserManagement": true,
+    "Business": true,
+    "Model": true
 }

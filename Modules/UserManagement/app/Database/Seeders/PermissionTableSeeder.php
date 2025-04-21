@@ -2,13 +2,13 @@
 
 namespace Modules\UserManagement\App\Database\Seeders;
 
-use App\Models\Business;
-use App\Models\Permission;
 use App\Models\Role;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Permission;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Artisan;
+use Modules\Business\App\Models\Business;
 
 class PermissionTableSeeder extends Seeder
 {
@@ -21,6 +21,7 @@ class PermissionTableSeeder extends Seeder
         Log::info('Starting UserManagement permission seeding');
 
         $permissions = [
+            // User Management
             [
                 'name' => 'usermanagement.view',
                 'display_name' => 'View Users',
@@ -41,6 +42,8 @@ class PermissionTableSeeder extends Seeder
                 'display_name' => 'Delete Users',
                 'description' => 'Can delete users'
             ],
+
+            // Role Management
             [
                 'name' => 'role.view',
                 'display_name' => 'View Roles',
@@ -61,17 +64,15 @@ class PermissionTableSeeder extends Seeder
                 'display_name' => 'Delete Roles',
                 'description' => 'Can delete roles'
             ],
+
+            // Permission Management
             [
                 'name' => 'permission.manage',
                 'display_name' => 'Manage Permissions',
-                'description' => 'Access to permission management'
+                'description' => 'Access to manage and assign permissions'
             ],
-            [
-                'name' => 'permission.assign',
-                'display_name' => 'Assign Permissions',
-                'description' => 'Can assign permissions to roles'
-            ]
         ];
+
 
         $superadminRole = Role::where('name', 'superadmin')->first();
         Log::info('SuperAdmin role found: ' . ($superadminRole ? 'Yes' : 'No'));
