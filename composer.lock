@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8c8c215236bc00ef23a0d8a535f369b",
+    "content-hash": "33b5755a05e0f9135e0f0c4edb8187c9",
     "packages": [
         {
             "name": "brick/math",
@@ -65,55 +65,6 @@
                 }
             ],
             "time": "2025-02-28T13:11:00+00:00"
-        },
-        {
-            "name": "brick/varexporter",
-            "version": "0.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/brick/varexporter.git",
-                "reference": "af98bfc2b702a312abbcaff37656dbe419cec5bc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/brick/varexporter/zipball/af98bfc2b702a312abbcaff37656dbe419cec5bc",
-                "reference": "af98bfc2b702a312abbcaff37656dbe419cec5bc",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/php-parser": "^5.0",
-                "php": "^8.1"
-            },
-            "require-dev": {
-                "php-coveralls/php-coveralls": "^2.2",
-                "phpunit/phpunit": "^10.5",
-                "vimeo/psalm": "6.8.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Brick\\VarExporter\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A powerful alternative to var_export(), which can export closures and objects without __set_state()",
-            "keywords": [
-                "var_export"
-            ],
-            "support": {
-                "issues": "https://github.com/brick/varexporter/issues",
-                "source": "https://github.com/brick/varexporter/tree/0.6.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/BenMorel",
-                    "type": "github"
-                }
-            ],
-            "time": "2025-02-20T17:42:39+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -1170,6 +1121,56 @@
                 "source": "https://github.com/inertiajs/inertia-laravel/tree/v2.0.2"
             },
             "time": "2025-04-10T15:08:36+00:00"
+        },
+        {
+            "name": "kkszymanowski/traitor",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KKSzymanowski/Traitor.git",
+                "reference": "97d12e2b045fcc4e132fed5ddee3b1dcff409989"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KKSzymanowski/Traitor/zipball/97d12e2b045fcc4e132fed5ddee3b1dcff409989",
+                "reference": "97d12e2b045fcc4e132fed5ddee3b1dcff409989",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^1.0|^2.0|^3.0|^4.0|^5.0",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "8.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Traitor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kuba Szymanowski",
+                    "email": "kuba.szymanowski@inf24.pl"
+                }
+            ],
+            "description": "Add a trait use statement to existing PHP class",
+            "keywords": [
+                "add",
+                "php",
+                "trait"
+            ],
+            "support": {
+                "email": "kuba.szymanowski@inf24.pl",
+                "issues": "https://github.com/kkszymanowski/traitor/issues",
+                "source": "https://github.com/kkszymanowski/traitor"
+            },
+            "time": "2024-01-29T09:23:11+00:00"
         },
         {
             "name": "laravel/framework",
@@ -2715,92 +2716,6 @@
             "time": "2025-03-08T02:07:02+00:00"
         },
         {
-            "name": "outhebox/laravel-translations",
-            "version": "1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/MohmmedAshraf/laravel-translations.git",
-                "reference": "947cb244856f16c6481219be7ab57c606724b931"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/MohmmedAshraf/laravel-translations/zipball/947cb244856f16c6481219be7ab57c606724b931",
-                "reference": "947cb244856f16c6481219be7ab57c606724b931",
-                "shasum": ""
-            },
-            "require": {
-                "brick/varexporter": "^0.6.0",
-                "ext-zip": "*",
-                "inertiajs/inertia-laravel": "^2.0",
-                "php": "^8.2|^8.3",
-                "spatie/laravel-package-tools": "^1.0",
-                "stichoza/google-translate-php": "^5.0",
-                "tightenco/ziggy": "^2.5"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.0",
-                "nunomaduro/collision": "^8.0",
-                "orchestra/testbench": "^9.0|^10.0",
-                "pestphp/pest": "^3.0",
-                "pestphp/pest-plugin-faker": "^3.0",
-                "pestphp/pest-plugin-laravel": "^3.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "TranslationsUI": "Outhebox\\TranslationsUI\\Facades\\TranslationsUI"
-                    },
-                    "providers": [
-                        "Outhebox\\TranslationsUI\\TranslationsUIServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
-                "psr-4": {
-                    "Outhebox\\TranslationsUI\\": "src",
-                    "Outhebox\\TranslationsUI\\Database\\Seeders\\": "database/seeders",
-                    "Outhebox\\TranslationsUI\\Database\\Factories\\": "database/factories"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mohamed Ashraf",
-                    "email": "cupo.ashraf@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Laravel Translations UI provides a simple way to manage your translations in your Laravel application. It allows you to add, edit, delete and export translations, and it also provides a search functionality to find translations.",
-            "homepage": "https://github.com/MohmmedAshraf/laravel-translations",
-            "keywords": [
-                "inertia",
-                "inertiajs",
-                "laravel",
-                "laravel-translations",
-                "localization",
-                "translation-manager",
-                "translations"
-            ],
-            "support": {
-                "issues": "https://github.com/MohmmedAshraf/laravel-translations/issues",
-                "source": "https://github.com/MohmmedAshraf/laravel-translations/tree/1.3.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/MohmmedAshraf",
-                    "type": "github"
-                }
-            ],
-            "time": "2025-03-13T15:08:34+00:00"
-        },
-        {
             "name": "phpoption/phpoption",
             "version": "1.9.3",
             "source": {
@@ -3579,35 +3494,43 @@
             "time": "2024-04-27T21:32:50+00:00"
         },
         {
-            "name": "spatie/laravel-package-tools",
-            "version": "1.92.4",
+            "name": "santigarcor/laratrust",
+            "version": "8.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/spatie/laravel-package-tools.git",
-                "reference": "d20b1969f836d210459b78683d85c9cd5c5f508c"
+                "url": "https://github.com/santigarcor/laratrust.git",
+                "reference": "f0b90fca6b378906c3522f9f40ca1691c4a6fd84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/d20b1969f836d210459b78683d85c9cd5c5f508c",
-                "reference": "d20b1969f836d210459b78683d85c9cd5c5f508c",
+                "url": "https://api.github.com/repos/santigarcor/laratrust/zipball/f0b90fca6b378906c3522f9f40ca1691c4a6fd84",
+                "reference": "f0b90fca6b378906c3522f9f40ca1691c4a6fd84",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^9.28|^10.0|^11.0|^12.0",
-                "php": "^8.0"
+                "kkszymanowski/traitor": "^1.0",
+                "laravel/framework": "^10.0|^11.0|^12.0",
+                "php": ">=8.1"
             },
             "require-dev": {
-                "mockery/mockery": "^1.5",
-                "orchestra/testbench": "^7.7|^8.0|^9.0|^10.0",
-                "pestphp/pest": "^1.23|^2.1|^3.1",
-                "phpunit/php-code-coverage": "^9.0|^10.0|^11.0",
-                "phpunit/phpunit": "^9.5.24|^10.5|^11.5",
-                "spatie/pest-plugin-test-time": "^1.1|^2.2"
+                "mockery/mockery": "^1.3.2",
+                "orchestra/testbench": "^8.0|^9.0|^10.0",
+                "phpunit/phpunit": "^8.4|^9.0|^10.5|^11.5.3"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Laratrust": "Laratrust\\LaratrustFacade"
+                    },
+                    "providers": [
+                        "Laratrust\\LaratrustServiceProvider"
+                    ]
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "Spatie\\LaravelPackageTools\\": "src"
+                    "Laratrust\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3616,109 +3539,34 @@
             ],
             "authors": [
                 {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "role": "Developer"
+                    "name": "Santiago Garcia",
+                    "homepage": "http://santigarcor.me"
                 }
             ],
-            "description": "Tools for creating Laravel packages",
-            "homepage": "https://github.com/spatie/laravel-package-tools",
+            "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
             "keywords": [
-                "laravel-package-tools",
-                "spatie"
+                "Teams",
+                "acl",
+                "authorization",
+                "laratrust",
+                "laravel",
+                "multiusers",
+                "permissions",
+                "php",
+                "rbac",
+                "roles"
             ],
             "support": {
-                "issues": "https://github.com/spatie/laravel-package-tools/issues",
-                "source": "https://github.com/spatie/laravel-package-tools/tree/1.92.4"
+                "issues": "https://github.com/santigarcor/laratrust/issues",
+                "source": "https://github.com/santigarcor/laratrust/tree/8.4.1"
             },
             "funding": [
                 {
-                    "url": "https://github.com/spatie",
+                    "url": "https://github.com/santigarcor",
                     "type": "github"
                 }
             ],
-            "time": "2025-04-11T15:27:14+00:00"
-        },
-        {
-            "name": "stichoza/google-translate-php",
-            "version": "v5.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Stichoza/google-translate-php.git",
-                "reference": "9429773d991c98f68a25bec40d20f590ea3312a0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Stichoza/google-translate-php/zipball/9429773d991c98f68a25bec40d20f590ea3312a0",
-                "reference": "9429773d991c98f68a25bec40d20f590ea3312a0",
-                "shasum": ""
-            },
-            "require": {
-                "ext-dom": "*",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "guzzlehttp/guzzle": "^7.0",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.5.10"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Stichoza\\GoogleTranslate\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Levan Velijanashvili",
-                    "email": "me@stichoza.com"
-                }
-            ],
-            "description": "Free Google Translate API PHP Package",
-            "homepage": "https://github.com/Stichoza/google-translate-php",
-            "keywords": [
-                "google",
-                "php",
-                "translate",
-                "translating",
-                "translator"
-            ],
-            "support": {
-                "issues": "https://github.com/Stichoza/google-translate-php/issues",
-                "source": "https://github.com/Stichoza/google-translate-php/tree/v5.2.0"
-            },
-            "funding": [
-                {
-                    "url": "https://btc.com/bc1qc25j4x7yahghm8nnn6lypnw59nptylsw32nkfl",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.paypal.me/stichoza",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://ko-fi.com/stichoza",
-                    "type": "ko_fi"
-                },
-                {
-                    "url": "https://liberapay.com/stichoza",
-                    "type": "liberapay"
-                },
-                {
-                    "url": "https://opencollective.com/stichoza",
-                    "type": "open_collective"
-                },
-                {
-                    "url": "https://www.patreon.com/stichoza",
-                    "type": "patreon"
-                }
-            ],
-            "time": "2024-08-05T19:11:36+00:00"
+            "time": "2025-03-31T14:02:58+00:00"
         },
         {
             "name": "symfony/clock",
