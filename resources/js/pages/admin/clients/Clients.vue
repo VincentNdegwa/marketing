@@ -12,6 +12,13 @@ import { ref } from 'vue';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import Menu from 'primevue/menu';
+import Tag from 'primevue/tag';
+
+interface Business {
+    id: number;
+    name: string;
+    is_default: boolean;
+}
 
 defineProps<{
     users: {
@@ -20,6 +27,8 @@ defineProps<{
             name: string;
             email: string;
             user_type: string;
+            admin_businesses: Business[];
+            default_business_id: number | null;
         }>;
         links: Array<{
             url: string | null;
@@ -131,6 +140,23 @@ const toggle = (event: Event, data: any) => {
                     <Column field="name" header="Name"></Column>
                     <Column field="email" header="Email"></Column>
                     <Column field="user_type" header="Type"></Column>
+                    <Column header="Businesses" :exportable="false">
+                        <template #body="slotProps">
+                            <div class="flex flex-wrap gap-1">
+                                <Tag v-for="business in slotProps.data.admin_businesses" :key="business.id"
+                                    :severity="business.id === slotProps.data.default_business_id ? 'success' : 'info'"
+                                    :value="business.name"
+                                >
+                                    <template #icon v-if="business.id === slotProps.data.default_business_id">
+                                        <i class="pi pi-star-fill mr-1"></i>
+                                    </template>
+                                </Tag>
+                                <div v-if="slotProps.data.admin_businesses.length === 0" class="text-gray-500 italic">
+                                    No businesses
+                                </div>
+                            </div>
+                        </template>
+                    </Column>
                     <Column header="Actions" :exportable="false" style="width: 5rem">
                         <template #body="slotProps">
                             <div class="flex justify-center">

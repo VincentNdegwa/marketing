@@ -16,11 +16,35 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $users = User::latest()
+        $adminUsers = User::whereHas('roles', function ($query) {
+            $query->where('name', 'admin');
+        })
+            ->with([
+                'businesses' => function ($query) {
+                    $query->orderBy('name');
+                },
+                'roles' => function ($query) {
+                    $query->where('name', 'admin');
+                }
+            ])
+            ->latest()
             ->paginate(10);
 
+        $adminUsers->through(function ($user) {
+            $adminBusinesses = $user->businesses->filter(function ($business) use ($user) {
+                return $user->isAdminForBusiness($business->id);
+            })->values();
+            
+            $user->admin_businesses = $adminBusinesses;
+            $user->default_business_id = $user->defaultBusiness()?->id;
+            $user->user_type = 'Business User';
+            $user->roles =$user->roles();
+            
+            return $user;
+        });
+
         return Inertia::render('admin/clients/Clients', [
-            'users' => $users,
+            'users' => $adminUsers,
         ]);
     }
 
