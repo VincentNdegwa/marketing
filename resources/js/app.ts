@@ -2,7 +2,6 @@ import '@css/app.css';
 import 'primeicons/primeicons.css';
 
 import { createInertiaApp } from '@inertiajs/vue3';
-import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue, route } from 'ziggy-js';
 import { initializeTheme } from '@/composables/useAppearance';

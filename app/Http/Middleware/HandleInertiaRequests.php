@@ -38,13 +38,13 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
-        
+
         $menuItems = [];
         if ($request->user()) {
             // Create a new Menu instance with the current user
             $menu = new \App\Classes\Menu($request->user());
             $user = $request->user();
-            
+
             // Dispatch the appropriate event based on user type
             if ($user->user_type === 'Super Admin') {
                 // Log the event for debugging
@@ -55,7 +55,7 @@ class HandleInertiaRequests extends Middleware
                 \Illuminate\Support\Facades\Log::info('Dispatching ClientMenuEvent');
                 event(new \App\Events\ClientMenuEvent($menu));
             }
-            
+
             // Get the menu items after the events have been processed
             $menuItems = $menu->getItems();
             \Illuminate\Support\Facades\Log::info('Menu items', ['items' => $menuItems]);

@@ -16,7 +16,7 @@ class SuperAdminMiddlware
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-        if($user->user_type != "Super Admin"){
+        if ($user->user_type != 'Super Admin') {
             abort(403);
         }
 

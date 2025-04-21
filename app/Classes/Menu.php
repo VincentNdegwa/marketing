@@ -5,7 +5,9 @@ namespace App\Classes;
 class Menu
 {
     public $items = [];
+
     public $user;
+
     public $modules;
 
     public function __construct($user = null)
@@ -21,10 +23,10 @@ class Menu
     {
         // For debugging, let's add all items without restrictions
         $this->items[] = $item;
-        
+
         // Original logic (commented out for debugging)
         // if (
-        //     in_array($item['module'] ?? 'Base', $this->modules) && 
+        //     in_array($item['module'] ?? 'Base', $this->modules) &&
         //     ((empty($item['permission'])) || $this->userHasPermission($item['permission']))
         // ) {
         //     $this->items[] = $item;
@@ -52,7 +54,7 @@ class Menu
         // For now, return all modules as activated
         // In a real implementation, you would check which modules are activated
         $modules = ['Base'];
-        
+
         // Get modules from modules_statuses.json
         $modulesStatusesPath = base_path('modules_statuses.json');
         if (file_exists($modulesStatusesPath)) {
@@ -63,7 +65,7 @@ class Menu
                 }
             }
         }
-        
+
         return $modules;
     }
 

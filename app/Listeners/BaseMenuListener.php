@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Events\MenuEvent;
 use App\Events\ClientMenuEvent;
+use App\Events\MenuEvent;
 use App\Events\SuperAdminMenuEvent;
 use Illuminate\Support\Facades\Log;
 
@@ -16,10 +16,8 @@ class BaseMenuListener
     {
         $menu = $event->menu;
 
-        Log::info("Base Menu", ["event" => $event]);
+        Log::info('Base Menu', ['event' => $event]);
 
-        
-        
         // Add client specific menu items
         if ($event instanceof ClientMenuEvent) {
             $module = 'Base';
@@ -34,7 +32,7 @@ class BaseMenuListener
                 'depend_on' => null,
                 'href' => 'dashboard',
                 'module' => $module,
-                'permission' => 'manage-dashboard'
+                'permission' => 'manage-dashboard',
             ]);
         }
 
@@ -52,7 +50,7 @@ class BaseMenuListener
                 'depend_on' => [],
                 'href' => 'dashboard.admin',
                 'module' => $module,
-                'permission' => 'manage-admin-dashboard'
+                'permission' => 'manage-admin-dashboard',
             ]);
             $menu->add([
                 'title' => 'Clients',
@@ -64,7 +62,7 @@ class BaseMenuListener
                 'depend_on' => [],
                 'href' => 'clients.index',
                 'module' => $module,
-                'permission' => 'manage-clients'
+                'permission' => 'manage-clients',
             ]);
 
             $menu->add([
@@ -77,7 +75,7 @@ class BaseMenuListener
                 'depend_on' => [],
                 'href' => 'admin.modules',
                 'module' => $module,
-                'permission' => 'manage-modules'
+                'permission' => 'manage-modules',
             ]);
         }
     }

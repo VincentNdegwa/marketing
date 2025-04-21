@@ -20,8 +20,8 @@ class ClientController extends Controller
             ->latest()
             ->paginate(10);
 
-        return Inertia::render("admin/clients/Clients", [
-            'users' => $users
+        return Inertia::render('admin/clients/Clients', [
+            'users' => $users,
         ]);
     }
 
@@ -51,7 +51,7 @@ class ClientController extends Controller
     public function update(Request $request, string $id)
     {
         $user = User::where('user_type', 'Admin')->findOrFail($id);
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', Rule::unique('users')->ignore($id)],
@@ -63,7 +63,7 @@ class ClientController extends Controller
             'email' => $validated['email'],
         ];
 
-        if (!empty($validated['password'])) {
+        if (! empty($validated['password'])) {
             $updateData['password'] = Hash::make($validated['password']);
         }
 
@@ -78,11 +78,11 @@ class ClientController extends Controller
     public function destroy(string $id)
     {
         $user = User::where('user_type', 'Admin')->findOrFail($id);
-        
+
         if ($user->isSuperAdmin()) {
             return redirect()->back()->with('error', 'Super Admin users cannot be deleted');
         }
-        
+
         $user->delete();
 
         return redirect()->back()->with('success', 'Admin user deleted successfully');

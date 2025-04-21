@@ -2,10 +2,9 @@
 
 namespace Modules\UserManagement\app\Listeners;
 
-use App\Events\MenuEvent;
 use App\Events\ClientMenuEvent;
+use App\Events\MenuEvent;
 use App\Events\SuperAdminMenuEvent;
-use Illuminate\Support\Facades\Log;
 
 class MenuListener
 {
@@ -16,7 +15,7 @@ class MenuListener
     {
         $module = 'UserManagement';
         $menu = $event->menu;
-                
+
         // Handle different menu event types
         if ($event instanceof ClientMenuEvent) {
             $this->registerClientMenu($menu, $module);
@@ -27,7 +26,7 @@ class MenuListener
             $this->registerDefaultMenu($menu, $module);
         }
     }
-    
+
     /**
      * Register menu items for client users
      */
@@ -43,24 +42,17 @@ class MenuListener
             'depend_on' => [],
             'href' => 'usermanagement.index',
             'module' => $module,
-            'permission' => 'usermanagement.manage'
+            'permission' => 'usermanagement.manage',
         ]);
     }
-    
-    
+
     /**
      * Register menu items for admin users
      */
-    private function registerAdminMenu($menu, $module): void
-    {
+    private function registerAdminMenu($menu, $module): void {}
 
-    }
-    
     /**
      * Register default menu items
      */
-    private function registerDefaultMenu($menu, $module): void
-    {
-
-    }
+    private function registerDefaultMenu($menu, $module): void {}
 }

@@ -3,18 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use Nwidart\Modules\Facades\Module;
 use Inertia\Inertia;
 use Inertia\Response;
+use Nwidart\Modules\Facades\Module;
 
 class ModuleController extends Controller
 {
     /**
      * Display a listing of all modules.
-     *
-     * @return \Inertia\Response
      */
     public function index(): Response
     {
@@ -22,8 +19,8 @@ class ModuleController extends Controller
         $formattedModules = [];
 
         foreach ($modules as $name => $module) {
-            $moduleJson = json_decode(file_get_contents($module->getPath() . '/module.json'), true);
-            
+            $moduleJson = json_decode(file_get_contents($module->getPath().'/module.json'), true);
+
             $formattedModules[] = [
                 'name' => $moduleJson['name'],
                 'alias' => $moduleJson['alias'] ?? $name,
@@ -31,26 +28,23 @@ class ModuleController extends Controller
                 'version' => $moduleJson['version'] ?? '1.0.1',
                 'enabled' => $module->isEnabled(),
                 'path' => $module->getPath(),
-                'is_common' => $moduleJson['common']??0,
-                'icon'=> $moduleJson['icon_url'],
-                'depends_on'=> $moduleJson['depends_on']
+                'is_common' => $moduleJson['common'] ?? 0,
+                'icon' => $moduleJson['icon_url'],
+                'depends_on' => $moduleJson['depends_on'],
             ];
         }
 
         return Inertia::render('admin/modules/modules', [
-            'modules' => $formattedModules
+            'modules' => $formattedModules,
         ]);
     }
 
     /**
      * Enable a specific module.
-     *
-     * @param string $name
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function enable(string $name): RedirectResponse
     {
-        if (!Module::has($name)) {
+        if (! Module::has($name)) {
             return redirect()->back()->with('error', "Module {$name} not found");
         }
 
@@ -65,17 +59,14 @@ class ModuleController extends Controller
 
     /**
      * Disable a specific module.
-     *
-     * @param string $name
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function disable(string $name): RedirectResponse
     {
-        if (!Module::has($name)) {
+        if (! Module::has($name)) {
             return redirect()->back()->with('error', "Module {$name} not found");
         }
 
-        if (!Module::isEnabled($name)) {
+        if (! Module::isEnabled($name)) {
             return redirect()->back()->with('info', "Module {$name} is already disabled");
         }
 

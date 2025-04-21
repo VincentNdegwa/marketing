@@ -28,24 +28,25 @@ class RegisterModulePages extends Command
     public function handle()
     {
         $this->info('Registering module pages for Inertia.js integration...');
-        
+
         // Get all enabled modules
         $modules = Module::allEnabled();
-        $this->info('Found ' . count($modules) . ' enabled modules: ' . implode(', ', array_keys($modules)));
-        
+        $this->info('Found '.count($modules).' enabled modules: '.implode(', ', array_keys($modules)));
+
         // Run the npm script to register module pages
         $process = Process::path(base_path())
             ->run('npm run modules:register');
-            
+
         if ($process->successful()) {
             $this->info('Module pages registered successfully!');
             $this->line($process->output());
         } else {
             $this->error('Failed to register module pages!');
             $this->error($process->errorOutput());
+
             return Command::FAILURE;
         }
-        
+
         return Command::SUCCESS;
     }
 }

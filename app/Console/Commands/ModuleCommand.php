@@ -34,32 +34,32 @@ class ModuleCommand extends Command
     {
         $name = $this->argument('name');
         $this->info("Creating module: {$name}");
-        
+
         // Build the command with all options
-        $command = 'php artisan module:make ' . $name;
-        
+        $command = 'php artisan module:make '.$name;
+
         if ($this->option('force')) {
             $command .= ' --force';
         }
-        
+
         if ($this->option('plain')) {
             $command .= ' --plain';
         }
-        
+
         if ($this->option('api')) {
             $command .= ' --api';
         }
-        
+
         if ($this->option('web')) {
             $command .= ' --web';
         }
-        
+
         if ($this->option('disabled')) {
             $command .= ' --disabled';
         }
-        
+
         $this->line("Running: $command");
-        
+
         // Run command with real-time output based on platform
         if ($this->isWindows()) {
             // Use passthru for Windows
@@ -69,6 +69,7 @@ class ModuleCommand extends Command
 
             if ($exitCode !== 0) {
                 $this->error("Failed to create module: {$name}");
+
                 return Command::FAILURE;
             }
         } else {
@@ -78,28 +79,30 @@ class ModuleCommand extends Command
                 ->run($command);
             $this->info('Wait for pages regsitration...');
 
-            if (!$process->successful()) {
+            if (! $process->successful()) {
                 $this->error("Failed to create module: {$name}");
                 $this->error($process->errorOutput());
+
                 return Command::FAILURE;
             }
         }
-        
+
         // If the module was created successfully and not disabled, register its pages
-        if (!$this->option('disabled')) {
+        if (! $this->option('disabled')) {
             $this->info("Registering pages for module: {$name}");
-            
+
             $registerCommand = 'php artisan modules:register-pages';
             $this->line("Running: $registerCommand");
-            
+
             // Run command with real-time output based on platform
             if ($this->isWindows()) {
                 // Use passthru for Windows
                 $exitCode = 0;
                 passthru($registerCommand, $exitCode);
-                
+
                 if ($exitCode !== 0) {
                     $this->error("Failed to register pages for module: {$name}");
+
                     return Command::FAILURE;
                 }
             } else {
@@ -107,19 +110,21 @@ class ModuleCommand extends Command
                 $process = Process::path(base_path())
                     ->tty()
                     ->run($registerCommand);
-                    
-                if (!$process->successful()) {
+
+                if (! $process->successful()) {
                     $this->error("Failed to register pages for module: {$name}");
                     $this->error($process->errorOutput());
+
                     return Command::FAILURE;
                 }
             }
         }
-        
+
         $this->info("Module {$name} created and pages registered successfully!");
+
         return Command::SUCCESS;
     }
-    
+
     /**
      * Check if the current platform is Windows
      */

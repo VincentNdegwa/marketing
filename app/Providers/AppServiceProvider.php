@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Inertia\Inertia;
 use App\Classes\Menu;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
@@ -28,6 +27,6 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(\App\Events\MenuEvent::class, \App\Listeners\BaseMenuListener::class);
         Event::listen(\App\Events\SuperAdminMenuEvent::class, \App\Listeners\BaseMenuListener::class);
         Event::listen(\App\Events\ClientMenuEvent::class, \App\Listeners\BaseMenuListener::class);
-        
+
     }
 }

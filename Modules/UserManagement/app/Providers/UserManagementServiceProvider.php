@@ -42,17 +42,17 @@ class UserManagementServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-        
+
         $this->app->make('events')->listen(
             \App\Events\MenuEvent::class,
             \Modules\UserManagement\app\Listeners\MenuListener::class
         );
-        
+
         $this->app->make('events')->listen(
             \App\Events\ClientMenuEvent::class,
             \Modules\UserManagement\app\Listeners\MenuListener::class
         );
-        
+
         $this->app->make('events')->listen(
             \App\Events\SuperAdminMenuEvent::class,
             \Modules\UserManagement\app\Listeners\MenuListener::class
@@ -67,7 +67,7 @@ class UserManagementServiceProvider extends ServiceProvider
         // $this->commands([]);
     }
 
-        /**
+    /**
      * Register assets for the module.
      */
     protected function registerAssets(): void
@@ -79,7 +79,7 @@ class UserManagementServiceProvider extends ServiceProvider
                 ->withEntryPoints($entry);
         });
     }
-    
+
     /**
      * Register Inertia related components and middleware.
      */
@@ -87,11 +87,12 @@ class UserManagementServiceProvider extends ServiceProvider
     {
         // Set the root view for this module
         Inertia::setRootView('usermanagement::app');
-        
+
         // Only register the macro if it doesn't exist yet
-        if (!Inertia::hasMacro('module')) {
+        if (! Inertia::hasMacro('module')) {
             Inertia::macro('module', function ($component, $props = []) {
                 Inertia::setRootView('usermanagement::app');
+
                 return Inertia::render($component, $props);
             });
         }
@@ -137,8 +138,8 @@ class UserManagementServiceProvider extends ServiceProvider
 
             foreach ($iterator as $file) {
                 if ($file->isFile() && $file->getExtension() === 'php') {
-                    $relativePath = str_replace($configPath . DIRECTORY_SEPARATOR, '', $file->getPathname());
-                    $configKey = $this->nameLower . '.' . str_replace([DIRECTORY_SEPARATOR, '.php'], ['.', ''], $relativePath);
+                    $relativePath = str_replace($configPath.DIRECTORY_SEPARATOR, '', $file->getPathname());
+                    $configKey = $this->nameLower.'.'.str_replace([DIRECTORY_SEPARATOR, '.php'], ['.', ''], $relativePath);
                     $key = ($relativePath === 'config.php') ? $this->nameLower : $configKey;
 
                     $this->publishes([$file->getPathname() => config_path($relativePath)], 'config');
