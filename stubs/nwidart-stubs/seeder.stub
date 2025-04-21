@@ -3,7 +3,8 @@
 namespace $NAMESPACE$;
 
 use Illuminate\Database\Seeder;
-use  $NAMESPACE$\PermissionTableSeeder;
+use Modules\$STUDLY_NAME$\App\Database\Seeders\PermissionTableSeeder;
+
 
 class $NAME$ extends Seeder
 {
