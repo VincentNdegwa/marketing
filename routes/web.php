@@ -1,16 +1,33 @@
 <?php
 
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Client\ClientController;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
 
 Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
+    // Get the current business from session if it exists
+    $currentBusinessId = session('current_business_id');
+    $user = Auth::user();
+    
+    // If no current business in session, use the user's default business
+    if (!$currentBusinessId && $user) {
+        $defaultBusiness = $user->defaultBusiness();
+        if ($defaultBusiness) {
+            $currentBusinessId = $defaultBusiness->id;
+            session(['current_business_id' => $currentBusinessId]);
+        }
+    }
+    
+    return Inertia::render('Dashboard', [
+        'currentBusinessId' => $currentBusinessId
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::prefix('super-admin')->group(function () {
@@ -22,6 +39,11 @@ Route::prefix('super-admin')->group(function () {
     Route::get('modules', [ModuleController::class, 'index'])->middleware(['auth', 'verified'])->name('admin.modules');
     Route::post('modules/{name}/enable', [ModuleController::class, 'enable'])->middleware(['auth', 'verified'])->name('admin.modules.enable');
     Route::post('modules/{name}/disable', [ModuleController::class, 'disable'])->middleware(['auth', 'verified'])->name('admin.modules.disable');
+    
+    // Business management routes
+    Route::resource('businesses', BusinessController::class);
+    Route::post('businesses/{business}/set-default', [BusinessController::class, 'setDefault'])->name('businesses.set-default');
+    Route::post('businesses/{business}/switch', [BusinessController::class, 'switchBusiness'])->name('businesses.switch');
 })->middleware(['super']);
 
 require __DIR__.'/settings.php';

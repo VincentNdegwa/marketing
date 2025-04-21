@@ -3,14 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laratrust\Contracts\LaratrustUser;
 use Illuminate\Notifications\Notifiable;
+use Laratrust\Traits\HasRolesAndPermissions;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable
+
+class User extends Authenticatable implements LaratrustUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRolesAndPermissions, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +26,22 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'user_type',
+        'mobile',
+        'avatar',
+        'job_title',
+        'bio',
+        'address_line1',
+        'address_line2',
+        'city',
+        'state',
+        'postal_code',
+        'country',
+        'date_of_birth',
+        'gender',
+        'website',
+        'social_links',
+        'is_active',
+        'last_login_at',
     ];
 
     /**
@@ -43,12 +63,116 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'last_login_at' => 'datetime',
+            'date_of_birth' => 'date',
             'password' => 'hashed',
+            'social_links' => 'array',
+            'is_active' => 'boolean',
         ];
     }
 
+    /**
+     * Check if the user is a Super Admin (system-wide administrator)
+     * There should only be one Super Admin in the system
+     * 
+     * @return bool
+     */
     public function isSuperAdmin(): bool
     {
-        return $this->user_type == 'Super Admin';
+        return $this->hasRole('superadmin');
+    }
+    
+    /**
+     * Check if the user is an Admin for a specific business
+     * 
+     * @param int $businessId
+     * @return bool
+     */
+    public function isAdminForBusiness(int $businessId): bool
+    {
+        return $this->hasRoleInBusiness('admin', $businessId);
+    }
+
+    /**
+     * The businesses that belong to the user.
+     */
+    public function businesses(): BelongsToMany
+    {
+        return $this->belongsToMany(Business::class, 'user_business')
+            ->withPivot('is_default')
+            ->withTimestamps();
+    }
+    
+    /**
+     * Get the user's default business.
+     *
+     * @return \App\Models\Business|null
+     */
+    public function defaultBusiness()
+    {
+        return $this->businesses()->wherePivot('is_default', true)->first();
+    }
+    
+    /**
+     * Set a business as the default for this user.
+     *
+     * @param int $businessId
+     * @return bool
+     */
+    public function setDefaultBusiness(int $businessId): bool
+    {
+        $this->businesses()->updateExistingPivot(
+            $this->businesses()->pluck('businesses.id')->toArray(),
+            ['is_default' => false]
+        );
+        
+        // Then set the specified business as default
+        return $this->businesses()->updateExistingPivot($businessId, ['is_default' => true]);
+    }
+
+    /**
+     * Get roles for a specific business
+     *
+     * @param int $businessId
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function rolesForBusiness(int $businessId)
+    {
+        return $this->roles()->wherePivot('business_id', $businessId)->get();
+    }
+
+    /**
+     * Get permissions for a specific business
+     *
+     * @param int $businessId
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function permissionsForBusiness(int $businessId)
+    {
+        return $this->permissions()->wherePivot('business_id', $businessId)->get();
+    }
+
+    /**
+     * Check if user has a specific role in a business
+     *
+     * @param string $role
+     * @param int $businessId
+     * @return bool
+     */
+    public function hasRoleInBusiness(string $role, int $businessId): bool
+    {
+        return $this->roles()->wherePivot('business_id', $businessId)->where('name', $role)->exists();
+    }
+
+    /**
+     * Check if user has a specific permission in a business
+     *
+     * @param string $permission
+     * @param int $businessId
+     * @return bool
+     */
+    public function hasPermissionInBusiness(string $permission, int $businessId): bool
+    {
+        return $this->permissions()->wherePivot('business_id', $businessId)->where('name', $permission)->exists();
     }
 }

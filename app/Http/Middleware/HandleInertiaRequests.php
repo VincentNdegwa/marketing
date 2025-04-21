@@ -41,24 +41,20 @@ class HandleInertiaRequests extends Middleware
 
         $menuItems = [];
         if ($request->user()) {
-            // Create a new Menu instance with the current user
             $menu = new \App\Classes\Menu($request->user());
             $user = $request->user();
 
-            // Dispatch the appropriate event based on user type
-            if ($user->user_type === 'Super Admin') {
-                // Log the event for debugging
+            if ($user->isSuperAdmin()) {
                 \Illuminate\Support\Facades\Log::info('Dispatching SuperAdminMenuEvent');
                 event(new \App\Events\SuperAdminMenuEvent($menu));
             } else {
-                // Log the event for debugging
                 \Illuminate\Support\Facades\Log::info('Dispatching ClientMenuEvent');
                 event(new \App\Events\ClientMenuEvent($menu));
             }
 
-            // Get the menu items after the events have been processed
-            $menuItems = $menu->getItems();
-            \Illuminate\Support\Facades\Log::info('Menu items', ['items' => $menuItems]);
+            // // Get the menu items after the events have been processed
+            // $menuItems = $menu->getItems();
+            // \Illuminate\Support\Facades\Log::info('Menu items', ['items' => $menuItems]);
         }
 
         return [
@@ -67,6 +63,7 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
+                'is_superadmin'=> $request->user()->isSuperAdmin()
             ],
             'ziggy' => [
                 ...(new Ziggy)->toArray(),

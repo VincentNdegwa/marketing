@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\BusinessPermission;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SuperAdminMiddlware;
@@ -7,6 +8,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Laratrust\Middleware\Role;
+use Laratrust\Middleware\Permission;
+use Laratrust\Middleware\Ability;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -22,7 +26,13 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
-        $middleware->alias(['super' => SuperAdminMiddlware::class]);
+        $middleware->alias([
+            'super' => SuperAdminMiddlware::class,
+            'role' => Role::class,
+            'permission' => Permission::class,
+            'ability' => Ability::class,
+            'business.permission' => BusinessPermission::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
