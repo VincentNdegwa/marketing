@@ -37,9 +37,6 @@ Route::prefix('super-admin')->middleware(['auth', 'verified', 'super'])->group(f
     Route::post('modules/{name}/enable', [ModuleController::class, 'enable'])->name('admin.modules.enable');
     Route::post('modules/{name}/disable', [ModuleController::class, 'disable'])->name('admin.modules.disable');
 
-    Route::resource('businesses', BusinessController::class);
-    Route::post('businesses/{business}/set-default', [BusinessController::class, 'setDefault'])->name('businesses.set-default');
-    Route::post('businesses/{business}/switch', [BusinessController::class, 'switchBusiness'])->name('businesses.switch');
 });
 
 require __DIR__.'/settings.php';

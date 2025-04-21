@@ -34,7 +34,7 @@ class MenuListener
     {
         $menu->add([
             'title' => 'Business',
-            'icon' => 'FileText',
+            'icon' => 'Building2',
             'name' => 'business',
             'parent' => null,
             'order' => 40,
