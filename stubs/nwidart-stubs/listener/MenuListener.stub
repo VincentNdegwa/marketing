@@ -16,9 +16,7 @@ class MenuListener
     {
         $module = '$STUDLY_NAME$';
         $menu = $event->menu;
-        
-        Log::info("$STUDLY_NAME$ Menu", ["event" => get_class($event)]);
-        
+                
         // Handle different menu event types
         if ($event instanceof ClientMenuEvent) {
             $this->registerClientMenu($menu, $module);
@@ -45,7 +43,7 @@ class MenuListener
             'depend_on' => [],
             'href' => '$LOWER_NAME$.index',
             'module' => $module,
-            'permission' => 'manage-$LOWER_NAME$'
+            'permission' => '$LOWER_NAME$.manage'
         ]);
     }
     
@@ -55,18 +53,7 @@ class MenuListener
      */
     private function registerAdminMenu($menu, $module): void
     {
-        $menu->add([
-            'title' => '$STUDLY_NAME$',
-            'icon' => 'FileText',
-            'name' => '$LOWER_NAME$',
-            'parent' => null,
-            'order' => 40,
-            'ignore_if' => [],
-            'depend_on' => [],
-            'href' => '$LOWER_NAME$.index',
-            'module' => $module,
-            'permission' => 'manage-$LOWER_NAME$'
-        ]);
+
     }
     
     /**
@@ -74,17 +61,6 @@ class MenuListener
      */
     private function registerDefaultMenu($menu, $module): void
     {
-        $menu->add([
-            'title' => '$STUDLY_NAME$',
-            'icon' => 'FileText',
-            'name' => '$LOWER_NAME$',
-            'parent' => null,
-            'order' => 40,
-            'ignore_if' => [],
-            'depend_on' => [],
-            'href' => '$LOWER_NAME$.index',
-            'module' => $module,
-            'permission' => 'manage-$LOWER_NAME$'
-        ]);
+
     }
 }

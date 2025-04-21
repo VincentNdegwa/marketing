@@ -22,39 +22,8 @@ class $CLASS$ extends ServiceProvider
     public function boot(): void
     {
         parent::boot();
-        
-        // Register menu listeners
-        $this->registerMenuListeners();
     }
     
-    /**
-     * Register menu event listeners.
-     */
-    protected function registerMenuListeners(): void
-    {
-        // Get the module name from the namespace
-        $namespace = explode('\\', __NAMESPACE__);
-        $moduleName = $namespace[1] ?? '$STUDLY_NAME$';
-        
-        // Build the listener class name dynamically
-        $listenerClass = "Modules\\{$moduleName}\\app\\Listeners\\MenuListener";
-        
-        // Register the menu listener for all menu event types
-        $this->app->make('events')->listen(
-            MenuEvent::class,
-            $listenerClass
-        );
-        
-        $this->app->make('events')->listen(
-            ClientMenuEvent::class,
-            $listenerClass
-        );
-        
-        $this->app->make('events')->listen(
-            SuperAdminMenuEvent::class,
-            $listenerClass
-        );
-    }
     
     /**
      * Indicates if events should be discovered.

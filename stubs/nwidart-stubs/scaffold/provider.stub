@@ -43,19 +43,16 @@ class $CLASS$ extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         
-        // Register the module menu listener directly
         $this->app->make('events')->listen(
             \App\Events\MenuEvent::class,
             \Modules\$STUDLY_NAME$\app\Listeners\MenuListener::class
         );
         
-        // Register for client menu events
         $this->app->make('events')->listen(
             \App\Events\ClientMenuEvent::class,
             \Modules\$STUDLY_NAME$\app\Listeners\MenuListener::class
         );
         
-        // Register for admin menu events
         $this->app->make('events')->listen(
             \App\Events\SuperAdminMenuEvent::class,
             \Modules\$STUDLY_NAME$\app\Listeners\MenuListener::class

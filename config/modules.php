@@ -33,7 +33,10 @@ return [
             'views/master' => 'resources/views/layouts/master.blade.php',
             'scaffold/config' => 'config/config.php',
             'composer' => 'composer.json',
-            'assets/js/app' => 'resources/assets/js/app.js',
+            'assets/js/app' => 'resources/js/app.ts',
+            'assets/js/tsconfig' => 'resources/js/tsconfig.json',
+            'assets/js/types' => 'resources/js/types.ts',
+            'assets/js/pages/Index' => 'resources/js/pages/Index.vue',
             'assets/sass/app' => 'resources/assets/sass/app.scss',
             'vite' => 'vite.config.js',
             'package' => 'package.json',
@@ -78,6 +81,9 @@ return [
             'seeders/PermissionTableSeeder' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE'],
             'event-provider' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'NAMESPACE', 'CLASS'],
             'scaffold/provider' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'NAMESPACE', 'CLASS'],
+            'assets/js/app' => ['LOWER_NAME', 'STUDLY_NAME'],
+            'assets/js/types' => ['LOWER_NAME', 'STUDLY_NAME'],
+            'assets/js/pages/Index' => ['LOWER_NAME', 'STUDLY_NAME'],
         ],
         'gitkeep' => true,
     ],
@@ -169,12 +175,12 @@ return [
             'config' => ['path' => 'config', 'generate' => true],
 
             // database/
-            'factory' => ['path' => 'database/factories', 'generate' => true],
-            'migration' => ['path' => 'database/migrations', 'generate' => true],
-            'seeder' => ['path' => 'database/seeders', 'generate' => true],
+            'factory' => ['path' => 'database/factories', 'generate' => true, 'namespace' => 'app\Http\Factories'],
+            'migration' => ['path' => 'database/migrations', 'generate' => true, 'namespace' => 'app\Http\Migrations'],
+            'seeder' => ['path' => 'database/seeders', 'generate' => true, 'namespace' => 'app\Http\Seeders'],
 
             // lang/
-            'lang' => ['path' => 'lang', 'generate' => false],
+            'lang' => ['path' => 'lang', 'generate' => true],
 
             // resource/
             'assets' => ['path' => 'resources/assets', 'generate' => true],

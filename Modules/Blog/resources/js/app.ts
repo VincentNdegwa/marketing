@@ -37,7 +37,7 @@ createInertiaApp({
       return resolveModulePage(pageName);
     } catch (error) {
       // Fallback: try resolving just the page name without the module prefix
-      console.log(`Failed to resolve ${pageName}, trying fallback...`);
+      console.log(`Failed to resolve ${pageName} ${error}, trying fallback...`);
       return resolveModulePage(name);
     }
   },
