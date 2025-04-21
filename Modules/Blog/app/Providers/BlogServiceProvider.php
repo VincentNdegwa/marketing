@@ -1,11 +1,10 @@
 <?php
 
-namespace Modules\Blog\app\Providers;
+namespace Modules\Blog\App\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Routing\Router;
 use Inertia\Inertia;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -18,6 +17,8 @@ class BlogServiceProvider extends ServiceProvider
     protected string $name = 'Blog';
 
     protected string $nameLower = 'blog';
+
+    protected string $InertiaName = 'blog::app';
 
     /**
      * Boot the application events.
@@ -42,13 +43,19 @@ class BlogServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         
-        // Register the Blog Inertia middleware
-        $router = $this->app->make(Router::class);
-        
-        // Register the Blog menu listener
         $this->app->make('events')->listen(
             \App\Events\MenuEvent::class,
-            \Modules\Blog\app\Listeners\BlogMenuListener::class
+            \Modules\Blog\app\Listeners\MenuListener::class
+        );
+        
+        $this->app->make('events')->listen(
+            \App\Events\ClientMenuEvent::class,
+            \Modules\Blog\app\Listeners\MenuListener::class
+        );
+        
+        $this->app->make('events')->listen(
+            \App\Events\SuperAdminMenuEvent::class,
+            \Modules\Blog\app\Listeners\MenuListener::class
         );
     }
 
@@ -60,13 +67,11 @@ class BlogServiceProvider extends ServiceProvider
         // $this->commands([]);
     }
 
-    /**
+        /**
      * Register assets for the module.
      */
     protected function registerAssets(): void
     {
-        // Use the main application's build directory instead of a module-specific one
-        // This is necessary when using a centralized Vite configuration
         Vite::macro('module', function (string $module, string|array $entry) {
             // Use the main build directory and manifest
             return Vite::useHotFile('hot')
@@ -80,21 +85,18 @@ class BlogServiceProvider extends ServiceProvider
      */
     protected function registerInertia(): void
     {
-        // Set the root view for Inertia responses from this module
+        // Set the root view for this module
         Inertia::setRootView('blog::app');
         
-        // Register a macro to extend Inertia::render with module-specific functionality
+        // Only register the macro if it doesn't exist yet
         if (!Inertia::hasMacro('module')) {
             Inertia::macro('module', function ($component, $props = []) {
-                // Ensure the root view is set correctly for this module
                 Inertia::setRootView('blog::app');
-                
-                // Then render the component
                 return Inertia::render($component, $props);
             });
         }
     }
-    
+
     /**
      * Register command Schedules.
      */

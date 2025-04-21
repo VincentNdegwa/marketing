@@ -1,10 +1,15 @@
 {
     "name": "Blog",
-    "alias": "Blog",
+    "alias": "blog",
     "description": "",
     "keywords": [],
     "priority": 0,
-    "providers": ["Modules\\Blog\\app\\Providers\\BlogServiceProvider"],
+    "providers": [
+        "Modules\\Blog\\App\\Providers\\BlogServiceProvider"
+    ],
     "files": [],
-    "namespace": "Modules\\Blog\\app"
+    "depends_on": ["UserManagement"],
+    "common": 0,
+    "icon_url": "",
+    "version": "1.0.1"
 }

@@ -28,9 +28,12 @@ class ModuleController extends Controller
                 'name' => $moduleJson['name'],
                 'alias' => $moduleJson['alias'] ?? $name,
                 'description' => $moduleJson['description'] ?? '',
-                'version' => $moduleJson['version'] ?? '1.0.0',
+                'version' => $moduleJson['version'] ?? '1.0.1',
                 'enabled' => $module->isEnabled(),
                 'path' => $module->getPath(),
+                'is_common' => $moduleJson['common']??0,
+                'icon'=> $moduleJson['icon_url'],
+                'depends_on'=> $moduleJson['depends_on']
             ];
         }
 

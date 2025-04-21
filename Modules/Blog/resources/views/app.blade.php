@@ -9,7 +9,7 @@
 
     <!-- Scripts and Styles -->
     @routes
-    @vite(['Modules/Blog/Resources/js/app.ts'])
+        @vite(['Modules/Blog/Resources/js/app.ts'])
     @inertiaHead
 </head>
 <body class="font-sans antialiased">

@@ -1,9 +1,10 @@
 <?php
 
-namespace Modules\Blog\app\Providers;
+namespace Modules\Blog\App\Providers;
 
 use App\Events\ClientMenuEvent;
-use Modules\Blog\app\Listeners\BlogMenuListener;
+use App\Events\MenuEvent;
+use App\Events\SuperAdminMenuEvent;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -13,12 +14,17 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array<string, array<int, string>>
      */
-    protected $listen = [
-        ClientMenuEvent::class=>[
-            BlogMenuListener::class
-        ]
-    ];
-
+    protected $listen = [];
+    
+    /**
+     * Register any events for your application.
+     */
+    public function boot(): void
+    {
+        parent::boot();
+    }
+    
+    
     /**
      * Indicates if events should be discovered.
      *

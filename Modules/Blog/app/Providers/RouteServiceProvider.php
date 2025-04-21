@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Blog\app\Providers;
+namespace Modules\Blog\App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -17,10 +17,6 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         parent::boot();
-
-        $this->mapApiRoutes();
-        $this->mapWebRoutes();
-        
     }
 
     /**

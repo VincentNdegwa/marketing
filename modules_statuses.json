@@ -1,4 +1,4 @@
 {
-    "Blog": false,
-    "UserManagement": true
+    "UserManagement": true,
+    "Blog": true
 }
