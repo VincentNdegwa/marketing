@@ -1,6 +1,6 @@
 <?php
 
-namespace $NAMESPACE$;
+namespace Modules\UserManagement\App\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Vite;
@@ -10,15 +10,15 @@ use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class $CLASS$ extends ServiceProvider
+class UserManagementServiceProvider extends ServiceProvider
 {
     use PathNamespace;
 
-    protected string $name = '$MODULE$';
+    protected string $name = 'UserManagement';
 
-    protected string $nameLower = '$LOWER_NAME$';
+    protected string $nameLower = 'usermanagement';
 
-    protected string $InertiaName = '$LOWER_NAME$::app';
+    protected string $InertiaName = 'usermanagement::app';
 
     /**
      * Boot the application events.
@@ -32,7 +32,7 @@ class $CLASS$ extends ServiceProvider
         $this->registerViews();
         $this->registerAssets();
         $this->registerInertia();
-        $this->loadMigrationsFrom(module_path($this->name, '$MIGRATIONS_PATH$'));
+        $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
     }
 
     /**
@@ -45,17 +45,17 @@ class $CLASS$ extends ServiceProvider
         
         $this->app->make('events')->listen(
             \App\Events\MenuEvent::class,
-            \Modules\$STUDLY_NAME$\app\Listeners\MenuListener::class
+            \Modules\UserManagement\app\Listeners\MenuListener::class
         );
         
         $this->app->make('events')->listen(
             \App\Events\ClientMenuEvent::class,
-            \Modules\$STUDLY_NAME$\app\Listeners\MenuListener::class
+            \Modules\UserManagement\app\Listeners\MenuListener::class
         );
         
         $this->app->make('events')->listen(
             \App\Events\SuperAdminMenuEvent::class,
-            \Modules\$STUDLY_NAME$\app\Listeners\MenuListener::class
+            \Modules\UserManagement\app\Listeners\MenuListener::class
         );
     }
 
@@ -86,12 +86,11 @@ class $CLASS$ extends ServiceProvider
     protected function registerInertia(): void
     {
         // Set the root view for this module
-        Inertia::setRootView('$LOWER_NAME$::app');
+        Inertia::setRootView('usermanagement::app');
         
-        // Only register the macro if it doesn't exist yet
         if (!Inertia::hasMacro('module')) {
             Inertia::macro('module', function ($component, $props = []) {
-                Inertia::setRootView('$LOWER_NAME$::app');
+                Inertia::setRootView('usermanagement::app');
                 return Inertia::render($component, $props);
             });
         }
@@ -119,8 +118,8 @@ class $CLASS$ extends ServiceProvider
             $this->loadTranslationsFrom($langPath, $this->nameLower);
             $this->loadJsonTranslationsFrom($langPath);
         } else {
-            $this->loadTranslationsFrom(module_path($this->name, '$PATH_LANG$'), $this->nameLower);
-            $this->loadJsonTranslationsFrom(module_path($this->name, '$PATH_LANG$'));
+            $this->loadTranslationsFrom(module_path($this->name, 'lang'), $this->nameLower);
+            $this->loadJsonTranslationsFrom(module_path($this->name, 'lang'));
         }
     }
 
@@ -154,7 +153,7 @@ class $CLASS$ extends ServiceProvider
     public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/'.$this->nameLower);
-        $sourcePath = module_path($this->name, '$PATH_VIEWS$');
+        $sourcePath = module_path($this->name, 'resources/views');
 
         $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower.'-module-views']);
 

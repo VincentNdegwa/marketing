@@ -1,19 +1,19 @@
 <?php
 
-namespace $CLASS_NAMESPACE$;
+namespace Modules\UserManagement\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class $CLASS$ extends Controller
+class UserManagementController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::module('$LOWER_NAME$/Index');
+        return Inertia::module('usermanagement/Index');
     }
 
     /**
@@ -21,7 +21,7 @@ class $CLASS$ extends Controller
      */
     public function create()
     {
-        return Inertia::module('$LOWER_NAME$/Create');
+        return Inertia::module('usermanagement/Create');
     }
 
     /**
@@ -34,7 +34,7 @@ class $CLASS$ extends Controller
      */
     public function show($id)
     {
-        return view('$LOWER_NAME$::show');
+        return view('usermanagement::show');
     }
 
     /**
@@ -42,7 +42,7 @@ class $CLASS$ extends Controller
      */
     public function edit($id)
     {
-        return view('$LOWER_NAME$::edit');
+        return view('usermanagement::edit');
     }
 
     /**

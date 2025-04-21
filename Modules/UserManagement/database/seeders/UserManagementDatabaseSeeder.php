@@ -1,11 +1,11 @@
 <?php
 
-namespace $NAMESPACE$;
+namespace Modules\UserManagement\App\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
 
-class $NAME$ extends Seeder
+class UserManagementDatabaseSeeder extends Seeder
 {
     public function run(): void
     {

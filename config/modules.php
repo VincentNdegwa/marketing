@@ -29,7 +29,7 @@ return [
         'files' => [
             'routes/web' => 'routes/web.php',
             'routes/api' => 'routes/api.php',
-            'views/index' => 'resources/views/index.blade.php',
+            'views/app' => 'resources/views/app.blade.php',
             'views/master' => 'resources/views/layouts/master.blade.php',
             'scaffold/config' => 'config/config.php',
             'composer' => 'composer.json',
@@ -64,7 +64,7 @@ return [
             'routes/api' => ['LOWER_NAME', 'STUDLY_NAME', 'PLURAL_LOWER_NAME', 'KEBAB_NAME', 'MODULE_NAMESPACE', 'CONTROLLER_NAMESPACE'],
             'vite' => ['LOWER_NAME', 'STUDLY_NAME', 'KEBAB_NAME'],
             'json' => ['LOWER_NAME', 'STUDLY_NAME', 'KEBAB_NAME', 'MODULE_NAMESPACE', 'PROVIDER_NAMESPACE'],
-            'views/index' => ['LOWER_NAME'],
+            'views/app' => ['LOWER_NAME', 'STUDLY_NAME'],
             'views/master' => ['LOWER_NAME', 'STUDLY_NAME', 'KEBAB_NAME'],
             'scaffold/config' => ['STUDLY_NAME'],
             'composer' => [
@@ -84,7 +84,7 @@ return [
             'assets/js/app' => ['LOWER_NAME', 'STUDLY_NAME'],
             'assets/js/types' => ['LOWER_NAME', 'STUDLY_NAME'],
             'assets/js/pages/Index' => ['LOWER_NAME', 'STUDLY_NAME'],
-            'seeder'=> ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'NAMESPACE', 'CLASS']
+            'seeder'=> ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'NAMESPACE', 'CLASS'],
         ],
         'gitkeep' => true,
     ],
@@ -176,9 +176,9 @@ return [
             'config' => ['path' => 'config', 'generate' => true],
 
             // database/
-            'factory' => ['path' => 'database/factories', 'generate' => true, 'namespace' => 'App\Http\Factories'],
-            'migration' => ['path' => 'database/migrations', 'generate' => true, 'namespace' => 'App\Http\Migrations'],
-            'seeder' => ['path' => 'database/seeders', 'generate' => true, 'namespace' => 'App\Http\Seeders'],
+            'factory' => ['path' => 'database/factories', 'generate' => true, 'namespace' => 'App\Database\Factories'],
+            'migration' => ['path' => 'database/migrations', 'generate' => true, 'namespace' => 'App\Database\Migrations'],
+            'seeder' => ['path' => 'database/seeders', 'generate' => true, 'namespace' => 'App\Database\Seeders'],
 
             // lang/
             'lang' => ['path' => 'lang', 'generate' => false],
