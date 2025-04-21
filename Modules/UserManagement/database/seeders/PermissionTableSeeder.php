@@ -20,22 +20,21 @@ class PermissionTableSeeder extends Seeder
             // Please add the permissions for your module here.
         ];
 
-        $company_role = Role::where('name', 'company')->first();
+        $superadmin_role = Role::where('name', 'superadmin')->first();
         foreach ($permissions as $key => $value) {
             $check = Permission::where('name', $value)->where('module', $module)->exists();
             if ($check == false) {
                 $permission = Permission::create(
                     [
-                        'name' => $value,
-                        'guard_name' => 'web',
+                        'name' => $value['name'],
+                        'guard_name' => $value['description'],
                         'module' => $module,
-                        'created_by' => 0,
                         'created_at' => date('Y-m-d H:i:s'),
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]
                 );
-                if (! $company_role->hasPermission($value)) {
-                    $company_role->givePermission($permission);
+                if (! $superadmin_role->hasPermission($value)) {
+                    $superadmin_role->givePermission($permission);
                 }
             }
         }

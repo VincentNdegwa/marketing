@@ -2,10 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -39,10 +40,13 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+        // Authentication should be handled by the auth middleware, not here
+        // This middleware is just for sharing data with Inertia
         $menuItems = [];
-        if ($request->user()) {
-            $menu = new \App\Classes\Menu($request->user());
-            $user = $request->user();
+        $user = $request->user();
+        
+        if ($user) {
+            $menu = new \App\Classes\Menu($user);
 
             if ($user->isSuperAdmin()) {
                 \Illuminate\Support\Facades\Log::info('Dispatching SuperAdminMenuEvent');
@@ -51,9 +55,9 @@ class HandleInertiaRequests extends Middleware
                 \Illuminate\Support\Facades\Log::info('Dispatching ClientMenuEvent');
                 event(new \App\Events\ClientMenuEvent($menu));
             }
-
-            // // Get the menu items after the events have been processed
-            // $menuItems = $menu->getItems();
+            
+            // Get the menu items after the events have been processed
+            $menuItems = $menu->getItems();
             // \Illuminate\Support\Facades\Log::info('Menu items', ['items' => $menuItems]);
         }
 
@@ -63,7 +67,7 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
-                'is_superadmin' => $request->user()->isSuperAdmin(),
+                'is_superadmin' => $request->user() ? $request->user()->isSuperAdmin() : false,
             ],
             'ziggy' => [
                 ...(new Ziggy)->toArray(),

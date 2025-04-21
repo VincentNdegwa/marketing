@@ -35,6 +35,7 @@ class LaratrustSetupTables extends Migration
             $table->string('display_name')->nullable();
             $table->string('description')->nullable();
             $table->unsignedBigInteger('business_id')->nullable();
+            $table->string('module')->default('Base');
             $table->timestamps();
 
             $table->foreign('business_id')->references('id')->on('businesses')
