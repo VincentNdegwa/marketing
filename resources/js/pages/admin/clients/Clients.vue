@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+// import { Input } from '@/components/ui/input';
+import { InputPassword } from '@/components/ui/input-password';
+import {InputText} from '@/components/ui/input-text';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
@@ -240,19 +242,19 @@ const showBusinessDetails = () => {
                 <form @submit.prevent="handleSubmit" class="space-y-4">
                     <div class="space-y-2">
                         <Label>Name</Label>
-                        <Input v-model="form.name" required />
+                        <InputText v-model="form.name" required />
                         <small v-if="form.errors.name" class="mt-1 text-sm text-red-500">{{ form.errors.name }}</small>
                     </div>
 
                     <div class="space-y-2">
                         <Label>Email</Label>
-                        <Input v-model="form.email" required />
+                        <InputText v-model="form.email" required type="email" />
                         <small v-if="form.errors.email" class="mt-1 text-sm text-red-500">{{ form.errors.email }}</small>
                     </div>
 
                     <div class="space-y-2">
                         <Label>Password {{ editMode ? '(leave blank to keep current)' : '' }}</Label>
-                        <Input type="password" v-model="form.password" :required="!editMode" />
+                        <InputPassword type="password" v-model="form.password" :required="!editMode" :toggleMask="true" :fluid="true" aria-label="Password" aria-labelledby="password-label" />
                         <small v-if="form.errors.password" class="mt-1 text-sm text-red-500">{{ form.errors.password }}</small>
                     </div>
 

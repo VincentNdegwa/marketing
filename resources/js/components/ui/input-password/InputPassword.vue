@@ -1,41 +1,58 @@
 <template>
-  <Password
-    v-model="internalValue"
-    v-bind="props"
-    inputClass="!w-full !flex-1"
-  />
+
+  <Password v-model="stringModel" :feedback="props.feedback" :toggleMask="props.toggleMask"
+    :promptLabel="props.promptLabel" :weakLabel="props.weakLabel" :mediumLabel="props.mediumLabel"
+    :strongLabel="props.strongLabel" :fluid=props.fluid inputClass="!w-full !flex-1" />
+
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import Password from 'primevue/password'
+import { useVModel } from '@vueuse/core'
 
-const props = defineProps({
-  modelValue: String,
-  feedback: {
-    type: Boolean,
-    default: true
-  },
-  toggleMask: Boolean,
-  promptLabel: String,
-  weakLabel: String,
-  mediumLabel: String,
-  strongLabel: String,
-  placeholder: String,
-  size: String,
-  variant: String,
-  disabled: Boolean,
-  invalid: Boolean,
-  name: String,
-  'aria-labelledby': String,
-  'aria-label': String
+const props = defineProps<
+  {
+    defaultValue?: string | number,
+    modelValue?: string | number,
+    fluid?:boolean,
+    feedback?: boolean,
+    toggleMask?: boolean,
+    promptLabel?: string,
+    weakLabel?: string,
+    mediumLabel?: string,
+    strongLabel?: string,
+    placeholder?: string,
+    size?: string,
+    variant?: string,
+    disabled?: boolean,
+    invalid?: boolean,
+    name?: string,
+    required?: boolean,
+    autofocus?: boolean,
+    tabindex?: number,
+    autocomplete?: string,
+    'aria-labelledby': string,
+    'aria-label': string
+  }
+
+
+>(
+)
+
+const emits = defineEmits<{
+  (e: 'update:modelValue', payload: string | number): void
+}>()
+const modelValue = useVModel(props, 'modelValue', emits, {
+  passive: true,
+  defaultValue: props.defaultValue,
 })
 
-const emit = defineEmits(['update:modelValue'])
-
-const internalValue = computed({
-  get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+const stringModel = computed({
+  get: () => modelValue.value?.toString() ?? '',
+  set: (val: string) => {
+    modelValue.value = val
+  }
 })
 
 const customClass = computed(() => ({

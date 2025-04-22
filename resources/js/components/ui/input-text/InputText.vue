@@ -35,5 +35,6 @@ const stringModel = computed({
 <template>
   <InputText :type="props.type" v-model="stringModel" :class="props.class" :required="props.required"
     :autofocus="props.autofocus" :tabindex="props.tabindex" :autocomplete="props.autocomplete"
-    :placeholder="props.placeholder" />
+    :placeholder="props.placeholder" class="!w-full !flex-1"
+/>
 </template>
