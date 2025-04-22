@@ -7,37 +7,41 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
 
-import { ref } from 'vue';
+import { ref, defineAsyncComponent } from 'vue';
 
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import Menu from 'primevue/menu';
 import Tag from 'primevue/tag';
+import DynamicDialog from 'primevue/dynamicdialog';
+import { useDialog } from 'primevue/usedialog';
+import { useToast } from 'primevue/usetoast';
+import Toast from 'primevue/toast';
 
-interface Business {
-    id: number;
-    name: string;
-    is_default: boolean;
-}
 
 defineProps<{
     users: {
-        data: Array<{
-            id: number;
-            name: string;
-            email: string;
-            user_type: string;
-            admin_businesses: Business[];
-            default_business_id: number | null;
-        }>;
+        current_page: number;
+        data: User[];
+        first_page_url: string;
+        from: number;
+        last_page: number;
+        last_page_url: string;
         links: Array<{
             url: string | null;
             label: string;
             active: boolean;
         }>;
+        next_page_url: string | null;
+        path: string;
+        per_page: number;
+        prev_page_url: string | null;
+        to: number;
+        total: number;
     };
 }>();
 
+const BusinessDetailsComponent = defineAsyncComponent(()=>import('./BusinessDetails.vue'))
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
@@ -52,7 +56,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 const showDialog = ref(false);
 const editMode = ref(false);
 const menu = ref();
-const currentUser = ref();
+const currentData = ref<User | null>(null);
+const dialog = useDialog();
+const toast = useToast();
 
 const form = useForm({
     id: '',
@@ -70,18 +76,18 @@ const menu_item = [
     {
         label: 'View',
         icon: 'pi pi-eye',
-        command: () => openEditDialog(currentUser.value),
+        command: () => showBusinessDetails(),
     },
     {
         label: 'Edit',
         icon: 'pi pi-pencil',
-        command: () => openEditDialog(currentUser.value),
+        command: () => openEditDialog(currentData.value),
     },
     {
         label: 'Delete',
         icon: 'pi pi-trash',
         class: 'text-red-500',
-        command: () => deleteUser(currentUser.value?.id),
+        command: () => deleteUser(currentData.value?.id),
     },
 ];
 
@@ -112,16 +118,53 @@ function handleSubmit() {
     }
 }
 
-function deleteUser(id: number) {
-    if (confirm('Are you sure you want to delete this admin user?')) {
-        useForm({}).delete(route('clients.destroy', id));
+function deleteUser(id: number | undefined) {
+    if (id) {
+        
+        if (confirm('Are you sure you want to delete this admin user?')) {
+            useForm({}).delete(route('clients.destroy', id));
+        }
     }
 }
 
-const toggle = (event: Event, data: any) => {
-    currentUser.value = data;
+const toggle = (event: Event, data: User) => {
+    currentData.value = data;
     menu.value.toggle(event);
+    console.log(data);
 };
+
+const showBusinessDetails = () => {
+    // Make sure we have data to display
+    if (!currentData.value || !currentData.value.businesses) {
+        toast.add({ severity: 'error', summary: 'Error', detail: 'No business data available', life: 3000 });
+        return;
+    }
+    
+    console.log('Businesses data to pass:', currentData.value.businesses);
+    
+    dialog.open(BusinessDetailsComponent, {
+        props: {
+            header: `Business Details for ${currentData.value.name}`,
+            style: {
+                width: '70vw',
+            },
+            breakpoints: {
+                '960px': '75vw',
+                '640px': '90vw'
+            },
+            modal: true
+        },
+        data: {
+            business: currentData.value.businesses
+        },
+        onClose: (options) => {
+            if (options?.data) {
+                toast.add({ severity: 'info', summary: 'Business Details', detail: `Viewed details for ${currentData.value?.name}`, life: 3000 });
+            }
+        }
+    });
+};
+
 </script>
 
 <template>
@@ -153,6 +196,7 @@ const toggle = (event: Event, data: any) => {
                                     :key="business.id"
                                     :severity="business.id === slotProps.data.default_business_id ? 'success' : 'info'"
                                     :value="business.name"
+                                    class="cursor-pointer"
                                 >
                                     <template #icon v-if="business.id === slotProps.data.default_business_id">
                                         <i class="pi pi-star-fill mr-1"></i>
@@ -182,6 +226,9 @@ const toggle = (event: Event, data: any) => {
                 <Menu ref="menu" id="overlay_menu" :model="menu_item" :popup="true" />
             </div>
         </div>
+        
+        <Toast />
+        <DynamicDialog />
 
         <!-- Create/Edit Dialog -->
         <Dialog :open="showDialog" @update:open="showDialog = false">

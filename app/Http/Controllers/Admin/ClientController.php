@@ -20,7 +20,7 @@ class ClientController extends Controller
             $query->where('name', 'admin');
         })
             ->with([
-            'businesses' => function ($query) {
+            'businesses.users' => function ($query) {
                     $query->orderBy('name');
                 },
                 'roles' => function ($query) {

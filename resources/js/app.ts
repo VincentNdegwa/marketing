@@ -8,6 +8,8 @@ import { initializeTheme } from '@/composables/useAppearance';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import { resolveModulePage } from '@/utils/modulePageResolver';
+import DialogService from 'primevue/dialogservice';
+import ToastService from 'primevue/toastservice';
 
 // Extend ImportMeta interface for Vite...
 declare module 'vite/client' {
@@ -47,6 +49,10 @@ createInertiaApp({
                 }
             }
         });
+        
+        // Add DialogService and ToastService
+        app.use(DialogService);
+        app.use(ToastService);
 
         app.mount(el);
     },
