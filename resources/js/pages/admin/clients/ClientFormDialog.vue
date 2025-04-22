@@ -22,7 +22,6 @@ interface ClientFormData {
     zip_code: string;
     description: string;
     is_active: boolean;
-    selected_business_id: string;
     
     // Admin user details
     admin_user: {
@@ -65,7 +64,6 @@ const form = useForm<ClientFormData>({
     zip_code: '',
     description: '',
     is_active: true,
-    selected_business_id: '',
     
     // Admin user details
     admin_user: {
@@ -85,7 +83,7 @@ watch(() => props.userData, (newValue) => {
         form.admin_user.password = ''; 
         
         if (newValue.admin_businesses && newValue.admin_businesses.length > 0) {
-            form.selected_business_id = newValue.admin_businesses[0].id.toString();
+            form.id = newValue.admin_businesses[0].id.toString();
             loadBusinessData(newValue.admin_businesses[0]);
         } else {
             resetBusinessFields();
@@ -116,7 +114,6 @@ function loadBusinessData(business: any) {
     form.zip_code = business.zip_code || '';
     form.description = business.description || '';
     form.is_active = business.is_active === 1;
-    form.selected_business_id = '0';
 }
 
 // Helper function to reset business fields
@@ -140,7 +137,7 @@ function onBusinessChange() {
     if (!currentData.value || !currentData.value.admin_businesses) return;
     
     const selectedBusiness = currentData.value.admin_businesses.find(
-        business => business.id.toString() === form.selected_business_id
+        business => business.id.toString() === form.id
     );
     
     if (selectedBusiness) {
@@ -188,7 +185,7 @@ function closeDialog() {
                     <h3 class="text-lg font-medium mb-2">Select Business to Edit</h3>
                     <div class="space-y-2">
                         <Label :required="true">Business</Label>
-                        <select v-model="form.selected_business_id" @change="onBusinessChange"
+                        <select v-model="form.id" @change="onBusinessChange"
                             class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                             <option v-for="business in currentData.admin_businesses" :key="business.id"
                                 :value="business.id.toString()">

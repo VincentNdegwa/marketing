@@ -2,12 +2,13 @@
 
 namespace Modules\Business\app\Models;
 
-use App\Models\Permission;
 use App\Models\Role;
-// use Modules\Business\Database\Factories\BusinessFactory;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use Modules\Business\Database\Factories\BusinessFactory;
+use App\Models\Permission;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Business extends Model
@@ -60,5 +61,42 @@ class Business extends Model
     public function permissions()
     {
         return $this->hasMany(Permission::class);
+    }
+
+    public function adminUser()
+    {
+        return $this->users()
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'admin');
+            })
+            ->first(); 
+    }
+
+    public static function permitNewBusiness($business_id, $admin_name, $admin_email){
+        $clientAdmin = Role::create([
+            'name' => 'admin',
+            'display_name' => 'Client Administrator',
+            'description' => 'Administrator of the client business',
+            'business_id' => $business_id,
+        ]);
+
+        $clientAdminUser = User::where('email', $admin_email)->where("name",$admin_name)->first();
+        if (! $clientAdminUser) {
+            $clientAdminUser = User::create([
+                'name' => $admin_name,
+                'email' => $admin_email,
+                'password' => Hash::make('password'),
+            ]);
+        }
+
+        $permissions = Permission::whereNull('business_id')->get();
+        foreach ($permissions as $permission) {
+            $permission->business_id = $business_id;
+            $new_permission = Permission::create($permission->toArray());
+            $clientAdminUser->givePermissions([$new_permission]);
+        }
+
+        $clientAdminUser->roles()->attach($clientAdmin->id, ['business_id' => $business_id]);
+        $clientAdminUser->businesses()->attach($business_id, ['is_default' => true]);
     }
 }
