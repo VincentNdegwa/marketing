@@ -84,7 +84,7 @@ class ClientController extends Controller
                 'name' => $validated['admin_user']['name'],
                 'email' => $validated['admin_user']['email'],
                 'password' => Hash::make($validated['admin_user']['password']),
-                'user_type' => 'Admin',
+                'type' => 'admin',
             ]);
 
             // Create the business and associate with admin user
@@ -104,7 +104,7 @@ class ClientController extends Controller
                 'admin_user_id' => $admin->id,
             ]);
 
-            Business::permitNewBusiness($business->id, $validated['name'], $validated['email']);
+            Business::permitNewBusiness($business->id, $validated['admin_user']['name'], $validated['admin_user']['email']);
 
             DB::commit();
 

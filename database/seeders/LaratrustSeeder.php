@@ -31,14 +31,14 @@ class LaratrustSeeder extends Seeder
         ]);
 
         // Create Superadmin role (system-wide, no business_id)
-        $superadmin = Role::create([
+        $superadminRole = Role::create([
             'name' => 'superadmin',
             'display_name' => 'Super Administrator',
             'description' => 'User with access to all system features',
         ]);
 
         // Create admin role for the client business
-        $clientAdmin = Role::create([
+        $clientAdminRole = Role::create([
             'name' => 'admin',
             'display_name' => 'Client Administrator',
             'description' => 'Administrator of the client business',
@@ -52,6 +52,7 @@ class LaratrustSeeder extends Seeder
                 'name' => 'Super Admin',
                 'email' => 'superadmin@example.com',
                 'password' => Hash::make('password'),
+                'type'=>'superadmin'
             ]);
         }
 
@@ -62,21 +63,22 @@ class LaratrustSeeder extends Seeder
                 'name' => 'Client Admin',
                 'email' => 'admin@client.com',
                 'password' => Hash::make('password'),
+                'type'=>'admin'
             ]);
         }
 
         // Assign superadmin role (system-wide)
-        $superadminUser->roles()->attach($superadmin);
+        $superadminUser->roles()->attach($superadminRole);
 
         // Also give superadmin access to client business as admin
-        $superadminUser->roles()->attach($clientAdmin->id, ['business_id' => $clientBusiness->id]);
+        // $superadminUser->roles()->attach($clientAdminRole->id, ['business_id' => $clientBusiness->id]);
 
         // Assign client admin role to client admin user
-        $clientAdminUser->roles()->attach($clientAdmin->id, ['business_id' => $clientBusiness->id]);
+        $clientAdminUser->roles()->attach($clientAdminRole->id, ['business_id' => $clientBusiness->id]);
 
         // Associate users with businesses
         $superadminUser->businesses()->attach($systemBusiness->id, ['is_default' => true]);
-        $superadminUser->businesses()->attach($clientBusiness->id);
+        // $superadminUser->businesses()->attach($clientBusiness->id);
         $clientAdminUser->businesses()->attach($clientBusiness->id, ['is_default' => true]);
     }
 }

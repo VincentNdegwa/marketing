@@ -86,6 +86,7 @@ class Business extends Model
                 'name' => $admin_name,
                 'email' => $admin_email,
                 'password' => Hash::make('password'),
+                'type'=> 'admin'
             ]);
         }
 
