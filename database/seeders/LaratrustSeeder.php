@@ -74,7 +74,7 @@ class LaratrustSeeder extends Seeder
         // $superadminUser->roles()->attach($clientAdminRole->id, ['business_id' => $clientBusiness->id]);
 
         // Assign client admin role to client admin user
-        $clientAdminUser->roles()->attach($clientAdminRole->id, ['business_id' => $clientBusiness->id]);
+        $clientAdminUser->roles()->attach($clientAdminRole->id);
 
         // Associate users with businesses
         $superadminUser->businesses()->attach($systemBusiness->id, ['is_default' => true]);

@@ -94,10 +94,10 @@ class Business extends Model
         foreach ($permissions as $permission) {
             $permission->business_id = $business_id;
             $new_permission = Permission::create($permission->toArray());
-            $clientAdminUser->givePermissions([$new_permission]);
+            $clientAdmin->givePermissions([$new_permission]);
         }
 
-        $clientAdminUser->roles()->attach($clientAdmin->id, ['business_id' => $business_id]);
+        $clientAdminUser->roles()->attach($clientAdmin->id);
         $clientAdminUser->businesses()->attach($business_id, ['is_default' => true]);
     }
 }

@@ -3,6 +3,8 @@
 namespace Modules\UserManagement\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,7 +15,28 @@ class UserRoleController extends Controller
      */
     public function index()
     {
-        return Inertia::module('usermanagement/roles/Index');
+        $current_business_id = session()->get('current_business_id');
+        
+        $roles = Role::where('business_id', $current_business_id)
+            ->with(['permissions' => function($query) use ($current_business_id) {
+                $query->where('permissions.business_id', $current_business_id);
+            }])
+            ->get()
+            ->map(function($role) {
+                return [
+                    'id' => $role->id,
+                    'name' => $role->name,
+                    'display_name' => $role->display_name,
+                    'description' => $role->description,
+                    'permissions' => $role->permissions->pluck('display_name'),
+                    'users_count' => $role->users()->count()
+                ];
+            });
+        
+        return Inertia::module('usermanagement/roles/Index', [
+            'roles' => $roles,
+            'current_business_id' => $current_business_id
+        ]);
     }
 
     /**
