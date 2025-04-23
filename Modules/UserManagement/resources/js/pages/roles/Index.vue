@@ -8,9 +8,8 @@ import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Badge from 'primevue/badge';
-import Tooltip from 'primevue/tooltip';
 
-const props = defineProps<{
+defineProps<{
   roles: any[];
   current_business_id: number;
 }>();

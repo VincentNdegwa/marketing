@@ -9,7 +9,7 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 
-const props = defineProps<{
+defineProps<{
   users: any[];
   current_business_id: number;
 }>();
@@ -94,7 +94,7 @@ const formatRoles = (roles) => {
           </template>
         </Column>
         <Column header="Actions" style="min-width: 8rem">
-          <template #body="{data}">
+          <template #body="{}">
             <div class="flex gap-2">
               <Button icon="pi pi-pencil" class="p-button-text p-button-sm" />
               <Button icon="pi pi-trash" class="p-button-text p-button-danger p-button-sm" />
