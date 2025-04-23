@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class UserManagementController extends Controller
+class UserRoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::module('usermanagement/users/Index');
+        return Inertia::module('usermanagement/roles/Index');
     }
 
     /**
@@ -21,7 +21,7 @@ class UserManagementController extends Controller
      */
     public function create()
     {
-        return Inertia::module('usermanagement/users/Create');
+        return Inertia::module('usermanagement/roles/Create');
     }
 
     /**
@@ -34,7 +34,7 @@ class UserManagementController extends Controller
      */
     public function show($id)
     {
-        return Inertia::module('usermanagement/users/Show');
+        return Inertia::module('usermanagement/roles/Show');
     }
 
     /**
@@ -42,7 +42,7 @@ class UserManagementController extends Controller
      */
     public function edit($id)
     {
-        return Inertia::module('usermanagement/users/Edit');
+        return Inertia::module('usermanagement/roles/Edit');
     }
 
     /**

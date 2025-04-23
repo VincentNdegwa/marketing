@@ -15,15 +15,14 @@ const breadcrumbs: BreadcrumbItem[] = [
 </script>
 
 <template>
+
   <Head title="UserManagement" />
-  
-  <AppLayout :breadcrumbs="breadcrumbs" >
-    <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="overflow-hidden shadow-xl sm:rounded-lg p-6">
-          <h1 class="text-2xl font-bold mb-4">Welcome to the UserManagement Module</h1>
-          <p>This is the index page of your new module.</p>
-        </div>
+
+  <AppLayout :breadcrumbs="breadcrumbs">
+    <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+      <div>
+        <h1 class="text-2xl font-bold mb-4">Welcome to the User</h1>
+        <p>This is the index page of your new module.</p>
       </div>
     </div>
   </AppLayout>

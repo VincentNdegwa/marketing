@@ -2,7 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\UserManagement\App\Http\Controllers\UserManagementController;
+use Modules\UserManagement\App\Http\Controllers\UserRoleController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('user-management', UserManagementController::class)->names('usermanagement');
+    Route::prefix("user-management")->group(function(){
+        Route::resource('/', UserManagementController::class)->names('usermanagement');
+        Route::resource('/roles',UserRoleController::class)->names('user-role');
+    });
 });

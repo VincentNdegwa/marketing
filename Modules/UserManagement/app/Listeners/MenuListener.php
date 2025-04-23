@@ -64,7 +64,7 @@ class MenuListener
             'order' => 2,
             'ignore_if' => [],
             'depend_on' => [],
-            'href' => 'usermanagement.index',
+            'href' => 'user-role.index',
             'module' => $module,
             'permission' => 'role.view',
         ]);
