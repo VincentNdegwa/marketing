@@ -10,6 +10,8 @@ import InputText from 'primevue/inputtext';
 import { ref } from 'vue';
 import Menu from 'primevue/menu';
 import { route } from 'ziggy-js';
+import Dialog from 'primevue/dialog';
+
 
 
 
@@ -56,17 +58,48 @@ const menu_item = ref([
     icon: 'pi pi-trash',
     class: 'text-red-500',
     command: () => {
-      if (currentRole.value && currentRole.value.name !== 'admin') {
-        router.delete(route('user-role.destroy', currentRole.value.id), {
-          onSuccess: () => {
-            // Optional: Show success message or handle success case
-          }
-        });
+      if (currentRole.value) {
+        confirmDelete(currentRole.value);
       }
     },
   },
 ]);
 
+const dialog = ref<{
+  text: string;
+  visible: boolean;
+  header: string;
+  action: ((payload: MouseEvent) => void) | undefined;
+}>({
+  text: "",
+  visible: false,
+  header: "",
+  action: undefined
+});
+
+const confirmDelete = (role: Role) => {
+  
+  dialog.value = {
+    text: `Are you sure you want to delete ${role.name}? This action cannot be undone.`,
+    visible: true,
+    header: "Confirm Deletion",
+    action: () => deleteRole(role)
+  };
+};
+
+const deleteRole = (role:Role) => {
+  if (role.name !== 'admin') {
+    router.delete(route('user-role.destroy', role.id), {
+      onSuccess: () => {
+      }
+    });
+  }
+};
+
+const toggle = (event: Event, data: Role) => {
+  currentRole.value = data
+  menu.value.toggle(event);
+}
 const filters = ref({
     global: { value: null, matchMode: 'contains' },
 });
@@ -76,10 +109,6 @@ const formatPermissions = (permissions:string[]) => {
     return permissions.length > 3 ? `${permissions.slice(0, 3).join(', ')} +${permissions.length - 3} more` : permissions.join(', ');
 };
 
-const toggle = (event: Event, data: Role) => {
-  currentRole.value = data
-  menu.value.toggle(event);
-}
 </script>
 
 <template>
@@ -129,7 +158,7 @@ const toggle = (event: Event, data: Role) => {
         <Column header="Actions" style="min-width: 8rem">
           <template #body="{ data }">
             <div class="flex gap-2">
-              <Button type="button" severity="contrast" size="sm" @click="toggle($event, data)" aria-haspopup="true"
+              <Button v-if="(data.name != 'admin' && data.name != 'superadmin')" type="button" severity="contrast" size="sm" @click="toggle($event, data)" aria-haspopup="true"
                 aria-controls="overlay_menu">
                 <i class="pi pi-ellipsis-v"></i>
               </Button>
@@ -140,6 +169,18 @@ const toggle = (event: Event, data: Role) => {
       </DataTable>
     </div>
   </AppLayout>
+
+  <!-- Delete Confirmation Dialog -->
+  <Dialog v-model:visible="dialog.visible" modal :header="dialog.header" :style="{ width: '450px' }">
+    <div class="confirmation-content">
+      <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+      <span>{{ dialog.text }}</span>
+    </div>
+    <template #footer>
+      <Button label="No" icon="pi pi-times" class="p-button-text" @click="dialog.visible = false" />
+      <Button label="Yes" icon="pi pi-check" class="p-button-danger" @click="dialog.action" />
+    </template>
+  </Dialog>
 </template>
 
 <style scoped>

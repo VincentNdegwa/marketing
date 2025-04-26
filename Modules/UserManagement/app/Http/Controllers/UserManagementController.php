@@ -58,6 +58,7 @@ class UserManagementController extends Controller
         $current_business_id = session()->get('current_business_id');
         
         $roles = Role::where('business_id', $current_business_id)
+            ->where('name', '!=', 'admin')
             ->get()
             ->map(function($role) {
                 return [
@@ -82,11 +83,23 @@ class UserManagementController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => ['required', 'confirmed', Password::defaults()],
-            'type' => 'required|string|in:client,staff,partner',
+            'password' => 'required|string|min:8',
+            'type' => 'required|string|in:subuser,client,staff,partner',
+            'mobile' => 'nullable|string|max:20',
             'job_title' => 'nullable|string|max:255',
             'bio' => 'nullable|string',
-            'roles' => 'array',
+            'address_line1' => 'nullable|string|max:255',
+            'address_line2' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+            'state' => 'nullable|string|max:100',
+            'postal_code' => 'nullable|string|max:20',
+            'country' => 'nullable|string|max:100',
+            'date_of_birth' => 'nullable|date',
+            'gender' => 'nullable|string|in:male,female,other',
+            'website' => 'nullable|string|max:255',
+            'social_links' => 'nullable|array',
+            'roles' => 'required|array',
+            'roles.*' => 'exists:roles,id',
             'is_active' => 'boolean',
             'business_id' => 'required|exists:businesses,id'
         ]);
@@ -95,29 +108,38 @@ class UserManagementController extends Controller
         DB::beginTransaction();
         
         try {
-            // Create the user
+            // Create the user with all available fields
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'type' => $validated['type'],
+                'mobile' => $validated['mobile'] ?? null,
                 'job_title' => $validated['job_title'] ?? null,
                 'bio' => $validated['bio'] ?? null,
+                'address_line1' => $validated['address_line1'] ?? null,
+                'address_line2' => $validated['address_line2'] ?? null,
+                'city' => $validated['city'] ?? null,
+                'state' => $validated['state'] ?? null,
+                'postal_code' => $validated['postal_code'] ?? null,
+                'country' => $validated['country'] ?? null,
+                'date_of_birth' => $validated['date_of_birth'] ?? null,
+                'gender' => $validated['gender'] ?? null,
+                'website' => $validated['website'] ?? null,
+                'social_links' => $validated['social_links'] ?? null,
                 'is_active' => $validated['is_active'] ?? true,
             ]);
             
-            // Attach the user to the business
             $user->businesses()->attach($validated['business_id'], [
                 'is_default' => true
             ]);
             
-            // Attach roles if any
             if (isset($validated['roles']) && count($validated['roles']) > 0) {
                 foreach ($validated['roles'] as $roleId) {
                     $role = Role::findOrFail($roleId);
-                    // Only attach roles from the current business
+
                     if ($role->business_id == $current_business_id) {
-                        $user->attachRole($role, $current_business_id);
+                        $user->roles()->attach($role);
                     }
                 }
             }
@@ -161,6 +183,7 @@ class UserManagementController extends Controller
         
         // Get all roles for the current business
         $roles = Role::where('business_id', $current_business_id)
+            ->where('name', '!=', 'admin')
             ->get()
             ->map(function($role) {
                 return [
@@ -176,8 +199,19 @@ class UserManagementController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'type' => $user->type,
+                'mobile' => $user->mobile,
                 'job_title' => $user->job_title,
                 'bio' => $user->bio,
+                'address_line1' => $user->address_line1,
+                'address_line2' => $user->address_line2,
+                'city' => $user->city,
+                'state' => $user->state,
+                'postal_code' => $user->postal_code,
+                'country' => $user->country,
+                'date_of_birth' => $user->date_of_birth,
+                'gender' => $user->gender,
+                'website' => $user->website,
+                'social_links' => $user->social_links,
                 'is_active' => $user->is_active,
                 'roles' => $user->roles->map(function($role) {
                     return [
@@ -195,55 +229,81 @@ class UserManagementController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $current_business_id = session()->get('current_business_id');
         
-        // Get the user
         $user = User::whereHas('businesses', function($query) use ($current_business_id) {
                 $query->where('businesses.id', $current_business_id);
             })
             ->findOrFail($id);
         
-        // Validate the request
-        $validated = $request->validate([
+        $rules = [
             'name' => 'required|string|max:255',
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'password' => $request->filled('password') ? ['required', 'confirmed', Password::defaults()] : '',
-            'type' => 'required|string|in:client,staff,partner',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'type' => 'required|string|in:subuser,client,staff,partner',
+            'mobile' => 'nullable|string|max:20',
             'job_title' => 'nullable|string|max:255',
             'bio' => 'nullable|string',
-            'roles' => 'array',
+            'address_line1' => 'nullable|string|max:255',
+            'address_line2' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+            'state' => 'nullable|string|max:100',
+            'postal_code' => 'nullable|string|max:20',
+            'country' => 'nullable|string|max:100',
+            'date_of_birth' => 'nullable|date',
+            'gender' => 'nullable|string|in:male,female,other',
+            'website' => 'nullable|string|max:255',
+            'social_links' => 'nullable|array',
+            'roles' => 'required|array',
+            'roles.*' => 'exists:roles,id',
             'is_active' => 'boolean',
-            'business_id' => 'required|exists:businesses,id'
-        ]);
+        ];
         
-        // Update the user
+        // Only validate password if it's provided
+        if ($request->filled('password')) {
+            $rules['password'] = 'required|string|min:8';
+        }
+        
+        $validated = $request->validate($rules);
+        
         DB::beginTransaction();
         
         try {
-            // Update user details
-            $user->update([
+            // Update user with all available fields
+            $updateData = [
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'type' => $validated['type'],
+                'mobile' => $validated['mobile'] ?? null,
                 'job_title' => $validated['job_title'] ?? null,
                 'bio' => $validated['bio'] ?? null,
+                'address_line1' => $validated['address_line1'] ?? null,
+                'address_line2' => $validated['address_line2'] ?? null,
+                'city' => $validated['city'] ?? null,
+                'state' => $validated['state'] ?? null,
+                'postal_code' => $validated['postal_code'] ?? null,
+                'country' => $validated['country'] ?? null,
+                'date_of_birth' => $validated['date_of_birth'] ?? null,
+                'gender' => $validated['gender'] ?? null,
+                'website' => $validated['website'] ?? null,
+                'social_links' => $validated['social_links'] ?? null,
                 'is_active' => $validated['is_active'] ?? true,
-            ]);
+            ];
             
-            // Update password if provided
-            if ($request->filled('password')) {
-                $user->update([
-                    'password' => Hash::make($validated['password']),
-                ]);
+            // Only update password if provided
+            if (isset($validated['password'])) {
+                $updateData['password'] = Hash::make($validated['password']);
             }
             
-            // Sync roles for this business
-            // First, detach all roles for this business
-            $user->roles()->wherePivot('business_id', $current_business_id)->detach();
+            $user->update($updateData);
             
-            // Then attach the new roles
-            if (isset($validated['roles']) && count($validated['roles']) > 0) {
+            // Handle roles if any
+            if (isset($validated['roles'])) {
+                // Detach all current roles for this business
+                $user->roles()->wherePivot('business_id', $current_business_id)->detach();
+                
+                // Attach new roles
                 foreach ($validated['roles'] as $roleId) {
                     $role = Role::findOrFail($roleId);
                     // Only attach roles from the current business

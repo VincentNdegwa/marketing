@@ -63,7 +63,17 @@ const form = useForm({
 });
 
 const groupedPermissions = ref<Record<string, Record<string, Permission[]>>>({});
-const deleteDialogVisible = ref(false);
+const dialog = ref<{
+  text: string;
+  visible: boolean;
+  header: string;
+  action: ((payload: MouseEvent) => void) | undefined;
+}>({
+  text: "",
+  visible: false,
+  header: "",
+  action: undefined
+});
 
 onMounted(() => {
   // Group permissions by module
@@ -90,14 +100,18 @@ onMounted(() => {
 const submitForm = () => {
   form.post(route('user-role.update', props.role.id), {
     onSuccess: () => {
-      // Redirect to roles list on success
       router.visit(route('user-role.index'));
     },
   });
 };
 
 const confirmDelete = () => {
-  deleteDialogVisible.value = true;
+  dialog.value = {
+    text: `Are you sure you want to delete this role? This action cannot be undone.`,
+    visible: true,
+    header: "Confirm Deletion",
+    action: deleteRole
+  };
 };
 
 const deleteRole = () => {
@@ -192,14 +206,14 @@ const deleteRole = () => {
   </AppLayout>
 
   <!-- Delete Confirmation Dialog -->
-  <Dialog v-model:visible="deleteDialogVisible" modal header="Confirm Deletion" :style="{ width: '450px' }">
+  <Dialog v-model:visible="dialog.visible" modal :header="dialog.header" :style="{ width: '450px' }">
     <div class="confirmation-content">
       <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-      <span>Are you sure you want to delete this role? This action cannot be undone.</span>
+      <span>{{ dialog.text }}</span>
     </div>
     <template #footer>
-      <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteDialogVisible = false" />
-      <Button label="Yes" icon="pi pi-check" class="p-button-danger" @click="deleteRole" />
+      <Button label="No" icon="pi pi-times" class="p-button-text" @click="dialog.visible = false" />
+      <Button label="Yes" icon="pi pi-check" class="p-button-danger" @click="dialog.action" />
     </template>
   </Dialog>
 </template>
