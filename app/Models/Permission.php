@@ -29,14 +29,14 @@ class Permission extends PermissionModel
         return $this->belongsTo(Business::class);
     }
 
-    /**
-     * Scope a query to only include permissions for a specific business.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeForBusiness($query, int $businessId)
-    {
-        return $query->where('business_id', $businessId);
-    }
+    // /**
+    //  * Scope a query to only include permissions for a specific business.
+    //  *
+    //  * @param  \Illuminate\Database\Eloquent\Builder  $query
+    //  * @return \Illuminate\Database\Eloquent\Builder
+    //  */
+    // public function scopeForBusiness($query, int $businessId)
+    // {
+    //     return $query->where('business_id', $businessId);
+    // }
 }

@@ -36,7 +36,7 @@ class ClientController extends Controller
 
         $adminUsers->through(function ($user) {
             $adminBusinesses = $user->businesses->filter(function ($business) use ($user) {
-                return $user->isAdminForBusiness($business->id);
+                return true;
             })->values();
             
             $user->admin_businesses = $adminBusinesses;
