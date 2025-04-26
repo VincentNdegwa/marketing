@@ -197,6 +197,7 @@ class BusinessController extends Controller
             return redirect()->back()->with('error', 'You do not have access to this business.');
         }
         $user->setDefaultBusiness($business->id);
+        session('current_business_id', $id);
         return redirect()->back()->with('success', 'Default business updated successfully.');
     }
     

@@ -111,7 +111,7 @@ const menu_items = ref([
         setAsDefault(currentBusiness.value);
       }
     },
-    disabled: () => !!currentBusiness.value && isDefault(currentBusiness.value.id),
+    visible: () => !!currentBusiness.value && !isDefault(currentBusiness.value.id),
   },
   {
     separator: true
