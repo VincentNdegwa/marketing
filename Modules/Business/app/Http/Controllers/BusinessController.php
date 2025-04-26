@@ -170,31 +170,53 @@ class BusinessController extends Controller
     /**
      * Remove the specified business from storage.
      */
-    public function destroy(Business $business)
+    public function destroy($id)
     {
-        // Check if user has access to this business
+        $business = Business::findOrFail($id);
         $user = Auth::user();
-        if (! $user->isSuperAdmin()) {
-            abort(403, 'Unauthorized access.');
-        }
-
-        // Check if this is the user's default business
         if ($user->defaultBusiness() && $user->defaultBusiness()->id === $business->id) {
-            // Find another business to set as default
             $newDefault = $user->businesses()->where('id', '!=', $business->id)->first();
             if ($newDefault) {
                 $user->setDefaultBusiness($newDefault->id);
             }
         }
-
-        // Detach all users from this business
         $business->users()->detach();
-
-        // Delete the business
         $business->delete();
-
         return redirect()->route('business.index')
             ->with('success', 'Business deleted successfully.');
+    }
+    
+    /**
+     * Set a business as the default for the current user.
+     */
+    public function setAsDefault($id)
+    {
+        $business = Business::findOrFail($id);
+        $user = Auth::user();
+        if (!$user->businesses()->where('business_id', $business->id)->exists()) {
+            return redirect()->back()->with('error', 'You do not have access to this business.');
+        }
+        $user->setDefaultBusiness($business->id);
+        return redirect()->back()->with('success', 'Default business updated successfully.');
+    }
+    
+    /**
+     * Switch to a different business for the current session.
+     */
+    public function switchToBusiness($id)
+    {
+        $business = Business::findOrFail($id);
+        $user = Auth::user();
+        
+        // Check if user has access to this business
+        if (!$user->businesses()->where('business_id', $business->id)->exists()) {
+            return redirect()->back()->with('error', 'You do not have access to this business.');
+        }
+        
+        // Store the current business ID in the session
+        session(['current_business_id' => $business->id]);
+        
+        return redirect()->back()->with('success', 'Switched to ' . $business->name . ' successfully.');
     }
 
     /**

@@ -97,11 +97,11 @@ const deleteItem = () => {
         <Button @click="confirmDelete" icon="pi pi-trash" label="Delete Business" severity="danger" />
       </div>
 
-      <Card class="dark:bg-dark dark:text-white">
+      <Card class="dark:bg-brand-dark dark:text-white">
         <template #content>
           <form @submit.prevent="submit" class="space-y-6">
             <!-- Required Fields Section -->
-            <div class="p-4 rounded-lg border border-gray-200 dark:border-0">
+            <div class="dark:bg-brand-lightdark dark:border-0 p-4 rounded-lg border border-gray-200">
               <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Required Information</h2>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -126,7 +126,7 @@ const deleteItem = () => {
             </div>
 
             <!-- Optional Fields Section -->
-            <div class="dark:border-0 p-4 rounded-lg border border-gray-200">
+            <div class="dark:bg-brand-dark dark:border-0 p-4 rounded-lg border border-gray-200">
               <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Additional Information</h2>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

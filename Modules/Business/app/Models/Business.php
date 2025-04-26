@@ -46,6 +46,13 @@ class Business extends Model
         'is_active',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
+
     /**
      * The users that belong to the business.
      */
