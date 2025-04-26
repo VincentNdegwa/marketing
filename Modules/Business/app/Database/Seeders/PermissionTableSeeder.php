@@ -7,6 +7,7 @@ use App\Models\Role;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Modules\Business\App\Models\Business;
 
 class PermissionTableSeeder extends Seeder
@@ -16,6 +17,8 @@ class PermissionTableSeeder extends Seeder
         Model::unguard();
         Artisan::call('cache:clear');
         $module = 'Business';
+
+        Log::info('Starting Business permission seeding');
 
         // Define module permissions
         $permissions = [
@@ -47,61 +50,55 @@ class PermissionTableSeeder extends Seeder
         ];
 
         $superadminRole = Role::where('name', 'superadmin')->first();
+        Log::info('SuperAdmin role found: '.($superadminRole ? 'Yes' : 'No'));
 
         $adminRoles = Role::where('name', 'admin')->get();
+        Log::info('Admin roles found: '.$adminRoles->count());
 
-        // Get all businesses
         $businesses = Business::all();
+        Log::info('Businesses found: '.$businesses->count());
 
-        // Create system-wide permissions for the superadmin
+        $all_permissions = [];
         foreach ($permissions as $permissionData) {
-            // Check if the permission already exists
             $permissionExists = Permission::where('name', $permissionData['name'])
                 ->whereNull('business_id')
                 ->exists();
 
             if (! $permissionExists) {
-                // Create system-wide permission (null business_id)
-                $permission = Permission::create([
-                    'name' => $permissionData['name'],
-                    'display_name' => $permissionData['display_name'],
-                    'description' => $permissionData['description'],
-                    'business_id' => null, // System-wide permission
-                    'module' => $module,
-                ]);
-
-                // Attach permission to superadmin role
-                if ($superadminRole) {
-                    $superadminRole->givePermissions([$permission]);
-                }
-            }
-        }
-
-        // Create business-specific permissions for each business
-        foreach ($businesses as $business) {
-            foreach ($permissions as $permissionData) {
-                // Check if the permission already exists for this business
-                $permissionExists = Permission::where('name', $permissionData['name'])
-                    ->where('business_id', $business->id)
-                    ->exists();
-
-                if (! $permissionExists) {
-                    // Create business-specific permission
+                try {
                     $permission = Permission::create([
                         'name' => $permissionData['name'],
                         'display_name' => $permissionData['display_name'],
                         'description' => $permissionData['description'],
-                        'business_id' => $business->id,
+                        'business_id' => null,
                         'module' => $module,
                     ]);
+                    $all_permissions[] = $permission;
+                    Log::info('Created system permission: '.$permissionData['name']);
+                } catch (\Exception $e) {
+                    Log::error('Failed to create system permission: '.$e->getMessage());
+                }
 
-                    // Find the admin role for this business
-                    $businessAdminRole = $adminRoles->where('business_id', $business->id)->first();
-
-                    // Attach permission to business admin role
-                    if ($businessAdminRole) {
-                        $businessAdminRole->givePermissions([$permission]);
+                if ($superadminRole && isset($permission)) {
+                    try {
+                        $superadminRole->givePermissions([$permission]);
+                        Log::info('Attached permission to superadmin role: '.$permissionData['name']);
+                    } catch (\Exception $e) {
+                        Log::error('Failed to attach permission to superadmin: '.$e->getMessage());
                     }
+                }
+            }
+        }
+
+        //Assign business admins roles
+        foreach ($businesses as $business) {
+            $businessAdminRole = $adminRoles->where('business_id', $business->id)->first();
+
+            if ($businessAdminRole && isset($all_permissions)) {
+                try {
+                    $businessAdminRole->givePermissions($all_permissions);
+                } catch (\Exception $e) {
+                    Log::error('Failed to attach permission to business admin: ' . $e->getMessage());
                 }
             }
         }

@@ -81,6 +81,8 @@ class PermissionTableSeeder extends Seeder
 
         $businesses = Business::all();
         Log::info('Businesses found: '.$businesses->count());
+
+        $all_permissions = [];
         foreach ($permissions as $permissionData) {
             $permissionExists = Permission::where('name', $permissionData['name'])
                 ->whereNull('business_id')
@@ -95,6 +97,7 @@ class PermissionTableSeeder extends Seeder
                         'business_id' => null,
                         'module' => $module,
                     ]);
+                    $all_permissions[] = $permission;
                     Log::info('Created system permission: '.$permissionData['name']);
                 } catch (\Exception $e) {
                     Log::error('Failed to create system permission: '.$e->getMessage());
@@ -111,36 +114,15 @@ class PermissionTableSeeder extends Seeder
             }
         }
 
+        //Assigne business admins roles
         foreach ($businesses as $business) {
-            foreach ($permissions as $permissionData) {
-                $permissionExists = Permission::where('name', $permissionData['name'])
-                    ->where('business_id', $business->id)
-                    ->exists();
+            $businessAdminRole = $adminRoles->where('business_id', $business->id)->first();
 
-                if (! $permissionExists) {
-                    try {
-                        $permission = Permission::create([
-                            'name' => $permissionData['name'],
-                            'display_name' => $permissionData['display_name'],
-                            'description' => $permissionData['description'],
-                            'business_id' => $business->id,
-                            'module' => $module,
-                        ]);
-                        Log::info('Created business permission: '.$permissionData['name'].' for business ID: '.$business->id);
-                    } catch (\Exception $e) {
-                        Log::error('Failed to create business permission: '.$e->getMessage());
-                    }
-
-                    $businessAdminRole = $adminRoles->where('business_id', $business->id)->first();
-
-                    if ($businessAdminRole && isset($permission)) {
-                        try {
-                            $businessAdminRole->givePermissions([$permission]);
-                            Log::info('Attached permission to business admin role: '.$permissionData['name'].' for business ID: '.$business->id);
-                        } catch (\Exception $e) {
-                            Log::error('Failed to attach permission to business admin: '.$e->getMessage());
-                        }
-                    }
+            if ($businessAdminRole && isset($all_permissions)) {
+                try {
+                    $businessAdminRole->givePermissions($all_permissions);
+                } catch (\Exception $e) {
+                    Log::error('Failed to attach permission to business admin: ' . $e->getMessage());
                 }
             }
         }

@@ -10,6 +10,8 @@ import Aura from '@primeuix/themes/aura';
 import { resolveModulePage } from '@/utils/modulePageResolver';
 import DialogService from 'primevue/dialogservice';
 import ToastService from 'primevue/toastservice';
+import Toast from 'primevue/toast';
+
 
 // Extend ImportMeta interface for Vite...
 declare module 'vite/client' {
@@ -49,12 +51,19 @@ createInertiaApp({
                 }
             }
         });
-        
+
         // Add DialogService and ToastService
         app.use(DialogService);
         app.use(ToastService);
 
         app.mount(el);
+
+
+        const toastContainer = document.createElement('div');
+        document.body.appendChild(toastContainer);
+        const toastApp = createApp(Toast);
+        toastApp.use(PrimeVue);
+        toastApp.mount(toastContainer);
     },
     progress: {
         color: '#4B5563',

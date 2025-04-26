@@ -8,6 +8,10 @@ import { initializeTheme } from '@/composables/useAppearance';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import { resolveModulePage } from '@/utils/modulePageResolver';
+import DialogService from 'primevue/dialogservice';
+import ToastService from 'primevue/toastservice';
+import Toast from 'primevue/toast';
+
 
 // Extend ImportMeta interface for Vite...
 declare module 'vite/client' {
@@ -26,31 +30,17 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
-  // For the UserManagement module, we need to make sure pages are correctly resolved
-  resolve: (name) => {
-    // If the page name is just 'Index', 'Show', etc., prepend 'usermanagement/'
-    // If it already has a prefix (like 'usermanagement/Index'), leave it as is
-    const pageName = name.includes('/') ? name : `usermanagement/${name}`;
-    console.log(`UserManagement module resolving: ${pageName}`);
-    
-    try {
-      return resolveModulePage(pageName);
-    } catch (error) {
-      // Fallback: try resolving just the page name without the module prefix
-      console.log(`Failed to resolve ${pageName} ${error}, trying fallback...`);
-      return resolveModulePage(name);
-    }
-  },
+  resolve: (name) => resolveModulePage(name),
   setup({ el, App, props, plugin }) {
     const app = createApp({ render: () => h(App, props) });
-    
+
     // First initialize Ziggy to ensure routes are available
     app.use(plugin);
     app.use(ZiggyVue);
-    
+
     // Then set the route function as a global property
     app.config.globalProperties.$route = route;
-    
+
     app.use(PrimeVue, {
       theme: {
         preset: Aura,
@@ -61,8 +51,19 @@ createInertiaApp({
         }
       }
     });
-    
+
+    // Add DialogService and ToastService
+    app.use(DialogService);
+    app.use(ToastService);
+
     app.mount(el);
+
+
+    const toastContainer = document.createElement('div');
+    document.body.appendChild(toastContainer);
+    const toastApp = createApp(Toast);
+    toastApp.use(PrimeVue);
+    toastApp.mount(toastContainer);
   },
   progress: {
     color: '#4B5563',
