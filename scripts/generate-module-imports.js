@@ -16,7 +16,7 @@ let moduleMapEntries = [];
 
 activeModules.forEach(moduleName => {
   const constName = `${moduleName.toUpperCase().replace(/-/g, '_')}_PAGES`;
-  importStatements += `const ${constName} = import.meta.glob<DefineComponent>('../../../Modules/${moduleName}/Resources/js/pages/**/*.vue');\n`;
+  importStatements += `const ${constName} = import.meta.glob<DefineComponent>('../../../Modules/${moduleName}/resources/js/pages/**/*.vue');\n`;
   moduleMapEntries.push(`  '${moduleName.toLowerCase()}': ${constName}`);
 });
 

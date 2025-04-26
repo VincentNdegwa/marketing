@@ -23,7 +23,7 @@ async function getModulePaths(modulesPath = 'Modules') {
       // Check if the module is enabled (status is true)
       if (moduleStatuses[moduleDir] === true) {
         // Add the module's app.ts file to the result
-        result.push(`Modules/${moduleDir}/Resources/js/app.ts`);
+        result.push(`Modules/${moduleDir}/resources/js/app.ts`);
       }
     }
   } catch (error) {

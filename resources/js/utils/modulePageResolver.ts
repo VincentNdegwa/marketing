@@ -19,13 +19,13 @@ console.log('Active modules:', ACTIVE_MODULES);
 
 // Import pages for each module
 // Add new modules here when you create them
-const USERMANAGEMENT_PAGES = import.meta.glob<DefineComponent>('../../../Modules/UserManagement/Resources/js/pages/**/*.vue');
-const BUSINESS_PAGES = import.meta.glob<DefineComponent>('../../../Modules/Business/Resources/js/pages/**/*.vue');
+const USERMANAGEMENT_PAGES = import.meta.glob<DefineComponent>('../../../Modules/UserManagement/resources/js/pages/**/*.vue');
+const BUSINESS_PAGES = import.meta.glob<DefineComponent>('../../../Modules/Business/resources/js/pages/**/*.vue');
 
 // Create a mapping of module names to their page imports
 const MODULE_PAGES_MAP: Record<string, Record<string, () => Promise<DefineComponent>>> = {
   'usermanagement': USERMANAGEMENT_PAGES,
-  'business': BUSINESS_PAGES,
+  'business': BUSINESS_PAGES
 };
 
 // Log available pages for each module
