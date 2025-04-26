@@ -44,6 +44,11 @@ class BusinessController extends Controller
             'description' => 'nullable|string',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+            'state' => 'nullable|string|max:100',
+            'country' => 'nullable|string|max:100',
+            'zip_code' => 'nullable|string|max:20',
+            'website' => 'nullable|url|max:255',
         ]);
 
         $business = Business::create([
@@ -53,6 +58,11 @@ class BusinessController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
+            'city' => $request->city,
+            'state' => $request->state,
+            'country' => $request->country,
+            'zip_code' => $request->zip_code,
+            'website' => $request->website,
             'is_active' => true,
         ]);
 
@@ -130,6 +140,11 @@ class BusinessController extends Controller
             'description' => 'nullable|string',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+            'state' => 'nullable|string|max:100',
+            'country' => 'nullable|string|max:100',
+            'zip_code' => 'nullable|string|max:20',
+            'website' => 'nullable|url|max:255',
             'is_active' => 'boolean',
         ]);
 
@@ -140,10 +155,15 @@ class BusinessController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
+            'city' => $request->city,
+            'state' => $request->state,
+            'country' => $request->country,
+            'zip_code' => $request->zip_code,
+            'website' => $request->website,
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('businessindex')
+        return redirect()->route('business.index')
             ->with('success', 'Business updated successfully.');
     }
 
@@ -173,7 +193,7 @@ class BusinessController extends Controller
         // Delete the business
         $business->delete();
 
-        return redirect()->route('businessindex')
+        return redirect()->route('business.index')
             ->with('success', 'Business deleted successfully.');
     }
 

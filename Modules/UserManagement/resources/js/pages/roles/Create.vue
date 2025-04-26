@@ -102,7 +102,7 @@ const submitForm = () => {
           <form @submit.prevent="submitForm" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label for="name" class="block text-sm font-medium text-gray-700">System Name</label>
+                <label for="name" class="block text-sm font-medium">System Name</label>
                 <InputText id="name" v-model="form.name" class="w-full" :class="{ 'p-invalid': form.errors.name }"
                   placeholder="e.g. manager (lowercase, no spaces)" />
                 <small v-if="form.errors.name" class="p-error">{{ form.errors.name }}</small>
@@ -110,7 +110,7 @@ const submitForm = () => {
               </div>
 
               <div class="space-y-2">
-                <label for="display_name" class="block text-sm font-medium text-gray-700">Display Name</label>
+                <label for="display_name" class="block text-sm font-medium">Display Name</label>
                 <InputText id="display_name" v-model="form.display_name" class="w-full"
                   :class="{ 'p-invalid': form.errors.display_name }" placeholder="e.g. Business Manager" />
                 <small v-if="form.errors.display_name" class="p-error">{{ form.errors.display_name }}</small>
@@ -119,7 +119,7 @@ const submitForm = () => {
             </div>
 
             <div class="space-y-2">
-              <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+              <label for="description" class="block text-sm font-medium">Description</label>
               <Textarea id="description" v-model="form.description" rows="3" class="w-full"
                 :class="{ 'p-invalid': form.errors.description }"
                 placeholder="Describe the purpose and responsibilities of this role" />
@@ -127,7 +127,7 @@ const submitForm = () => {
             </div>
 
             <div class="space-y-4">
-              <label class="block text-sm font-medium text-gray-700">Permissions</label>
+              <label class="block text-sm font-medium">Permissions</label>
 
               <div v-for="(permissions, module) in groupedPermissions" :key="module" class="border rounded-lg p-4">
                 <h3 class="text-lg font-semibold capitalize mb-3">{{ module }} Module</h3>
@@ -141,7 +141,7 @@ const submitForm = () => {
                           class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500">
                       </div>
                       <div class="ml-3 text-sm">
-                        <label :for="`permission-${perm.id}`" class="font-medium text-gray-700">{{
+                        <label :for="`permission-${perm.id}`" class="font-medium">{{
                           perm.display_name }}</label>
                         <p v-if="perm.description" class="text-gray-500">{{ perm.description }}</p>
                       </div>
