@@ -81,5 +81,5 @@ test('correct password must be provided to delete account', function () {
         ->assertSessionHasErrors('password')
         ->assertRedirect('/settings/profile');
 
-    expect($user->fresh()->deleted_at)->not->toBeNull();
+    expect($user->fresh()->deleted_at)->toBeNull();
 });
