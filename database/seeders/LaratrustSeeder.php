@@ -52,7 +52,7 @@ class LaratrustSeeder extends Seeder
                 'name' => 'Super Admin',
                 'email' => 'superadmin@example.com',
                 'password' => Hash::make('password'),
-                'type'=>'superadmin'
+                'type' => 'superadmin',
             ]);
         }
 
@@ -63,7 +63,7 @@ class LaratrustSeeder extends Seeder
                 'name' => 'Client Admin',
                 'email' => 'admin@client.com',
                 'password' => Hash::make('password'),
-                'type'=>'admin'
+                'type' => 'admin',
             ]);
         }
 

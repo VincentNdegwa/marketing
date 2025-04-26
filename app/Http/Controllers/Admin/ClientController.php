@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
-use Inertia\Inertia;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 use Modules\Business\app\Models\Business;
 
 class ClientController extends Controller
@@ -24,23 +24,25 @@ class ClientController extends Controller
             $query->where('name', 'admin');
         })
             ->with([
-            'businesses.users' => function ($query) {
+                'businesses.users' => function ($query) {
                     $query->orderBy('name');
                 },
                 'roles' => function ($query) {
                     $query->where('name', 'admin');
-                }
+                },
             ])
             ->latest()
             ->paginate(10);
 
         $adminUsers->through(function ($user) {
-            $user->businesses= $user->businesses->map(function($business){
+            $user->businesses = $user->businesses->map(function ($business) {
                 $business->has_roles = count($business->roles) > 0;
-                $business->users = $business->users->map(function($user)use($business){
+                $business->users = $business->users->map(function ($user) use ($business) {
                     $user->roles = $user->rolesForBusiness($business->id);
+
                     return $user;
                 });
+
                 return $business;
             });
             $adminBusinesses = $user->businesses->filter(function ($business) use ($user) {
@@ -49,8 +51,8 @@ class ClientController extends Controller
             $user->admin_businesses = $adminBusinesses;
             $user->default_business_id = $user->defaultBusiness()?->id;
             $user->user_type = 'Business User';
-            $user->roles =$user->roles();
-            
+            $user->roles = $user->roles();
+
             return $user;
         });
 
@@ -95,10 +97,10 @@ class ClientController extends Controller
             ]);
 
             // Create the business and associate with admin user
-           $business= Business::create([
+            $business = Business::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'slug' => Str::slug($validated['name']) . '-' . uniqid(),
+                'slug' => Str::slug($validated['name']).'-'.uniqid(),
                 'phone' => $validated['phone'],
                 'website' => $validated['website'] ?? null,
                 'address' => $validated['address'],
@@ -173,7 +175,7 @@ class ClientController extends Controller
                 'email' => $validated['admin_user']['email'],
             ];
 
-            if (!empty($validated['admin_user']['password'])) {
+            if (! empty($validated['admin_user']['password'])) {
                 $adminUpdate['password'] = Hash::make($validated['admin_user']['password']);
             }
 
@@ -181,7 +183,7 @@ class ClientController extends Controller
 
             $business->update([
                 'name' => $validated['name'],
-                'slug' => Str::slug($validated['name']) . '-' . uniqid(),
+                'slug' => Str::slug($validated['name']).'-'.uniqid(),
                 'email' => $validated['email'],
                 'phone' => $validated['phone'],
                 'website' => $validated['website'],

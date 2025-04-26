@@ -2,11 +2,11 @@
 
 namespace Modules\Business\App\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
 use Modules\Business\app\Models\Business;
 
 class BusinessController extends Controller
@@ -212,6 +212,6 @@ class BusinessController extends Controller
         session(['current_business_id' => $business->id]);
 
         return redirect()->route('dashboard')
-            ->with('success', 'Switched to ' . $business->name);
+            ->with('success', 'Switched to '.$business->name);
     }
 }

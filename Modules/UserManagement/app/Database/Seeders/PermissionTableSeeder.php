@@ -114,7 +114,7 @@ class PermissionTableSeeder extends Seeder
             }
         }
 
-        //Assigne business admins roles
+        // Assigne business admins roles
         foreach ($businesses as $business) {
             $businessAdminRole = $adminRoles->where('business_id', $business->id)->first();
 
@@ -122,7 +122,7 @@ class PermissionTableSeeder extends Seeder
                 try {
                     $businessAdminRole->givePermissions($all_permissions);
                 } catch (\Exception $e) {
-                    Log::error('Failed to attach permission to business admin: ' . $e->getMessage());
+                    Log::error('Failed to attach permission to business admin: '.$e->getMessage());
                 }
             }
         }

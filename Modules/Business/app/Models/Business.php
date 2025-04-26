@@ -2,14 +2,14 @@
 
 namespace Modules\Business\app\Models;
 
-use App\Models\Role;
-use App\Models\User;
-// use Modules\Business\Database\Factories\BusinessFactory;
 use App\Models\Permission;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Role;
+// use Modules\Business\Database\Factories\BusinessFactory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Hash;
 
 class Business extends Model
 {
@@ -69,10 +69,11 @@ class Business extends Model
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'admin');
             })
-            ->first(); 
+            ->first();
     }
 
-    public static function permitNewBusiness($business_id, $admin_name, $admin_email){
+    public static function permitNewBusiness($business_id, $admin_name, $admin_email)
+    {
         $clientAdmin = Role::create([
             'name' => 'admin',
             'display_name' => 'Client Administrator',
@@ -80,13 +81,13 @@ class Business extends Model
             'business_id' => $business_id,
         ]);
 
-        $clientAdminUser = User::where('email', $admin_email)->where("name",$admin_name)->first();
+        $clientAdminUser = User::where('email', $admin_email)->where('name', $admin_name)->first();
         if (! $clientAdminUser) {
             $clientAdminUser = User::create([
                 'name' => $admin_name,
                 'email' => $admin_email,
                 'password' => Hash::make('password'),
-                'type'=> 'admin'
+                'type' => 'admin',
             ]);
         }
 

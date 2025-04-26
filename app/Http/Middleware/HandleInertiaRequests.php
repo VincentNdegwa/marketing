@@ -79,7 +79,7 @@ class HandleInertiaRequests extends Middleware
             'current_business' => session()->get('current_business_id'),
             // Add flash messages to Inertia shared data
             'flash' => [
-                'success' =>session('success'),
+                'success' => session('success'),
                 'error' => session('error'),
                 'warning' => session('warning'),
                 'info' => session('info'),
