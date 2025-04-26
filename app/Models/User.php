@@ -132,7 +132,7 @@ class User extends Authenticatable implements LaratrustUser
      */
     public function rolesForBusiness(int $businessId)
     {
-        return $this->roles()->wherePivot('business_id', $businessId)->get();
+        return $this->roles()->where('business_id', $businessId)->get();
     }
 
     /**
@@ -142,7 +142,7 @@ class User extends Authenticatable implements LaratrustUser
      */
     public function permissionsForBusiness(int $businessId)
     {
-        return $this->permissions()->wherePivot('business_id', $businessId)->get();
+        return $this->permissions()->where('business_id', $businessId)->get();
     }
 
     /**
@@ -150,7 +150,7 @@ class User extends Authenticatable implements LaratrustUser
      */
     public function hasRoleInBusiness(string $role, int $businessId): bool
     {
-        return $this->roles()->wherePivot('business_id', $businessId)->where('name', $role)->exists();
+        return $this->roles()->where('business_id', $businessId)->where('name', $role)->exists();
     }
 
     /**
@@ -158,6 +158,6 @@ class User extends Authenticatable implements LaratrustUser
      */
     public function hasPermissionInBusiness(string $permission, int $businessId): bool
     {
-        return $this->permissions()->wherePivot('business_id', $businessId)->where('name', $permission)->exists();
+        return $this->permissions()->where('business_id', $businessId)->where('name', $permission)->exists();
     }
 }

@@ -35,10 +35,17 @@ class ClientController extends Controller
             ->paginate(10);
 
         $adminUsers->through(function ($user) {
+            $user->businesses= $user->businesses->map(function($business){
+                $business->has_roles = count($business->roles) > 0;
+                $business->users = $business->users->map(function($user)use($business){
+                    $user->roles = $user->rolesForBusiness($business->id);
+                    return $user;
+                });
+                return $business;
+            });
             $adminBusinesses = $user->businesses->filter(function ($business) use ($user) {
-                return true;
+                return $user->isAdminForBusiness($business->id);
             })->values();
-            
             $user->admin_businesses = $adminBusinesses;
             $user->default_business_id = $user->defaultBusiness()?->id;
             $user->user_type = 'Business User';

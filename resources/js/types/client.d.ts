@@ -72,4 +72,5 @@ interface Business {
     updated_at: string;
     pivot?: Pivot;
     users?: User[];
+    has_roles: boolean;
 }
