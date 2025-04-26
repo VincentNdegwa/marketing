@@ -41,8 +41,8 @@ const submit = () => {
             <div class="grid gap-6">
                 <div class="grid gap-2">
                     <Label for="email">Email address</Label>
-                    <InputText id="email" type="email" :required="true" :autofocus="true" :tabindex="1" autocomplete="email"
-                        placeholder="email@example.com" v-model="form.email" />
+                    <InputText id="email" type="email" :required="true" :autofocus="true" :tabindex="1"
+                        autocomplete="email" placeholder="email@example.com" v-model="form.email" />
                     <InputError :message="form.errors.email" />
                 </div>
 
@@ -55,7 +55,8 @@ const submit = () => {
                         </TextLink>
                     </div>
                     <InputPassword id="password" required autocomplete="current-password" v-model="form.password"
-                        placeholder="Password" class="w-full" :toggleMask="true" :feedback="false" />
+                        placeholder="Password" class="w-full" :tabindex="2" :toggleMask="true" :feedback="false"
+                        aria-label="password" aria-labelledby="password" />
                     <InputError :message="form.errors.password" />
                 </div>
 

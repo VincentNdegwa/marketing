@@ -2,7 +2,7 @@
 
   <Password v-model="stringModel" :feedback="props.feedback" :toggleMask="props.toggleMask"
     :promptLabel="props.promptLabel" :weakLabel="props.weakLabel" :mediumLabel="props.mediumLabel"
-    :strongLabel="props.strongLabel" :fluid=props.fluid inputClass="!w-full !flex-1" />
+    :strongLabel="props.strongLabel" :tabindex="props.tabindex" :fluid=props.fluid inputClass="!w-full !flex-1" />
 
 </template>
 
