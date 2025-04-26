@@ -4,7 +4,7 @@ namespace Modules\Business\app\Models;
 
 use App\Models\Permission;
 use App\Models\Role;
-// use Modules\Business\Database\Factories\BusinessFactory;
+use Modules\Business\App\Database\Factories\BusinessFactory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Hash;
 class Business extends Model
 {
     use HasFactory;
+    
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return BusinessFactory::new();
+    }
 
     /**
      * The attributes that are mass assignable.

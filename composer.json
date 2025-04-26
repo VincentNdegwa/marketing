@@ -39,7 +39,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Modules\\Business\\Tests\\": "Modules/Business/tests/",
+            "Modules\\UserManagement\\Tests\\": "Modules/UserManagement/tests/"
         }
     },
     "scripts": {

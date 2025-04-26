@@ -64,7 +64,9 @@ class UserManagementServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): void
     {
-        // $this->commands([]);
+        $this->commands([
+            // Module-specific commands can be registered here
+        ]);
     }
 
     /**
