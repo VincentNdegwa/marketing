@@ -22,7 +22,7 @@ class UserManagementController extends Controller
         $users = User::whereHas('businesses', function($query) use ($current_business_id) {
             $query->where('businesses.id', $current_business_id);
         })->with(['roles' => function($query) use ($current_business_id) {
-            $query->wherePivot('business_id', $current_business_id);
+            $query->where('business_id', $current_business_id);
         }])->get();
         
         // Transform the data to include only necessary information

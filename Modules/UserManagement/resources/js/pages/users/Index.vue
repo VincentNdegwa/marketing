@@ -8,6 +8,7 @@ import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
+import Chip from 'primevue/chip';
 
 defineProps<{
   users: any[];
@@ -29,21 +30,18 @@ const filters = ref({
   global: { value: null, matchMode: 'contains' },
 });
 
-const getSeverity = (status) => {
+const getSeverity = (status:string) => {
   return status ? 'success' : 'danger';
 };
 
-const formatDate = (date) => {
+const formatDate = (date: number|string|Date) => {
   if (!date) return 'Never';
   return new Date(date).toLocaleString();
-};
-
-const formatRoles = (roles) => {
-  return roles.join(', ') || 'No roles assigned';
 };
 </script>
 
 <template>
+
   <Head title="User Management" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
@@ -52,25 +50,18 @@ const formatRoles = (roles) => {
         <h1 class="text-2xl font-bold">Users</h1>
         <Button label="Add User" icon="pi pi-plus" class="p-button-sm" />
       </div>
-      
+
       <div class="mb-4">
         <div class="flex flex-row gap-1 md:w-60 w-full items-center">
           <InputText v-model="filters.global.value" placeholder="Search users..." class="w-full" />
         </div>
       </div>
-      
-      <DataTable 
-        :value="users" 
-        :paginator="true" 
-        :rows="10"
-        :rowsPerPageOptions="[5, 10, 25, 50]"
-        :filters="filters"
-        filterDisplay="menu"
-        responsiveLayout="scroll"
+
+      <DataTable :value="users" :paginator="true" :rows="10" :rowsPerPageOptions="[5, 10, 25, 50]" :filters="filters"
+        filterDisplay="menu" responsiveLayout="scroll"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users"
-        class="p-datatable-sm">
-        
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users" class="p-datatable-sm">
+
         <Column field="name" header="Name" sortable style="min-width: 12rem"></Column>
         <Column field="email" header="Email" sortable style="min-width: 14rem"></Column>
         <Column field="job_title" header="Job Title" sortable style="min-width: 10rem">
@@ -80,7 +71,9 @@ const formatRoles = (roles) => {
         </Column>
         <Column field="roles" header="Roles" style="min-width: 14rem">
           <template #body="{data}">
-            <span>{{ formatRoles(data.roles) }}</span>
+            <div v-for="(item, index) in data.roles" :key="index" >
+              <Chip :label="item" />
+            </div>
           </template>
         </Column>
         <Column field="is_active" header="Status" sortable style="min-width: 8rem">
