@@ -13,6 +13,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('business/{business}/set-default', [BusinessController::class, 'setAsDefault'])
         ->name('business.set-default');
         
-    Route::post('business/{business}/switch', [BusinessController::class, 'switchToBusiness'])
+    Route::post('business/{business}/switch', [BusinessController::class, 'switchBusiness'])
         ->name('business.switch');
 });

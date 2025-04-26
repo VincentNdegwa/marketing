@@ -18,9 +18,13 @@ class BusinessController extends Controller
     {
         $user = Auth::user();
         $businesses = $user->businesses;
-
+        $current_business_id = session('current_business_id');
+        
         return Inertia::module('business/Index', [
-            'businesses' => $businesses,
+            'businesses' => $businesses->map(function($busines)use($current_business_id){
+                $busines->is_current = $busines->id == $current_business_id;
+                return $busines;
+            }),
             'defaultBusinessId' => $user->defaultBusiness()?->id,
         ]);
     }
@@ -197,28 +201,22 @@ class BusinessController extends Controller
             return redirect()->back()->with('error', 'You do not have access to this business.');
         }
         $user->setDefaultBusiness($business->id);
-        session('current_business_id', $id);
         return redirect()->back()->with('success', 'Default business updated successfully.');
     }
     
     /**
      * Switch to a different business for the current session.
      */
-    public function switchToBusiness($id)
+    public function switchBusiness($id)
     {
         $business = Business::findOrFail($id);
-        $user = Auth::user();
-        
-        // Check if user has access to this business
+        $user = Auth::user();        
         if (!$user->businesses()->where('business_id', $business->id)->exists()) {
             return redirect()->back()->with('error', 'You do not have access to this business.');
         }
-        
-        // Store the current business ID in the session
         session(['current_business_id' => $business->id]);
-        
-        return redirect()->back()->with('success', 'Switched to ' . $business->name . ' successfully.');
-    }
+        return redirect()->route('dashboard')
+            ->with('success', 'Switched to ' . $business->name);    }
 
     /**
      * Set the specified business as the default for the authenticated user.
@@ -237,24 +235,5 @@ class BusinessController extends Controller
 
         return redirect()->back()
             ->with('success', 'Default business updated successfully.');
-    }
-
-    /**
-     * Switch to the specified business context.
-     */
-    public function switchBusiness(Business $business)
-    {
-        $user = Auth::user();
-
-        // Check if user has access to this business
-        if (! $user->businesses->contains($business->id)) {
-            abort(403, 'Unauthorized access.');
-        }
-
-        // Store the current business ID in the session
-        session(['current_business_id' => $business->id]);
-
-        return redirect()->route('dashboard')
-            ->with('success', 'Switched to '.$business->name);
     }
 }
