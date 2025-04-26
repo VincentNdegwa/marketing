@@ -181,7 +181,6 @@ class UserManagementController extends Controller
             })
             ->findOrFail($id);
 
-        // Get all roles for the current business
         $roles = Role::where('business_id', $current_business_id)
             ->where('name', '!=', 'admin')
             ->get()
