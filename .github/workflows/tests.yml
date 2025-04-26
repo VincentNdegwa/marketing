@@ -46,8 +46,8 @@ jobs:
       - name: Publish Ziggy Configuration
         run: php artisan ziggy:generate
 
-      - name: Register Inertia Pages
-        run: php artisan modules:register-pages
+      - name: Register Inertia Pages to ModulePageResolver
+        run: npm run modules:register
 
       - name: Build Assets
         run: npm run build

@@ -1,5 +1,4 @@
 {
     "UserManagement": true,
-    "Business": true,
-    "Model": true
+    "Business": true
 }
