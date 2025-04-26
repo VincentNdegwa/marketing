@@ -33,7 +33,6 @@ export default defineConfig(async () => {
                 '@': path.resolve(__dirname, './resources/js'),
                 'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
                 '@modules': path.resolve(__dirname, './Modules'),
-                '@blog': path.resolve(__dirname, './Modules/Blog/Resources/js'),
                 '@css': path.resolve(__dirname, './resources/css'),
             },
         },
