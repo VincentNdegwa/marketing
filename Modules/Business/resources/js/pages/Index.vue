@@ -12,6 +12,11 @@ import Chip from 'primevue/chip';
 import { route } from 'ziggy-js';
 import Menu from 'primevue/menu';
 import Dialog from 'primevue/dialog';
+import { usePermissions } from '@/composables/usePermissions';
+
+const {
+  hasPermission,
+} = usePermissions();
 
 interface Business {
   id: number;
@@ -113,7 +118,7 @@ const menu_items = ref([
         setAsDefault(currentBusiness.value);
       }
     },
-    visible: () => !!currentBusiness.value && !isDefault(currentBusiness.value.id),
+    visible: () => (!!currentBusiness.value && !isDefault(currentBusiness.value.id) && hasPermission('business.manage')),
   },
   {
     separator: true
@@ -126,7 +131,7 @@ const menu_items = ref([
         router.visit(route('business.edit', { business: currentBusiness.value.id }));
       }
     },
-    // Permission check handled by v-permission directive
+    visible: () => hasPermission('business.edit')
   },
   {
     label: 'Delete',
@@ -137,7 +142,7 @@ const menu_items = ref([
         confirmDelete(currentBusiness.value);
       }
     },
-    // Permission check handled by v-permission directive
+    visible: () => hasPermission('business.delete')
   },
 ]);
 

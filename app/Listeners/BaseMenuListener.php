@@ -15,10 +15,6 @@ class BaseMenuListener
     public function handle(MenuEvent $event): void
     {
         $menu = $event->menu;
-
-        Log::info('Base Menu', ['event' => $event]);
-
-        // Add client specific menu items
         if ($event instanceof ClientMenuEvent) {
             $module = 'Base';
             $menu = $event->menu;
@@ -32,7 +28,7 @@ class BaseMenuListener
                 'depend_on' => null,
                 'href' => 'dashboard',
                 'module' => $module,
-                'permission' => 'manage-dashboard',
+                'permission' => null,
             ]);
         }
 
@@ -50,7 +46,7 @@ class BaseMenuListener
                 'depend_on' => [],
                 'href' => 'dashboard.admin',
                 'module' => $module,
-                'permission' => 'manage-admin-dashboard',
+                'permission' => 'admin-dashboard.manage',
             ]);
             $menu->add([
                 'title' => 'Clients',
@@ -62,7 +58,7 @@ class BaseMenuListener
                 'depend_on' => [],
                 'href' => 'clients.index',
                 'module' => $module,
-                'permission' => 'manage-clients',
+                'permission' => 'clients.view',
             ]);
 
             $menu->add([
@@ -75,7 +71,7 @@ class BaseMenuListener
                 'depend_on' => [],
                 'href' => 'admin.modules',
                 'module' => $module,
-                'permission' => 'manage-modules',
+                'permission' => 'modulse.view',
             ]);
         }
     }

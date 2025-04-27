@@ -203,9 +203,9 @@ const deleteItem = () => {
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end space-x-3">
-              <Button type="button" label="Cancel" severity="secondary" outlined
+              <Button type="button" label="Cancel" severity="contrast" outlined
                 @click="$inertia.visit(route('business.index'))" />
-              <Button type="submit" label="Update Business" :loading="form.processing" />
+              <Button type="submit" severity="contrast" label="Update Business" :loading="form.processing" />
             </div>
           </form>
         </template>

@@ -42,7 +42,7 @@ class MenuListener
             'depend_on' => [],
             'href' => 'business.index',
             'module' => $module,
-            'permission' => 'business.manage',
+            'permission' => 'business.view',
         ]);
     }
 
