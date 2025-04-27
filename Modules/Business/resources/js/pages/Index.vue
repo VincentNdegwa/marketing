@@ -21,6 +21,7 @@ interface Business {
   address: string;
   description: string;
   is_active: boolean;
+  is_current: boolean;
   slug: string;
 }
 
@@ -102,6 +103,7 @@ const menu_items = ref([
         switchToBusiness(currentBusiness.value);
       }
     },
+    visible: () => currentBusiness.value && !currentBusiness.value.is_current,
   },
   {
     label: 'Set as Default',

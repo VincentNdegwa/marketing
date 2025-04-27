@@ -5,6 +5,7 @@ namespace Modules\Business\App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Modules\Business\app\Models\Business;
@@ -19,10 +20,13 @@ class BusinessController extends Controller
         $user = Auth::user();
         $businesses = $user->businesses;
         $current_business_id = session('current_business_id');
-        
+        Log::info("current_business_id", ['id'=> $current_business_id]);
         return Inertia::module('business/Index', [
-            'businesses' => $businesses->map(function($busines)use($current_business_id){
-                $busines->is_current = $busines->id == $current_business_id;
+            'businesses' => $businesses->map(function($busines)use($current_business_id, $user){
+                if(!isset($current_business_id)){
+                    $current_business_id = $user->defaultBusiness()?->id;
+                }
+                $busines->is_current = $busines->id === $current_business_id;
                 return $busines;
             }),
             'defaultBusinessId' => $user->defaultBusiness()?->id,
