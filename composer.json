@@ -35,7 +35,10 @@
             "Modules\\": "Modules/",
             "Modules\\Business\\App\\": "Modules/Business/app/",
             "Modules\\UserManagement\\App\\": "Modules/UserManagement/app/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

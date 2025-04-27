@@ -11,18 +11,6 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('dashboard', function () {
-    // Get the current business from session if it exists
-    $currentBusinessId = session('current_business_id');
-    $user = Auth::user();
-
-    if (! $currentBusinessId && $user) {
-        $defaultBusiness = $user->defaultBusiness();
-        if ($defaultBusiness) {
-            $currentBusinessId = $defaultBusiness->id;
-            session(['current_business_id' => $currentBusinessId]);
-        }
-    }
-
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

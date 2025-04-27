@@ -20,7 +20,7 @@ class UserManagementController extends Controller
      */
     public function index()
     {
-        $current_business_id = session()->get('current_business_id');
+        $current_business_id = getCurrentBusinessId();
 
         // Get all users associated with the current business
         $users = User::whereHas('businesses', function ($query) use ($current_business_id) {
@@ -53,7 +53,7 @@ class UserManagementController extends Controller
      */
     public function create()
     {
-        $current_business_id = session()->get('current_business_id');
+        $current_business_id = getCurrentBusinessId();
 
         $roles = Role::where('business_id', $current_business_id)
             ->where('name', '!=', 'admin')
@@ -77,7 +77,7 @@ class UserManagementController extends Controller
      */
     public function store(Request $request)
     {
-        $current_business_id = session()->get('current_business_id');
+        $current_business_id = getCurrentBusinessId();
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -170,7 +170,7 @@ class UserManagementController extends Controller
      */
     public function edit($id)
     {
-        $current_business_id = session()->get('current_business_id');
+        $current_business_id = getCurrentBusinessId();
 
         // Get the user with their roles for the current business
         $user = User::with(['roles' => function ($query) use ($current_business_id) {
@@ -230,7 +230,7 @@ class UserManagementController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $current_business_id = session()->get('current_business_id');
+        $current_business_id = getCurrentBusinessId();
 
         $user = User::whereHas('businesses', function ($query) use ($current_business_id) {
             $query->where('businesses.id', $current_business_id);
@@ -331,7 +331,7 @@ class UserManagementController extends Controller
      */
     public function destroy($id)
     {
-        $current_business_id = session()->get('current_business_id');
+        $current_business_id = getCurrentBusinessId();
 
         // Get the user
         $user = User::whereHas('businesses', function ($query) use ($current_business_id) {

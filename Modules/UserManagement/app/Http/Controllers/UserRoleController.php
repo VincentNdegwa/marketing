@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ class UserRoleController extends Controller
      */
     public function index()
     {
-        $current_business_id = session()->get('current_business_id');
+        $current_business_id = getCurrentBusinessId();
 
         $roles = Role::where('business_id', $current_business_id)
             ->with(['permissions' => function ($query) use ($current_business_id) {
@@ -48,7 +49,7 @@ class UserRoleController extends Controller
      */
     public function create()
     {
-        $current_business_id = session()->get('current_business_id');
+        $current_business_id = getCurrentBusinessId();
 
         $permissions = Permission::where('business_id', $current_business_id)
             ->orWhereNull('business_id')
@@ -74,7 +75,10 @@ class UserRoleController extends Controller
      */
     public function store(Request $request)
     {
-        $current_business_id = session()->get('current_business_id');
+        $current_business_id = getCurrentBusinessId();
+        if($current_business_id){
+            $current_business_id= Auth::user()->defaultBusiness()->id;
+        }
 
         $validated = $request->validate([
             'name' => [
@@ -132,7 +136,7 @@ class UserRoleController extends Controller
      */
     public function edit($id)
     {
-        $current_business_id = session()->get('current_business_id');
+        $current_business_id = getCurrentBusinessId();
 
         $role = Role::with('permissions')
             ->where('id', $id)
@@ -171,7 +175,7 @@ class UserRoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $current_business_id = session()->get('current_business_id');
+        $current_business_id = getCurrentBusinessId();
 
         $role = Role::where('id', $id)
             // ->where('business_id', $current_business_id)
@@ -228,7 +232,7 @@ class UserRoleController extends Controller
      */
     public function destroy($id)
     {
-        $current_business_id = session()->get('current_business_id');
+        $current_business_id = getCurrentBusinessId();
 
         $role = Role::where('id', $id)
             ->where('business_id', $current_business_id)

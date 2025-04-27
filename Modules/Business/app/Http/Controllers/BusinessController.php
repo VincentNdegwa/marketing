@@ -19,8 +19,7 @@ class BusinessController extends Controller
     {
         $user = Auth::user();
         $businesses = $user->businesses;
-        $current_business_id = session('current_business_id');
-        Log::info("current_business_id", ['id'=> $current_business_id]);
+        $current_business_id = getCurrentBusinessId();
         return Inertia::module('business/Index', [
             'businesses' => $businesses->map(function($busines)use($current_business_id, $user){
                 if(!isset($current_business_id)){
@@ -218,7 +217,7 @@ class BusinessController extends Controller
         if (!$user->businesses()->where('business_id', $business->id)->exists()) {
             return redirect()->back()->with('error', 'You do not have access to this business.');
         }
-        session(['current_business_id' => $business->id]);
+        setCurrentBusiness($business->id);
         return redirect()->route('dashboard')
             ->with('success', 'Switched to ' . $business->name);    }
 
@@ -235,7 +234,7 @@ class BusinessController extends Controller
 
         $user->setDefaultBusiness($business->id);
 
-        session(['current_business_id' => $business->id]);
+        setCurrentBusiness($business->id);
 
         return redirect()->back()
             ->with('success', 'Default business updated successfully.');

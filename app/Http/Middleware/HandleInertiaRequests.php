@@ -40,10 +40,11 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $currentBusiness = getCurrentBusiness();
+        $current_business_id = $currentBusiness ? $currentBusiness->id : null;
+
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
-        // Authentication should be handled by the auth middleware, not here
-        // This middleware is just for sharing data with Inertia
         $menuItems = [];
         $user = $request->user();
 
@@ -78,8 +79,9 @@ class HandleInertiaRequests extends Middleware
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'menu' => $menuItems,
             'businesses' => $user ? $user->businesses()->get() : [],
-            'current_business' => session()->get('current_business_id'),
-            'permissions' => $user ? $this->getUserPermissions($user) : [],
+            'current_business' => $current_business_id,
+            'current_business_name' => $currentBusiness ? $currentBusiness->name : null,
+            'permissions' => $user ? $this->getUserPermissions($user, $current_business_id) : [],
             'flash' => [
                 'success' => session('success'),
                 'error' => session('error'),
@@ -95,13 +97,13 @@ class HandleInertiaRequests extends Middleware
      * @param \App\Models\User $user
      * @return array
      */
-    protected function getUserPermissions($user): array
+    protected function getUserPermissions($user, $current_business_id): array
     {
         if (!$user) {
             return [];
         }
         
-        $businessId = session()->get('current_business_id');        
+        $businessId = $current_business_id;        
         if (!$businessId && $user->defaultBusiness()) {
             $businessId = $user->defaultBusiness()->id;
         }

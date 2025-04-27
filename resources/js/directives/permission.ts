@@ -23,6 +23,8 @@ export const vPermission = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const permissions = getPermissions();
     const value = binding.value;
+    console.log("Checking permission: "+value);
+    
     const superadmin = isSuperAdmin();
     if (superadmin) return;
     

@@ -23,8 +23,8 @@ class BusinessPermission
         $user = Auth::user();
 
         // If businessId is not provided, try to get it from the session
-        if (! $businessId && session()->has('current_business_id')) {
-            $businessId = session('current_business_id');
+        if (! $businessId) {
+            $businessId = getCurrentBusinessId();
         }
 
         // If still no businessId, check if user has the permission in any business
