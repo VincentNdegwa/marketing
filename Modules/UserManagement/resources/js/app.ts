@@ -12,62 +12,63 @@ import DialogService from 'primevue/dialogservice';
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
 
+import { vPermission, vCan } from '@/directives/permission';
 
-// Extend ImportMeta interface for Vite...
+
 declare module 'vite/client' {
-  interface ImportMetaEnv {
-    readonly VITE_APP_NAME: string;
-    [key: string]: string | boolean | undefined;
-  }
+    interface ImportMetaEnv {
+        readonly VITE_APP_NAME: string;
+        [key: string]: string | boolean | undefined;
+    }
 
-  interface ImportMeta {
-    readonly env: ImportMetaEnv;
-    readonly glob: <T>(pattern: string) => Record<string, () => Promise<T>>;
-  }
+    interface ImportMeta {
+        readonly env: ImportMetaEnv;
+        readonly glob: <T>(pattern: string) => Record<string, () => Promise<T>>;
+    }
 }
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
-  title: (title) => `${title} - ${appName}`,
-  resolve: (name) => resolveModulePage(name),
-  setup({ el, App, props, plugin }) {
-    const app = createApp({ render: () => h(App, props) });
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) => resolveModulePage(name),
+    setup({ el, App, props, plugin }) {
+        const app = createApp({ render: () => h(App, props) });
 
-    // First initialize Ziggy to ensure routes are available
-    app.use(plugin);
-    app.use(ZiggyVue);
+        app.use(plugin);
+        app.use(ZiggyVue);
 
-    // Then set the route function as a global property
-    app.config.globalProperties.$route = route;
+        app.config.globalProperties.$route = route;
 
-    app.use(PrimeVue, {
-      theme: {
-        preset: Aura,
-        options: {
-          prefix: 'p',
-          darkModeSelector: '.dark',
-          cssLayer: false
-        }
-      }
-    });
+        app.use(PrimeVue, {
+            theme: {
+                preset: Aura,
+                options: {
+                    prefix: 'p',
+                    darkModeSelector: '.dark',
+                    cssLayer: false
+                }
+            }
+        });
 
-    // Add DialogService and ToastService
-    app.use(DialogService);
-    app.use(ToastService);
+        app.use(DialogService);
+        app.use(ToastService);
+        
+        app.directive('permission', vPermission);
+        app.directive('can', vCan);
 
-    app.mount(el);
+        app.mount(el);
 
 
-    const toastContainer = document.createElement('div');
-    document.body.appendChild(toastContainer);
-    const toastApp = createApp(Toast);
-    toastApp.use(PrimeVue);
-    toastApp.mount(toastContainer);
-  },
-  progress: {
-    color: '#4B5563',
-  },
+        const toastContainer = document.createElement('div');
+        document.body.appendChild(toastContainer);
+        const toastApp = createApp(Toast);
+        toastApp.use(PrimeVue);
+        toastApp.mount(toastContainer);
+    },
+    progress: {
+        color: '#4B5563',
+    },
 });
 
 initializeTheme();

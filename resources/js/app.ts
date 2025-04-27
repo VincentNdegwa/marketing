@@ -12,8 +12,9 @@ import DialogService from 'primevue/dialogservice';
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
 
+import { vPermission, vCan } from '@/directives/permission';
 
-// Extend ImportMeta interface for Vite...
+
 declare module 'vite/client' {
     interface ImportMetaEnv {
         readonly VITE_APP_NAME: string;
@@ -34,11 +35,9 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const app = createApp({ render: () => h(App, props) });
 
-        // First initialize Ziggy to ensure routes are available
         app.use(plugin);
         app.use(ZiggyVue);
 
-        // Then set the route function as a global property
         app.config.globalProperties.$route = route;
 
         app.use(PrimeVue, {
@@ -52,9 +51,11 @@ createInertiaApp({
             }
         });
 
-        // Add DialogService and ToastService
         app.use(DialogService);
         app.use(ToastService);
+        
+        app.directive('permission', vPermission);
+        app.directive('can', vCan);
 
         app.mount(el);
 

@@ -94,7 +94,7 @@ const deleteItem = () => {
           <h1 class="text-2xl font-bold dark:text-white">Edit Business</h1>
           <p class="text-gray-500 dark:text-gray-300 mt-1">Update the details for {{ business.name }}</p>
         </div>
-        <Button @click="confirmDelete" icon="pi pi-trash" label="Delete Business" severity="danger" />
+        <Button v-permission="'business.delete'" @click="confirmDelete" icon="pi pi-trash" label="Delete Business" severity="danger" />
       </div>
 
       <Card class="dark:bg-brand-dark dark:text-white">

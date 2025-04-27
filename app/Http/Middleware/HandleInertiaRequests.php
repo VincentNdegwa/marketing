@@ -2,9 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Permission;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
@@ -77,13 +79,64 @@ class HandleInertiaRequests extends Middleware
             'menu' => $menuItems,
             'businesses' => $user ? $user->businesses()->get() : [],
             'current_business' => session()->get('current_business_id'),
-            // Add flash messages to Inertia shared data
+            'permissions' => $user ? $this->getUserPermissions($user) : [],
             'flash' => [
                 'success' => session('success'),
                 'error' => session('error'),
                 'warning' => session('warning'),
                 'info' => session('info'),
             ],
+        ];
+    }
+    
+    /**
+     * Get user permissions for the current business context
+     *
+     * @param \App\Models\User $user
+     * @return array
+     */
+    protected function getUserPermissions($user): array
+    {
+        if (!$user) {
+            return [];
+        }
+        
+        $businessId = session()->get('current_business_id');        
+        if (!$businessId && $user->defaultBusiness()) {
+            $businessId = $user->defaultBusiness()->id;
+        }
+        $isSuperAdmin = $user->isSuperAdmin();
+        if ($isSuperAdmin) {
+            $allPermissions = Permission::pluck('name')->toArray();
+            return [
+                'list' => $allPermissions,
+                'is_business_admin' => true,
+                'is_superadmin' => true,
+            ];
+        }
+        $directPermissions = $user->permissions;
+        $rolePermissions = collect();
+        foreach ($user->roles as $role) {
+            if ($role->name === 'admin' || $role->name === 'superadmin') {
+                $rolePermissions = $rolePermissions->merge($role->permissions);
+            }
+            else if ($role->business_id === null || ($businessId && $role->business_id == $businessId)) {
+                $rolePermissions = $rolePermissions->merge($role->permissions);
+            }
+        }
+        $allUserPermissions = $directPermissions->merge($rolePermissions)
+            ->unique('id')
+            ->pluck('name')
+            ->toArray();
+            
+        $isBusinessAdmin = $user->roles->contains(function ($role) {
+            return $role->name === 'admin';
+        });
+        
+        return [
+            'list' => $allUserPermissions,
+            'is_business_admin' => $isBusinessAdmin,
+            'is_superadmin' => $isSuperAdmin,
         ];
     }
 }

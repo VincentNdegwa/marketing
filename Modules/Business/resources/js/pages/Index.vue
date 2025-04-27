@@ -103,7 +103,7 @@ const menu_items = ref([
         switchToBusiness(currentBusiness.value);
       }
     },
-    visible: () => currentBusiness.value && !currentBusiness.value.is_current,
+    visible: () => !!currentBusiness.value && !currentBusiness.value.is_current,
   },
   {
     label: 'Set as Default',
@@ -126,6 +126,7 @@ const menu_items = ref([
         router.visit(route('business.edit', { business: currentBusiness.value.id }));
       }
     },
+    // Permission check handled by v-permission directive
   },
   {
     label: 'Delete',
@@ -136,6 +137,7 @@ const menu_items = ref([
         confirmDelete(currentBusiness.value);
       }
     },
+    // Permission check handled by v-permission directive
   },
 ]);
 
@@ -143,6 +145,8 @@ const toggle = (event: Event, data: Business) => {
   currentBusiness.value = data;  
   menu.value.toggle(event);
 };
+
+
 </script>
 
 <template>
@@ -153,6 +157,7 @@ const toggle = (event: Event, data: Business) => {
       <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold">Businesses</h1>
         <Link 
+          v-permission="'business.create'" 
           :href="route('business.create')" 
           class="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center rounded-sm px-3 py-2 shadow-xs"
         >
@@ -199,7 +204,7 @@ const toggle = (event: Event, data: Business) => {
         <Column header="Actions" style="min-width: 8rem">
           <template #body="{ data }">
             <div class="flex gap-2">
-              <Button type="button" severity="contrast" size="sm" @click="toggle($event, data)" aria-haspopup="true"
+              <Button v-can="['business.edit', 'business.delete', 'business.manage']" type="button" severity="contrast" size="sm" @click="toggle($event, data)" aria-haspopup="true"
                 aria-controls="overlay_menu">
                 <i class="pi pi-ellipsis-v"></i>
               </Button>
