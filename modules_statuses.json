@@ -1,4 +1,5 @@
 {
     "UserManagement": true,
-    "Business": true
+    "Business": true,
+    "CMS": true
 }

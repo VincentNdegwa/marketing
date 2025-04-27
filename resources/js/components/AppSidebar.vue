@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { usePage } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
-import { Boxes, LayoutGrid, Users, FileText, FolderTree, Settings, KeyRound, UserCheck, Building2 } from 'lucide-vue-next';
+import { Boxes, LayoutGrid, Users, FileText, FolderTree, Settings, KeyRound, UserCheck, Building2, File, Copy, Image } from 'lucide-vue-next';
 import type { NavItem, SharedData } from '../types';
 import AppLogo from './AppLogo.vue';
 
@@ -22,7 +22,10 @@ const iconMap = {
     'Settings': Settings,
     'User': UserCheck,
     'KeyRound': KeyRound,
-    'Building2':Building2
+    'Building2': Building2,
+    'File': File,
+    'Copy': Copy,
+    'Image': Image
 };
 
 const transformedMenuItems: NavItem[] = menuItems.map(item => ({

@@ -1,0 +1,15 @@
+{
+    "name": "CMS",
+    "alias": "cms",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\CMS\\App\\Providers\\CMSServiceProvider"
+    ],
+    "files": [],
+    "depends_on": ["UserManagement"],
+    "common": 0,
+    "icon_url": "",
+    "version": "1.0.1"
+}
