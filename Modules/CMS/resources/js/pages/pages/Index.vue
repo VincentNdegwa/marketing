@@ -111,7 +111,6 @@ import Tag from 'primevue/tag';
 import Dialog from 'primevue/dialog';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { route } from 'ziggy-js';
-import { usePermissions } from '@/composables/usePermissions';
 import { BreadcrumbItem } from '@/types';
 
 defineProps({
@@ -121,11 +120,10 @@ defineProps({
   }
 });
 
-const { hasPermission } = usePermissions();
 const toast = useToast();
 const loading = ref(false);
 const deleteDialog = ref(false);
-const pageToDelete = ref(null);
+const pageToDelete = ref<{ title: string; id: number } | null>(null);
 const statuses = ['draft', 'published'];
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -157,7 +155,7 @@ const clearFilter = () => {
   };
 };
 
-const formatDate = (dateString) => {
+const formatDate = (dateString: string|Date) => {
   if (!dateString) return '';
   const date = new Date(dateString);
   return new Intl.DateTimeFormat('en-US', {
@@ -169,15 +167,15 @@ const formatDate = (dateString) => {
   }).format(date);
 };
 
-const editPage = (page) => {
+const editPage = (page:any) => {
   router.visit(route('cms.pages.edit', page.id));
 };
 
-const previewPage = (page) => {
+const previewPage = (page:any) => {
   window.open(route('cms.pages.preview', page.id), '_blank');
 };
 
-const confirmDelete = (page) => {
+const confirmDelete = (page:any) => {
   pageToDelete.value = page;
   deleteDialog.value = true;
 };

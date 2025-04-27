@@ -111,7 +111,6 @@ import Tag from 'primevue/tag';
 import Sidebar from 'primevue/sidebar';
 import GrapesJSEditor from '../../components/GrapesJSEditor.vue';
 import { route } from 'ziggy-js';
-import { usePermissions } from '@/composables/usePermissions';
 
 const props = defineProps({
   page: {
@@ -124,7 +123,16 @@ const props = defineProps({
   }
 });
 
-const { hasPermission } = usePermissions();
+interface ProjectData {
+  html?: string;
+  css?: string;
+  pages?: Array<{
+    name: string;
+    component: string;
+  }>;
+  [key: string]: any;
+}
+
 const toast = useToast();
 
 const pageId = ref(props.page?.id || null);
@@ -157,11 +165,11 @@ const generateSlug = () => {
   }
 };
 
-const handleEditorSave = (data) => {
+const handleEditorSave = (data: ProjectData) => {
   form.value.content = data;
 };
 
-const handleEditorError = (error) => {
+const handleEditorError = (error: ProjectData) => {
   toast.add({ severity: 'error', summary: 'Editor Error', detail: 'There was a problem with the page editor', life: 3000 });
   console.error('Editor error:', error);
 };

@@ -13,6 +13,10 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
-    "@grapesjs/studio-sdk": "^1.0.41"
+    "@grapesjs/studio-sdk": "^1.0.41",
+    "@grapesjs/studio-sdk-plugins": "^1.0.18",
+    "grapesjs": "^0.22.6",
+    "grapesjs-blocks-basic": "^1.0.2",
+    "grapesjs-preset-webpage": "^1.0.3"
   }
 }
