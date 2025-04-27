@@ -50,13 +50,13 @@ class PermissionTableSeeder extends Seeder
         ];
 
         $superadminRole = Role::where('name', 'superadmin')->first();
-        Log::info('SuperAdmin role found: '.($superadminRole ? 'Yes' : 'No'));
+        Log::info('SuperAdmin role found: ' . ($superadminRole ? 'Yes' : 'No'));
 
         $adminRoles = Role::where('name', 'admin')->get();
-        Log::info('Admin roles found: '.$adminRoles->count());
+        Log::info('Admin roles found: ' . $adminRoles->count());
 
         $businesses = Business::all();
-        Log::info('Businesses found: '.$businesses->count());
+        Log::info('Businesses found: ' . $businesses->count());
 
         $all_permissions = [];
         foreach ($permissions as $permissionData) {
@@ -74,23 +74,23 @@ class PermissionTableSeeder extends Seeder
                         'module' => $module,
                     ]);
                     $all_permissions[] = $permission;
-                    Log::info('Created system permission: '.$permissionData['name']);
+                    Log::info('Created system permission: ' . $permissionData['name']);
                 } catch (\Exception $e) {
-                    Log::error('Failed to create system permission: '.$e->getMessage());
+                    Log::error('Failed to create system permission: ' . $e->getMessage());
                 }
 
                 if ($superadminRole && isset($permission)) {
                     try {
                         $superadminRole->givePermissions([$permission]);
-                        Log::info('Attached permission to superadmin role: '.$permissionData['name']);
+                        Log::info('Attached permission to superadmin role: ' . $permissionData['name']);
                     } catch (\Exception $e) {
-                        Log::error('Failed to attach permission to superadmin: '.$e->getMessage());
+                        Log::error('Failed to attach permission to superadmin: ' . $e->getMessage());
                     }
                 }
             }
         }
 
-        // Assign business admins roles
+        // Assigne business admins roles
         foreach ($businesses as $business) {
             $businessAdminRole = $adminRoles->where('business_id', $business->id)->first();
 
@@ -98,7 +98,7 @@ class PermissionTableSeeder extends Seeder
                 try {
                     $businessAdminRole->givePermissions($all_permissions);
                 } catch (\Exception $e) {
-                    Log::error('Failed to attach permission to business admin: '.$e->getMessage());
+                    Log::error('Failed to attach permission to business admin: ' . $e->getMessage());
                 }
             }
         }

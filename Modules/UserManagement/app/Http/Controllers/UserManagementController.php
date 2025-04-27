@@ -29,7 +29,6 @@ class UserManagementController extends Controller
             $query->where('business_id', $current_business_id);
         }])->get();
 
-        // Transform the data to include only necessary information
         $users = $users->map(function ($user) use ($current_business_id) {
             return [
                 'id' => $user->id,
