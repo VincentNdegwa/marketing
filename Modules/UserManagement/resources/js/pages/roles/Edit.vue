@@ -30,7 +30,7 @@ interface Role {
 
 const props = defineProps<{
   role: Role;
-  permissions: Permission[];
+  perms: Permission[];
   current_business_id: number;
 }>();
 
@@ -77,7 +77,7 @@ const dialog = ref<{
 
 onMounted(() => {
   // Group permissions by module
-  props.permissions.forEach((permission) => {
+  props.perms.forEach((permission) => {
     const module = permission.module;
     const part = permission.name.split('.');
     const sub_module = part[0];
@@ -131,7 +131,7 @@ const deleteRole = () => {
     <div class="flex h-full flex-1 flex-col gap-4 p-4">
       <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold">Edit Role: {{ role.display_name }}</h1>
-        <Button v-if="role.name !== 'admin'" label="Delete Role" icon="pi pi-trash" class="p-button-danger"
+        <Button v-permission="'role.delete'"  v-if="role.name !== 'admin'" label="Delete Role" icon="pi pi-trash" class="p-button-danger"
           @click="confirmDelete" />
       </div>
 
@@ -164,7 +164,7 @@ const deleteRole = () => {
               <small v-if="form.errors.description" class="p-error">{{ form.errors.description }}</small>
             </div>
 
-            <div class="space-y-4">
+            <div v-permission="'permission.manage'" class="space-y-4">
               <label class="block text-sm font-medium">Permissions</label>
 
               <div v-for="(permissions, module) in groupedPermissions" :key="module" class="border rounded-lg p-4">

@@ -11,9 +11,8 @@ import { ref } from 'vue';
 import Menu from 'primevue/menu';
 import { route } from 'ziggy-js';
 import Dialog from 'primevue/dialog';
-
-
-
+import {usePermissions} from '@/composables/usePermissions'
+const {hasPermission} = usePermissions()
 
 
 interface Role {
@@ -52,6 +51,7 @@ const menu_item = ref([
         router.visit(route('user-role.edit', currentRole.value.id));
       }
     },
+    visible: () => hasPermission('role.edit')
   },
   {
     label: 'Delete',
@@ -62,6 +62,8 @@ const menu_item = ref([
         confirmDelete(currentRole.value);
       }
     },
+    visible:() => hasPermission('role.delete')
+
   },
 ]);
 
@@ -119,7 +121,7 @@ const formatPermissions = (permissions:string[]) => {
     <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
       <div class="mb-4 flex items-center justify-between">
         <h1 class="text-2xl font-bold">Roles</h1>
-        <Link :href="route('user-role.create')"
+        <Link v-permission="'role.create'"  :href="route('user-role.create')"
           class="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center rounded-sm px-3 py-2 shadow-xs"
           preserve-scroll>
         <span>Add Role</span>
@@ -158,7 +160,7 @@ const formatPermissions = (permissions:string[]) => {
         <Column header="Actions" style="min-width: 8rem">
           <template #body="{ data }">
             <div class="flex gap-2">
-              <Button v-if="(data.name != 'admin' && data.name != 'superadmin')" type="button" severity="contrast" size="sm" @click="toggle($event, data)" aria-haspopup="true"
+              <Button v-can="['role.edit', 'role.delete', 'role.manage']" v-if="(data.name != 'admin' && data.name != 'superadmin')" type="button" severity="contrast" size="sm" @click="toggle($event, data)" aria-haspopup="true"
                 aria-controls="overlay_menu">
                 <i class="pi pi-ellipsis-v"></i>
               </Button>

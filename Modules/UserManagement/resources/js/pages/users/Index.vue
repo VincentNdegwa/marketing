@@ -12,7 +12,8 @@ import Chip from 'primevue/chip';
 import { route } from 'ziggy-js';
 import Menu from 'primevue/menu';
 import Dialog from 'primevue/dialog';
-
+import { usePermissions } from '@/composables/usePermissions';
+const {hasPermission } = usePermissions()
 export interface UserData {
   id: number;
   name: string;
@@ -91,6 +92,7 @@ const menu_item = ref([
         router.visit(route('usermanagement.edit', { id: currentUser.value.id }));
       }
     },
+    visible: () => hasPermission("usermanagement.edit")
   },
   {
     label: 'Delete',
@@ -101,6 +103,7 @@ const menu_item = ref([
         confirmDelete(currentUser.value);
       }
     },
+    visible: () => hasPermission("usermanagement.delete")
   },
 ]);
 
@@ -119,7 +122,7 @@ const toggle = (event: Event, data: UserData) => {
     <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
       <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold">Users</h1>
-        <Link :href="route('usermanagement.create')"
+        <Link v-permission="'usermanagement.create'" :href="route('usermanagement.create')"
           class="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center rounded-sm px-3 py-2 shadow-xs"
           preserve-scroll>
         <span>Add User</span>
@@ -164,7 +167,7 @@ const toggle = (event: Event, data: UserData) => {
         <Column header="Actions" style="min-width: 8rem">
           <template #body="{ data }">
             <div class="flex gap-2">
-              <Button v-if="!data.is_admin" type="button" severity="contrast" size="sm" @click="toggle($event, data)" aria-haspopup="true"
+              <Button v-can="['usermanagement.edit', 'usermanagement.delete', 'usermanagement.manage']" v-if="!data.is_admin" type="button" severity="contrast" size="sm" @click="toggle($event, data)" aria-haspopup="true"
                 aria-controls="overlay_menu">
                 <i class="pi pi-ellipsis-v"></i>
               </Button>

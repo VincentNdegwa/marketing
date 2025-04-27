@@ -165,7 +165,7 @@ class UserRoleController extends Controller
                 'description' => $role->description,
                 'permissions' => $role->permissions,
             ],
-            'permissions' => $permissions,
+            'perms' => $permissions,
             'current_business_id' => $current_business_id,
         ]);
     }

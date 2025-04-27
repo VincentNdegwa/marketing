@@ -143,7 +143,7 @@ const deleteUser = () => {
         <div class="flex h-full flex-1 flex-col gap-4 p-4">
             <div class="mb-4 flex items-center justify-between">
                 <h1 class="text-2xl font-bold">Edit User: {{ user.name }}</h1>
-                <Button label="Delete User" icon="pi pi-trash" class="p-button-danger" @click="confirmDelete" />
+                <Button v-permission="'usermanagement.delete'" label="Delete User" icon="pi pi-trash" class="p-button-danger" @click="confirmDelete" />
             </div>
 
             <Card class="dark:bg-dark dark:text-white">
