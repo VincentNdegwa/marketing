@@ -84,19 +84,17 @@ class UpdateModuleAutoloading extends Command
         $this->info('Module autoloading entries updated successfully.');
         $this->info('Run "composer dump-autoload" to apply changes.');
 
-        if ($this->confirm('Would you like to run composer dump-autoload now?', true)) {
-            $this->info('Running composer dump-autoload...');
-            $this->newLine();
-            exec('composer dump-autoload', $output, $returnCode);
+        $this->info('Running composer dump-autoload...');
+        $this->newLine();
+        exec('composer dump-autoload', $output, $returnCode);
 
-            if ($returnCode === 0) {
-                foreach ($output as $line) {
-                    $this->line($line);
-                }
-                $this->info('Autoload files regenerated successfully!');
-            } else {
-                $this->error('Failed to run composer dump-autoload. Please run it manually.');
+        if ($returnCode === 0) {
+            foreach ($output as $line) {
+                $this->line($line);
             }
+            $this->info('Autoload files regenerated successfully!');
+        } else {
+            $this->error('Failed to run composer dump-autoload. Please run it manually.');
         }
     }
 }

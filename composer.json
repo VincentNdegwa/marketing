@@ -34,6 +34,7 @@
             "Database\\Seeders\\": "database/seeders/",
             "Modules\\": "Modules/",
             "Modules\\Business\\App\\": "Modules/Business/app/",
+            "Modules\\CMS\\App\\": "Modules/CMS/app/",
             "Modules\\UserManagement\\App\\": "Modules/UserManagement/app/"
         },
         "files": [
