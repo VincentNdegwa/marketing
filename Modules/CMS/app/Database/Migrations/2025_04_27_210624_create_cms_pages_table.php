@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('cms_pages', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
@@ -19,7 +19,8 @@ return new class extends Migration
             $table->json('content');
             $table->enum('status', ['draft', 'published'])->default('draft');
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('template_id')->nullable()->constrained('templates')->nullOnDelete();
+            $table->unsignedBigInteger('template_id')->nullable();
+            $table->foreign('template_id')->references('id')->on('cms_templates')->nullOnDelete();
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->string('meta_keywords')->nullable();
@@ -34,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pages');
+        Schema::dropIfExists('cms_pages');
     }
 };

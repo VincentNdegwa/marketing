@@ -10,6 +10,8 @@ use App\Models\User;
 class Template extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $table = 'cms_templates';
+
 
     protected $fillable = [
         'name',

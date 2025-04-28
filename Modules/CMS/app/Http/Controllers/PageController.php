@@ -47,11 +47,11 @@ class PageController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:pages,slug',
+            'slug' => 'required|string|max:255|unique:cms_pages,slug',
             'description' => 'nullable|string|max:1000',
             'content' => 'required|array',
             'status' => 'required|in:draft,published',
-            'template_id' => 'nullable|exists:templates,id',
+            'template_id' => 'nullable|exists:cms_templates,id',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:1000',
             'meta_keywords' => 'nullable|string|max:255',
@@ -100,11 +100,11 @@ class PageController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:pages,slug,' . $page->id,
+            'slug' => 'required|string|max:255|unique:cms_pages,slug,' . $page->id,
             'description' => 'nullable|string|max:1000',
             'content' => 'required|array',
             'status' => 'required|in:draft,published',
-            'template_id' => 'nullable|exists:templates,id',
+            'template_id' => 'nullable|exists:cms_templates,id',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:1000',
             'meta_keywords' => 'nullable|string|max:255',

@@ -10,6 +10,7 @@ use App\Models\User;
 class Page extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $table = 'cms_pages';
 
     protected $fillable = [
         'title',
@@ -40,10 +41,12 @@ class Page extends Model
 
     /**
      * Get the template for this page
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function template()
     {
-        return $this->belongsTo(Template::class);
+        return $this->belongsTo(\Modules\CMS\app\Models\Template::class, 'template_id');
     }
 
     /**
