@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\CMS\App\Http\Controllers\BuilderIOController;
 use Modules\CMS\App\Http\Controllers\CMSController;
 use Modules\CMS\App\Http\Controllers\PageController;
 use Modules\CMS\App\Http\Controllers\TemplateController;
@@ -47,6 +48,8 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
         Route::post('/', [SettingsController::class, 'update'])->name('cms.settings.update');
         Route::get('/{group}', [SettingsController::class, 'group'])->name('cms.settings.group');
     });
+
+    Route::get('builderio', [BuilderIOController::class, 'index']);
 });
 
 // Public routes for viewing pages

@@ -72,7 +72,13 @@ onMounted(async () => {
       plugins: [
         listPagesComponent.init({
         })
-      ]
+      ],
+      canvas: {
+        styles: [
+          'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css'
+        ]
+      }
+
     };    
     editor = await createStudioEditor(editorConfig);
     
@@ -98,28 +104,4 @@ onBeforeUnmount(() => {
   position: relative;
 }
 
-/* Fix for flickering issue
-:deep(.gjs-frame) {
-  transition: none !important;
-}
-
-:deep(.gjs-cv-canvas) {
-  transition: none !important;
-}
-
-:deep(.gjs-pn-panel) {
-  transition: none !important;
-}
-
-:deep(.gjs-highlighter, .gjs-highlighter-sel) {
-  transition: none !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-:deep(.gjs-toolbar) {
-  transition: none !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-} */
 </style>
