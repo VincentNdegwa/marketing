@@ -1,0 +1,15 @@
+{
+    "name": "FbSocialite",
+    "alias": "fbsocialite",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\FbSocialite\\App\\Providers\\FbSocialiteServiceProvider"
+    ],
+    "files": [],
+    "depends_on": ["UserManagement"],
+    "common": 0,
+    "icon_url": "",
+    "version": "1.0.1"
+}

@@ -1,5 +1,6 @@
 {
     "UserManagement": true,
     "Business": true,
-    "CMS": true
+    "CMS": false,
+    "FbSocialite": true
 }

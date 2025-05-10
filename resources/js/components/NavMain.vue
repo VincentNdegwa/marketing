@@ -3,14 +3,23 @@ import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, Sideba
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import { ChevronDown, ChevronRight } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
-defineProps<{
+const { items } = defineProps<{
     items: NavItem[];
 }>();
 
 const page = usePage<SharedData>();
 const expandedMenus = ref<Record<string, boolean>>({});
+
+const initializeExpandedMenus = () => {
+    items.forEach((item) => {
+        if (item.name && item.children && item.children.some(child => child.href && route(child.href) === window.location.href)) {
+            
+            expandedMenus.value[item.name] = true;
+        }
+    });
+};
 
 const toggleMenu = (menuName: string | undefined) => {
     if (!menuName) return;
@@ -21,6 +30,11 @@ const isExpanded = (menuName: string | undefined) => {
     if (!menuName) return false;
     return !!expandedMenus.value[menuName];
 };
+
+// Run initialization on component mount
+onMounted(() => {
+    initializeExpandedMenus();
+});
 </script>
 
 <template>
@@ -74,13 +88,13 @@ const isExpanded = (menuName: string | undefined) => {
                             <SidebarMenuButton as-child :is-active="child.href === page.url" :tooltip="child.title">
                                 <template v-if="child.href">
                                     <Link :href="route(child.href)">
-                                        <component :is="child.icon" />
+                                        <!-- <component :is="child.icon" /> -->
                                         <span>{{ child.title }}</span>
                                     </Link>
                                 </template>
                                 <template v-else>
                                     <div class="flex items-center px-2 py-1.5 text-sm font-medium">
-                                        <component :is="child.icon" class="mr-2 h-4 w-4" />
+                                        <!-- <component :is="child.icon" class="mr-2 h-4 w-4" /> -->
                                         <span>{{ child.title }}</span>
                                     </div>
                                 </template>
