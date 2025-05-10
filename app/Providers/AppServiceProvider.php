@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register events
+        Event::listen(\App\Events\RegisteredUser::class, \App\Listeners\RegisteredUserLis::class);
+
         // Register event listeners for menu events
         Event::listen(\App\Events\MenuEvent::class, \App\Listeners\BaseMenuListener::class);
         Event::listen(\App\Events\SuperAdminMenuEvent::class, \App\Listeners\BaseMenuListener::class);

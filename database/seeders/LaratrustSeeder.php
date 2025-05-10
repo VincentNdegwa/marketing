@@ -42,7 +42,7 @@ class LaratrustSeeder extends Seeder
             'name' => 'admin',
             'display_name' => 'Client Administrator',
             'description' => 'Administrator of the client business',
-            'business_id' => $clientBusiness->id,
+            // 'business_id' => $clientBusiness->id,
         ]);
 
         // Create a superadmin user (should be only one in the system)

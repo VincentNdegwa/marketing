@@ -6,10 +6,10 @@ use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Events\RegisteredUser;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\Events\Registered;
 use Laravel\Socialite\Facades\Socialite;
 
 
@@ -56,7 +56,7 @@ class FaceBookController extends Controller
                     'email_verified_at' => now(),
                     'type' => 'admin',
                 ]);
-                event(new Registered($user));
+                event(new RegisteredUser($user));
                 Auth::login($user);
                 return redirect()->route('dashboard')->with('success', 'Logged in successfully.');
             }
