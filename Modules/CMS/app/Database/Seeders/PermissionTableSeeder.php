@@ -132,13 +132,25 @@ class PermissionTableSeeder extends Seeder
                 } catch (\Exception $e) {
                     Log::error('Failed to create system permission: '.$e->getMessage());
                 }
-
                 if ($superadminRole && isset($permission)) {
                     try {
-                        $superadminRole->givePermissions([$permission]);
-                        Log::info('Attached permission to superadmin role: '.$permissionData['name']);
+                        if (!$superadminRole->hasPermission($permission['name'])) {
+                            $superadminRole->givePermissions([$permission]);
+                            Log::info('Attached permission to superadmin role: ' . $permissionData['name']);
+                        }
                     } catch (\Exception $e) {
-                        Log::error('Failed to attach permission to superadmin: '.$e->getMessage());
+                        Log::error('Failed to attach permission to superadmin: ' . $e->getMessage());
+                    }
+                }
+
+                foreach ($adminRoles as $adminRole) {
+                    try {
+                        if (!$adminRole->hasPermission($permission['name'])) {
+                            $adminRole->givePermissions([$permission]);
+                            Log::info('Attached permission to admin role: ' . $permissionData['name']);
+                        }
+                    } catch (\Exception $e) {
+                        Log::error('Failed to attach permission to admin: ' . $e->getMessage());
                     }
                 }
             }

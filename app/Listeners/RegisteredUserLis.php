@@ -14,11 +14,16 @@ class RegisteredUserLis
     {
         $user = $event->user;
 
-        // Log the user registration event
         Log::info('User registered: ' . $user->name);
+        if($user->type =='admin'){
+            $adminRole = \App\Models\Role::where('name', 'admin')->first();
+            if ($adminRole && ! $user->hasRole('admin')) {
+                $user->addRole($adminRole);
+            } else {
+                Log::error('Admin role not found.');
+            }
+        }
 
-        // Perform any additional actions needed after user registration
-        // For example, send a welcome email or assign roles
     }
 
 }
