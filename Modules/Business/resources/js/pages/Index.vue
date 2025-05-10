@@ -218,7 +218,7 @@ const toggle = (event: Event, data: Business) => {
         </Column>
       </DataTable>
 
-      <div v-if="businesses.length === 0" class="text-center py-8 bg-white rounded-lg shadow-sm">
+      <div v-if="businesses.length === 0" class="text-center py-8 rounded-lg shadow-sm">
         <p class="text-gray-500">No businesses found. Create your first business to get started.</p>
       </div>
 

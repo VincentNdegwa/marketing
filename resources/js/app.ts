@@ -13,7 +13,7 @@ import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
 
 import { vPermission, vCan } from '@/directives/permission';
-import { vModuleActive } from './directives/moduleActive';
+import { vModuleActive } from '@/directives/moduleActive';
 
 
 declare module 'vite/client' {
