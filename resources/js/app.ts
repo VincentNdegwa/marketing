@@ -13,6 +13,7 @@ import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
 
 import { vPermission, vCan } from '@/directives/permission';
+import { vModuleActive } from './directives/moduleActive';
 
 
 declare module 'vite/client' {
@@ -56,6 +57,7 @@ createInertiaApp({
         
         app.directive('permission', vPermission);
         app.directive('can', vCan);
+        app.directive('module-active', vModuleActive);
 
         app.mount(el);
 
