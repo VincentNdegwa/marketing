@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import AuthBase from '@/layouts/AuthLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import FacebookLogin from './FacebookLogin.vue';
 
 defineProps<{
     status?: string;
@@ -72,6 +73,8 @@ const submit = () => {
                     Log in
                 </Button>
             </div>
+
+            <FacebookLogin />
 
             <div class="text-muted-foreground text-center text-sm">
                 Don't have an account?

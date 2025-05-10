@@ -34,6 +34,12 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('is_active')->default(true);
             $table->timestamp('last_login_at')->nullable();
+            $table->string('facebook_id')->nullable();
+            $table->string('google_id')->nullable();
+            $table->string('twitter_id')->nullable();
+            $table->string('linkedin_id')->nullable();
+            $table->string('github_id')->nullable();
+            $table->string('instagram_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
