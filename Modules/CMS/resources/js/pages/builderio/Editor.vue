@@ -4,7 +4,7 @@ import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
 import { onMounted, ref } from 'vue';
 
 const content = ref<BuilderContent | null>(null);
-const apiKey = '105f8988fec54f208fb59e94b8fde2dc';
+const apiKey = '';
 const canShowContent = ref(false);
 const model = 'page';
 
