@@ -182,7 +182,7 @@ class BusinessController extends Controller
         $business = Business::findOrFail($id);
         $user = Auth::user();
         if ($user->defaultBusiness() && $user->defaultBusiness()->id === $business->id) {
-            $newDefault = $user->businesses()->where('id', '!=', $business->id)->first();
+            $newDefault = $user->businesses()->where('user_business.business_id', '!=', $business->id)->first();
             if ($newDefault) {
                 $user->setDefaultBusiness($newDefault->id);
             }
