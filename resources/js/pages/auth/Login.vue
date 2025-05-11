@@ -75,8 +75,8 @@ const submit = () => {
                 </Button>
             </div>
 
-            <FacebookLogin />
             <GoogleLogin/>
+            <FacebookLogin />
 
             <div class="text-muted-foreground text-center text-sm">
                 Don't have an account?
