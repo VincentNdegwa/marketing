@@ -45,17 +45,17 @@ class FbSocialiteServiceProvider extends ServiceProvider
         
         $this->app->make('events')->listen(
             \App\Events\MenuEvent::class,
-            \Modules\FbSocialite\app\Listeners\MenuListener::class
+            \Modules\FbSocialite\App\Listeners\MenuListener::class
         );
         
         $this->app->make('events')->listen(
             \App\Events\ClientMenuEvent::class,
-            \Modules\FbSocialite\app\Listeners\MenuListener::class
+            \Modules\FbSocialite\App\Listeners\MenuListener::class
         );
         
         $this->app->make('events')->listen(
             \App\Events\SuperAdminMenuEvent::class,
-            \Modules\FbSocialite\app\Listeners\MenuListener::class
+            \Modules\FbSocialite\App\Listeners\MenuListener::class
         );
     }
 

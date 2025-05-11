@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
-use Modules\Business\app\Models\Business;
+use Modules\Business\App\Models\Business;
 
 class ClientController extends Controller
 {

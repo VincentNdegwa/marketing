@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\CMS\app\Models;
+namespace Modules\CMS\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -46,7 +46,7 @@ class Page extends Model
      */
     public function template()
     {
-        return $this->belongsTo(\Modules\CMS\app\Models\Template::class, 'template_id');
+        return $this->belongsTo(\Modules\CMS\App\Models\Template::class, 'template_id');
     }
 
     /**

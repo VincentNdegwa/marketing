@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\CMS\app\Http\Controllers;
+namespace Modules\CMS\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Modules\CMS\app\Models\Page;
-use Modules\CMS\app\Models\Template;
+use Modules\CMS\App\Models\Page;
+use Modules\CMS\App\Models\Template;
 
 class PageController extends Controller
 {

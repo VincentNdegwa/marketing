@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Business\app\Listeners;
+namespace Modules\Business\App\Listeners;
 
 use App\Events\ClientMenuEvent;
 use App\Events\MenuEvent;

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Modules\Business\app\Models\Business;
+use Modules\Business\App\Models\Business;
 
 class BusinessController extends Controller
 {

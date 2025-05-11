@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Modules\Business\app\Models\Business;
+use Modules\Business\App\Models\Business;
 
 if (!function_exists('getCurrentBusiness')) {
     function getCurrentBusiness()

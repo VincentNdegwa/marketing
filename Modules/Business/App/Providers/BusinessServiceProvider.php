@@ -45,17 +45,17 @@ class BusinessServiceProvider extends ServiceProvider
 
         $this->app->make('events')->listen(
             \App\Events\MenuEvent::class,
-            \Modules\Business\app\Listeners\MenuListener::class
+            \Modules\Business\App\Listeners\MenuListener::class
         );
 
         $this->app->make('events')->listen(
             \App\Events\ClientMenuEvent::class,
-            \Modules\Business\app\Listeners\MenuListener::class
+            \Modules\Business\App\Listeners\MenuListener::class
         );
 
         $this->app->make('events')->listen(
             \App\Events\SuperAdminMenuEvent::class,
-            \Modules\Business\app\Listeners\MenuListener::class
+            \Modules\Business\App\Listeners\MenuListener::class
         );
     }
 

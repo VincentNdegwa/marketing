@@ -45,17 +45,17 @@ class UserManagementServiceProvider extends ServiceProvider
 
         $this->app->make('events')->listen(
             \App\Events\MenuEvent::class,
-            \Modules\UserManagement\app\Listeners\MenuListener::class
+            \Modules\UserManagement\App\Listeners\MenuListener::class
         );
 
         $this->app->make('events')->listen(
             \App\Events\ClientMenuEvent::class,
-            \Modules\UserManagement\app\Listeners\MenuListener::class
+            \Modules\UserManagement\App\Listeners\MenuListener::class
         );
 
         $this->app->make('events')->listen(
             \App\Events\SuperAdminMenuEvent::class,
-            \Modules\UserManagement\app\Listeners\MenuListener::class
+            \Modules\UserManagement\App\Listeners\MenuListener::class
         );
     }
 

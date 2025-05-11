@@ -45,17 +45,17 @@ class CMSServiceProvider extends ServiceProvider
         
         $this->app->make('events')->listen(
             \App\Events\MenuEvent::class,
-            \Modules\CMS\app\Listeners\MenuListener::class
+            \Modules\CMS\App\Listeners\MenuListener::class
         );
         
         $this->app->make('events')->listen(
             \App\Events\ClientMenuEvent::class,
-            \Modules\CMS\app\Listeners\MenuListener::class
+            \Modules\CMS\App\Listeners\MenuListener::class
         );
         
         $this->app->make('events')->listen(
             \App\Events\SuperAdminMenuEvent::class,
-            \Modules\CMS\app\Listeners\MenuListener::class
+            \Modules\CMS\App\Listeners\MenuListener::class
         );
     }
 
