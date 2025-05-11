@@ -42,11 +42,23 @@ jobs:
       - name: Copy Environment File
         run: cp .env.example .env
 
+      - name: Configure Test Environment
+        run: |
+          echo "SESSION_DRIVER=file" >> .env
+          echo "SESSION_PATH=/tmp/laravel-sessions" >> .env
+          mkdir -p /tmp/laravel-sessions
+          chmod 777 /tmp/laravel-sessions
+
       - name: Create Database Directory
         run: mkdir -p database
 
       - name: Create Database File
         run: touch database/database.sqlite
+
+      - name: Set Session Storage Permissions
+        run: |
+          mkdir -p storage/framework/sessions
+          chmod -R 777 storage/framework/sessions
 
       - name: Run Database Migrations
         run: php artisan migrate --seed --force
