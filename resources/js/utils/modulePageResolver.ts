@@ -22,12 +22,14 @@ console.log('Active modules:', ACTIVE_MODULES);
 const USERMANAGEMENT_PAGES = import.meta.glob<DefineComponent>('../../../Modules/UserManagement/resources/js/pages/**/*.vue');
 const BUSINESS_PAGES = import.meta.glob<DefineComponent>('../../../Modules/Business/resources/js/pages/**/*.vue');
 const FBSOCIALITE_PAGES = import.meta.glob<DefineComponent>('../../../Modules/FbSocialite/resources/js/pages/**/*.vue');
+const GOOGLESOCIALITE_PAGES = import.meta.glob<DefineComponent>('../../../Modules/GoogleSocialite/resources/js/pages/**/*.vue');
 
 // Create a mapping of module names to their page imports
 const MODULE_PAGES_MAP: Record<string, Record<string, () => Promise<DefineComponent>>> = {
   'usermanagement': USERMANAGEMENT_PAGES,
   'business': BUSINESS_PAGES,
-  'fbsocialite': FBSOCIALITE_PAGES
+  'fbsocialite': FBSOCIALITE_PAGES,
+  'googlesocialite': GOOGLESOCIALITE_PAGES
 };
 
 // Log available pages for each module

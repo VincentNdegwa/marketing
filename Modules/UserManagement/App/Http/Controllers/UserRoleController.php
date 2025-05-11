@@ -25,6 +25,8 @@ class UserRoleController extends Controller
                 $query->where('permissions.business_id', $current_business_id)
                     ->orWhereNull('permissions.business_id');
             }])
+            ->where('roles.name', '!=', 'admin')
+            ->where('roles.name', '!=', 'superadmin')
             ->get()
             // ->unique('name')
             ->map(function ($role) {

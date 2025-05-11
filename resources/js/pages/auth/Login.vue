@@ -10,6 +10,7 @@ import AuthBase from '@/layouts/AuthLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 import FacebookLogin from './FacebookLogin.vue';
+import GoogleLogin from './GoogleLogin.vue';
 
 defineProps<{
     status?: string;
@@ -75,6 +76,7 @@ const submit = () => {
             </div>
 
             <FacebookLogin />
+            <GoogleLogin/>
 
             <div class="text-muted-foreground text-center text-sm">
                 Don't have an account?

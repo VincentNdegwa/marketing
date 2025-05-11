@@ -1,0 +1,15 @@
+{
+    "name": "GoogleSocialite",
+    "alias": "googlesocialite",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\GoogleSocialite\\App\\Providers\\GoogleSocialiteServiceProvider"
+    ],
+    "files": [],
+    "depends_on": ["UserManagement"],
+    "common": 0,
+    "icon_url": "",
+    "version": "1.0.1"
+}

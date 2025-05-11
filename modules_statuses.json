@@ -2,5 +2,6 @@
     "UserManagement": true,
     "Business": true,
     "CMS": false,
-    "FbSocialite": true
+    "FbSocialite": true,
+    "GoogleSocialite": true
 }
