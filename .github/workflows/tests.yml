@@ -34,28 +34,12 @@ jobs:
       - name: Install Node Dependencies
         run: npm ci
 
-      - name: Configure Module Autoloading
-        run: |
-          # Create a temporary composer.json file for module autoloading
-          echo '{
-            "autoload": {
-              "psr-4": {
-                "Modules\\": "Modules/"
-              }
-            }
-          }' > composer-temp.json
-          
-          # Use the temporary composer.json to dump autoload
-          composer dump-autoload -o --no-dev --classmap-authoritative --ignore-platform-reqs --no-interaction --working-dir=composer-temp.json
-
-      - name: Dump Autoload Modules
-        run: |
-          # Remove the temporary composer.json file
-          rm composer-temp.json
-          php artisan modules:update-autoloading
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
-        
+
+      - name: Dump Auutoload Modules
+        run: php artisan modules:update-autoloading
+
       - name: Copy Environment File
         run: cp .env.example .env
 

@@ -28,74 +28,26 @@ class UpdateModuleAutoloading extends Command
     {
         $this->info('Updating module autoloading entries...');
 
-        try {
-            // Path to modules directory
-            $modulesPath = base_path('Modules');
+        // Path to modules directory
+        $modulesPath = base_path('Modules');
 
-            // Get all module directories
-            $modules = File::directories($modulesPath);
+        // Get all module directories
+        $modules = File::directories($modulesPath);
 
-            // Path to composer.json
-            $composerJsonPath = base_path('composer.json');
+        // Path to composer.json
+        $composerJsonPath = base_path('composer.json');
 
-            // Read composer.json
-            $composerJson = json_decode(File::get($composerJsonPath), true);
+        // Read composer.json
+        $composerJson = json_decode(File::get($composerJsonPath), true);
 
-            // Get current autoload PSR-4 entries
-            $psr4 = $composerJson['autoload']['psr-4'] ?? [];
+        // Get current autoload PSR-4 entries
+        $psr4 = $composerJson['autoload']['psr-4'] ?? [];
 
-            // Ensure base entries exist
-            $psr4['App\\'] = 'app/';
-            $psr4['Database\\Factories\\'] = 'database/factories/';
-            $psr4['Database\\Seeders\\'] = 'database/seeders/';
-            $psr4['Modules\\'] = 'Modules/';
-
-            // Process each module
-            foreach ($modules as $modulePath) {
-                $moduleName = basename($modulePath);
-                
-                // Check if module has app directory
-                if (File::isDirectory("$modulePath/app")) {
-                    // Add the module namespace
-                    $namespace = "Modules\\$moduleName\\";
-                    $path = "Modules/$moduleName/app/";
-                    $psr4[$namespace] = $path;
-                    $this->info("Added autoloading for $moduleName: $namespace => $path");
-                }
-            }
-
-            // Update composer.json
-            $composerJson['autoload']['psr-4'] = $psr4;
-
-            // Write back to composer.json
-            File::put(
-                $composerJsonPath,
-                json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
-            );
-
-            $this->info('Module autoloading entries updated successfully.');
-            $this->info('Running composer dump-autoload...');
-            $this->newLine();
-            
-            // Run composer dump-autoload with optimized flags
-            exec('composer dump-autoload -o --no-dev --classmap-authoritative --ignore-platform-reqs', $output, $returnCode);
-
-            if ($returnCode === 0) {
-                foreach ($output as $line) {
-                    $this->line($line);
-                }
-                $this->info('Autoload files regenerated successfully!');
-            } else {
-                $this->error('Failed to run composer dump-autoload. Please run it manually.');
-            }
-
-        } catch (\Exception $e) {
-            $this->error('Error updating module autoloading: ' . $e->getMessage());
-            $this->error('Please check your module structure and try again.');
-            return 1;
-        }
-
-        return 0;
+        // Ensure base entries exist
+        $psr4['App\\'] = 'app/';
+        $psr4['Database\\Factories\\'] = 'database/factories/';
+        $psr4['Database\\Seeders\\'] = 'database/seeders/';
+        $psr4['Modules\\'] = 'Modules/';
 
         // Remove any existing module-specific entries to avoid duplicates
         foreach ($psr4 as $namespace => $path) {
