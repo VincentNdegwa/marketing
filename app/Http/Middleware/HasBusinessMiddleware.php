@@ -16,7 +16,7 @@ class HasBusinessMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->routeIs('business.create') || $request->routeIs('business.store') || $request->routeIs('business.index')) {
+        if ($request->routeIs('business.create') || $request->routeIs('business.store') || $request->routeIs('business.index') || $request->routeIs('logout')) {
             return $next($request);
         }
 
