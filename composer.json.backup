@@ -35,9 +35,9 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Modules\\": "Modules/",
-            "Modules\\Business\\App\\": "Modules/Business/App/",
-            "Modules\\CMS\\App\\": "Modules/CMS/App/",
-            "Modules\\UserManagement\\App\\": "Modules/UserManagement/App/"
+            "Modules\\Business\\App\\": "Modules/Business/app/",
+            "Modules\\CMS\\App\\": "Modules/CMS/app/",
+            "Modules\\UserManagement\\App\\": "Modules/UserManagement/app/"
         },
         "files": [
             "app/helpers.php"
