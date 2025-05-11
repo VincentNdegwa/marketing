@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\FbSocialite\app\Listeners;
+namespace Modules\FbSocialite\App\Listeners;
 
 use App\Events\MenuEvent;
 use App\Events\ClientMenuEvent;

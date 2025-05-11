@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\FbSocialite\Database\Seeders;
+namespace Modules\FbSocialite\App\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 

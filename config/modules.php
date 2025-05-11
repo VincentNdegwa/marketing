@@ -128,7 +128,7 @@ return [
         | the migration files?
         |
         */
-        'migration' => base_path('app/Database/Migrations'),
+        'migration' => base_path('App/Database/Migrations'),
 
         /*
         |--------------------------------------------------------------------------
@@ -138,7 +138,7 @@ return [
         | app folder name
         | for example can change it to 'src' or 'App'
         */
-        'app_folder' => 'app/',
+        'app_folder' => 'App/',
 
         /*
         |--------------------------------------------------------------------------
@@ -149,44 +149,44 @@ return [
         */
         'generator' => [
             // app/
-            'actions' => ['path' => 'app/Actions', 'generate' => false, 'namespace' => 'App\Actions'],
-            'casts' => ['path' => 'app/Casts', 'generate' => false, 'namespace' => 'App\Casts'],
-            'channels' => ['path' => 'app/Broadcasting', 'generate' => false, 'namespace' => 'App\Broadcasting'],
-            'class' => ['path' => 'app/Classes', 'generate' => false, 'namespace' => 'App\Classes'],
-            'command' => ['path' => 'app/Console', 'generate' => false, 'namespace' => 'App\Console'],
-            'component-class' => ['path' => 'app/View/Components', 'generate' => false, 'namespace' => 'App\View\Components'],
-            'emails' => ['path' => 'app/Emails', 'generate' => false, 'namespace' => 'App\Emails'],
-            'event' => ['path' => 'app/Events', 'generate' => false, 'namespace' => 'App\Events'],
-            'enums' => ['path' => 'app/Enums', 'generate' => false, 'namespace' => 'App\Enums'],
-            'exceptions' => ['path' => 'app/Exceptions', 'generate' => false, 'namespace' => 'App\Exceptions'],
-            'jobs' => ['path' => 'app/Jobs', 'generate' => false, 'namespace' => 'App\Jobs'],
-            'helpers' => ['path' => 'app/Helpers', 'generate' => false, 'namespace' => 'App\Helpers'],
-            'interfaces' => ['path' => 'app/Interfaces', 'generate' => false, 'namespace' => 'App\Interfaces'],
-            'listener' => ['path' => 'app/Listeners', 'generate' => true, 'namespace' => 'App\Listeners'],
-            'model' => ['path' => 'app/Models', 'generate' => false, 'namespace' => 'App\Models'],
-            'notifications' => ['path' => 'app/Notifications', 'generate' => false, 'namespace' => 'App\Notifications'],
-            'observer' => ['path' => 'app/Observers', 'generate' => false, 'namespace' => 'App\Observers'],
-            'policies' => ['path' => 'app/Policies', 'generate' => false, 'namespace' => 'App\Policies'],
-            'provider' => ['path' => 'app/Providers', 'generate' => true, 'namespace' => 'App\Providers'],
-            'repository' => ['path' => 'app/Repositories', 'generate' => false, 'namespace' => 'App\Repositories'],
-            'resource' => ['path' => 'app/Transformers', 'generate' => false, 'namespace' => 'App\Transformers'],
-            'route-provider' => ['path' => 'app/Providers', 'generate' => true, 'namespace' => 'App\Providers'],
-            'rules' => ['path' => 'app/Rules', 'generate' => false, 'namespace' => 'App\Rules'],
-            'services' => ['path' => 'app/Services', 'generate' => false, 'namespace' => 'App\Services'],
-            'scopes' => ['path' => 'app/Models/Scopes', 'generate' => false, 'namespace' => 'App\Models\Scopes'],
-            'traits' => ['path' => 'app/Traits', 'generate' => false, 'namespace' => 'App\Traits'],
+            'actions' => ['path' => 'App/Actions', 'generate' => false, 'namespace' => 'App\Actions'],
+            'casts' => ['path' => 'App/Casts', 'generate' => false, 'namespace' => 'App\Casts'],
+            'channels' => ['path' => 'App/Broadcasting', 'generate' => false, 'namespace' => 'App\Broadcasting'],
+            'class' => ['path' => 'App/Classes', 'generate' => false, 'namespace' => 'App\Classes'],
+            'command' => ['path' => 'App/Console', 'generate' => false, 'namespace' => 'App\Console'],
+            'component-class' => ['path' => 'App/View/Components', 'generate' => false, 'namespace' => 'App\View\Components'],
+            'emails' => ['path' => 'App/Emails', 'generate' => false, 'namespace' => 'App\Emails'],
+            'event' => ['path' => 'App/Events', 'generate' => false, 'namespace' => 'App\Events'],
+            'enums' => ['path' => 'App/Enums', 'generate' => false, 'namespace' => 'App\Enums'],
+            'exceptions' => ['path' => 'App/Exceptions', 'generate' => false, 'namespace' => 'App\Exceptions'],
+            'jobs' => ['path' => 'App/Jobs', 'generate' => false, 'namespace' => 'App\Jobs'],
+            'helpers' => ['path' => 'App/Helpers', 'generate' => false, 'namespace' => 'App\Helpers'],
+            'interfaces' => ['path' => 'App/Interfaces', 'generate' => false, 'namespace' => 'App\Interfaces'],
+            'listener' => ['path' => 'App/Listeners', 'generate' => true, 'namespace' => 'App\Listeners'],
+            'model' => ['path' => 'App/Models', 'generate' => false, 'namespace' => 'App\Models'],
+            'notifications' => ['path' => 'App/Notifications', 'generate' => false, 'namespace' => 'App\Notifications'],
+            'observer' => ['path' => 'App/Observers', 'generate' => false, 'namespace' => 'App\Observers'],
+            'policies' => ['path' => 'App/Policies', 'generate' => false, 'namespace' => 'App\Policies'],
+            'provider' => ['path' => 'App/Providers', 'generate' => true, 'namespace' => 'App\Providers'],
+            'repository' => ['path' => 'App/Repositories', 'generate' => false, 'namespace' => 'App\Repositories'],
+            'resource' => ['path' => 'App/Transformers', 'generate' => false, 'namespace' => 'App\Transformers'],
+            'route-provider' => ['path' => 'App/Providers', 'generate' => true, 'namespace' => 'App\Providers'],
+            'rules' => ['path' => 'App/Rules', 'generate' => false, 'namespace' => 'App\Rules'],
+            'services' => ['path' => 'App/Services', 'generate' => false, 'namespace' => 'App\Services'],
+            'scopes' => ['path' => 'App/Models/Scopes', 'generate' => false, 'namespace' => 'App\Models\Scopes'],
+            'traits' => ['path' => 'App/Traits', 'generate' => false, 'namespace' => 'App\Traits'],
 
-            // app/Http/
-            'controller' => ['path' => 'app/Http/Controllers', 'generate' => true, 'namespace' => 'App\Http\Controllers'],
-            'filter' => ['path' => 'app/Http/Middleware', 'generate' => false, 'namespace' => 'App\Http\Middleware'],
-            'request' => ['path' => 'app/Http/Requests', 'generate' => false, 'namespace' => 'App\Http\Requests'],
+            // App/Http/
+            'controller' => ['path' => 'App/Http/Controllers', 'generate' => true, 'namespace' => 'App\Http\Controllers'],
+            'filter' => ['path' => 'App/Http/Middleware', 'generate' => false, 'namespace' => 'App\Http\Middleware'],
+            'request' => ['path' => 'App/Http/Requests', 'generate' => false, 'namespace' => 'App\Http\Requests'],
 
             'config' => ['path' => 'config', 'generate' => true],
-            'command' => ['path' => 'app/Console', 'generate' => false],
-            'channels' => ['path' => 'app/Broadcasting', 'generate' => false],
-            'migration' => ['path' => 'app/Database/Migrations', 'generate' => true, 'namespace' => 'App\\Database\\Migrations'],
-            'seeder' => ['path' => 'app/Database/Seeders', 'generate' => true],
-            'factory' => ['path' => 'app/Database/Factories', 'generate' => true, 'namespace' => 'App\Database\Factories'],
+            'command' => ['path' => 'App/Console', 'generate' => false],
+            'channels' => ['path' => 'App/Broadcasting', 'generate' => false],
+            'migration' => ['path' => 'App/Database/Migrations', 'generate' => true, 'namespace' => 'App\\Database\\Migrations'],
+            'seeder' => ['path' => 'App/Database/Seeders', 'generate' => true, 'namespace' => 'App\Database\Seeders'],
+            'factory' => ['path' => 'App/Database/Factories', 'generate' => true, 'namespace' => 'App\Database\Factories'],
 
             // lang/
             'lang' => ['path' => 'lang', 'generate' => false],
@@ -312,7 +312,7 @@ return [
         'file' => [
             'class' => FileActivator::class,
             'statuses-file' => base_path('modules_statuses.json'),
-        ],
+        ], 
     ],
 
     'activator' => 'file',

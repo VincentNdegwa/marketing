@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\FbSocialite\Http\Controllers;
+namespace Modules\FbSocialite\App\Http\Controllers;
 
 use App\Models\User;
 use Inertia\Inertia;
