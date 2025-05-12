@@ -45,12 +45,6 @@ class User extends Authenticatable implements LaratrustUser
         'is_active',
         'last_login_at',
         'email_verified_at',
-        'facebook_id',
-        'google_id',
-        'twitter_id',
-        'linkedin_id',
-        'github_id',
-        'instagram_id',
     ];
 
     /**
@@ -166,5 +160,10 @@ class User extends Authenticatable implements LaratrustUser
     public function hasPermissionInBusiness(string $permission, int $businessId): bool
     {
         return $this->permissions()->where('business_id', $businessId)->where('name', $permission)->exists();
+    }
+
+    public function tokens()
+    {
+        return $this->hasOne(UserToken::class);
     }
 }

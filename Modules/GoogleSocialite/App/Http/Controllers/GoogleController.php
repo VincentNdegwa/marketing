@@ -47,24 +47,34 @@ class GoogleController extends Controller
                 return redirect()->route('login')->with('error', 'Unable to retrieve user information from Google.');
             }
 
-            $existingUser = User::where('google_id', $googleUser->id)->first();
-
+            
+            $existingUser = User::whereHas('tokens', function ($query) use ($googleUser) {
+                $query->where('google_id', $googleUser->id);
+            })->first();
+            
             if ($existingUser) {
                 Auth::login($existingUser);
                 return redirect()->route('dashboard')->with('success', 'Logged in successfully.');
             }
 
-            $user = User::create([
+            $newUser = User::create([
                 'name' => $googleUser->name,
                 'email' => $googleUser->email,
                 'password' => Hash::make(Str::random(16)),
                 'avatar' => $googleUser->avatar,
-                'google_id' => $googleUser->id,
                 'email_verified_at' => now(),
                 'type' => 'admin',
             ]);
-            event(new RegisteredUser($user));
-            Auth::login($user);
+            $newUser->tokens()->updateOrCreate(
+                ['user_id' => $newUser->id],
+                [
+                    'google_id' => $googleUser->id,
+                    'google_token' => isset($googleUser->token) ? $googleUser->token : null,
+                    'google_refresh_token' => isset($googleUser->refreshToken) ? $googleUser->refreshToken : null,
+                ]
+            );
+            event(new RegisteredUser($newUser));
+            Auth::login($newUser);
             return redirect()->route('dashboard')->with('success', 'Logged in successfully.');
 
         } catch (\Exception $e) {

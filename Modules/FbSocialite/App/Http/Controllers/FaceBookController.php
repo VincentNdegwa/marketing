@@ -41,28 +41,36 @@ class FaceBookController extends Controller
             if(!$user) {
                 return redirect()->route('login')->with('error', 'Unable to retrieve user information from Facebook.');
             }
-            $existingFbUser = User::where('facebook_id', $user->id)->first();
+            $existingFbUser = User::whereHas('tokens', function ($query) use ($user) {
+                $query->where('facebook_id', $user->id);
+            })->first();
             if ($existingFbUser) {
                 Auth::login($existingFbUser);
                 return redirect()->route('dashboard')->with('success', 'Logged in successfully.');
 
             }else{
-                $user = User::create([
+                $newUser = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
                     'password' => bcrypt(Str::random(16)),
                     'avatar' => $user->avatar,
-                    'facebook_id' => $user->id,
                     'email_verified_at' => now(),
                     'type' => 'admin',
                 ]);
-                event(new RegisteredUser($user));
-                Auth::login($user);
+                $newUser->tokens()->updateOrCreate(
+                    ['user_id' => $user->id],
+                    [
+                        'facebook_id' => $user->id,
+                        'facebook_token' => isset($user->token) ? $user->token : null,
+                        'facebook_refresh_token' => isset($user->refreshToken) ? $user->refreshToken : null,
+                    ]
+                );
+                event(new RegisteredUser($newUser));
+                Auth::login($newUser);
                 return redirect()->route('dashboard')->with('success', 'Logged in successfully.');
             }
 
 
-            dd($user);
         } catch (\Exception $e) {
             Log::error('Facebook callback error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Facebook login failed: ' . $e->getMessage());
