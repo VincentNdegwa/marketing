@@ -1,0 +1,15 @@
+{
+    "name": "Marketing",
+    "alias": "marketing",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Marketing\\App\\Providers\\MarketingServiceProvider"
+    ],
+    "files": [],
+    "depends_on": ["UserManagement"],
+    "common": 0,
+    "icon_url": "",
+    "version": "1.0.1"
+}
