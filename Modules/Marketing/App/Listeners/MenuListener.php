@@ -54,7 +54,7 @@ class MenuListener
             'order' => 10,
             'ignore_if' => [],
             'depend_on' => [],
-            'href' => 'marketing.index', //marketing.facebook.index
+            'href' => 'marketing.facebook.index', 
             'module' => $module,
             'permission' => 'facebook_ads.view'
         ]);
@@ -66,7 +66,7 @@ class MenuListener
             'order' => 20,
             'ignore_if' => [],
             'depend_on' => [],
-            'href' => 'marketing.index', //marketing.google.index
+            'href' => 'marketing.facebook.index', //marketing.google.index
             'module' => $module,
             'permission' => 'google_ads.view'
         ]);
