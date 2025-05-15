@@ -45,57 +45,61 @@ class BusinessController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'description' => 'nullable|string',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:100',
-            'state' => 'nullable|string|max:100',
-            'country' => 'nullable|string|max:100',
-            'zip_code' => 'nullable|string|max:20',
-            'website' => 'nullable|url|max:255',
-        ]);
+       try{
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'description' => 'nullable|string',
+                'phone' => 'nullable|string|max:20',
+                'address' => 'nullable|string|max:255',
+                'city' => 'nullable|string|max:100',
+                'state' => 'nullable|string|max:100',
+                'country' => 'nullable|string|max:100',
+                'zip_code' => 'nullable|string|max:20',
+                'website' => 'nullable|url|max:255',
+            ]);
 
-        $business = Business::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'description' => $request->description,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'city' => $request->city,
-            'state' => $request->state,
-            'country' => $request->country,
-            'zip_code' => $request->zip_code,
-            'website' => $request->website,
-            'is_active' => true,
-        ]);
+            $business = Business::create([
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+                'description' => $request->description,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'city' => $request->city,
+                'state' => $request->state,
+                'country' => $request->country,
+                'zip_code' => $request->zip_code,
+                'website' => $request->website,
+                'is_active' => true,
+            ]);
 
-        $user = Auth::user();
+            $user = Auth::user();
 
-        // If this is the user's first business, make it the default
-        $isDefault = $user->businesses()->count() === 0;
+            // If this is the user's first business, make it the default
+            $isDefault = $user->businesses()->count() === 0;
 
-        $user->businesses()->attach($business, ['is_default' => $isDefault]);
+            $user->businesses()->attach($business, ['is_default' => $isDefault]);
 
-        // Assign appropriate roles to the user for this business
-        if ($user->isSuperAdmin()) {
-            // Find the admin role for this business or create it
-            $adminRole = \App\Models\Role::firstOrCreate(
-                ['name' => 'admin', 'business_id' => $business->id],
-                [
-                    'display_name' => 'Administrator',
-                    'description' => 'User with access to most system features',
-                ]
-            );
+            // Assign appropriate roles to the user for this business
+            if ($user->isSuperAdmin()) {
+                // Find the admin role for this business or create it
+                $adminRole = \App\Models\Role::firstOrCreate(
+                    ['name' => 'admin', 'business_id' => $business->id],
+                    [
+                        'display_name' => 'Administrator',
+                        'description' => 'User with access to most system features',
+                    ]
+                );
 
-            $user->roles()->attach($adminRole, ['business_id' => $business->id]);
-        }
+                $user->roles()->attach($adminRole, ['business_id' => $business->id]);
+            }
 
-        return redirect()->route('business.index')
-            ->with('success', 'Business created successfully.');
+            return redirect()->route('business.index')
+                ->with('success', 'Business created successfully.');
+       }catch(\Exception $e){
+            return redirect()->back()->with('error', 'Failed to create business. Please try again. '. $e->getMessage());
+       }
     }
 
     /**

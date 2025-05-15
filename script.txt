@@ -16,3 +16,7 @@ npm run lint
 
 ## Registering Pages for modules
 php artisan modules:register-pages
+
+
+
+//expected design =https://dribbble.com/shots/21686444-SaaS-Landing-Page
