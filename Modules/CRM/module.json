@@ -1,0 +1,15 @@
+{
+    "name": "CRM",
+    "alias": "crm",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\CRM\\App\\Providers\\CRMServiceProvider"
+    ],
+    "files": [],
+    "depends_on": ["UserManagement"],
+    "common": 0,
+    "icon_url": "",
+    "version": "1.0.1"
+}

@@ -4,5 +4,6 @@
     "CMS": false,
     "FbSocialite": true,
     "GoogleSocialite": true,
-    "Marketing": true
+    "Marketing": true,
+    "CRM": true
 }
