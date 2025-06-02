@@ -24,6 +24,7 @@ const BUSINESS_PAGES = import.meta.glob<DefineComponent>('../../../Modules/Busin
 const FBSOCIALITE_PAGES = import.meta.glob<DefineComponent>('../../../Modules/FbSocialite/resources/js/pages/**/*.vue');
 const GOOGLESOCIALITE_PAGES = import.meta.glob<DefineComponent>('../../../Modules/GoogleSocialite/resources/js/pages/**/*.vue');
 const MARKETING_PAGES = import.meta.glob<DefineComponent>('../../../Modules/Marketing/resources/js/pages/**/*.vue');
+const CRM_PAGES = import.meta.glob<DefineComponent>('../../../Modules/CRM/resources/js/pages/**/*.vue');
 
 // Create a mapping of module names to their page imports
 const MODULE_PAGES_MAP: Record<string, Record<string, () => Promise<DefineComponent>>> = {
@@ -31,7 +32,8 @@ const MODULE_PAGES_MAP: Record<string, Record<string, () => Promise<DefineCompon
   'business': BUSINESS_PAGES,
   'fbsocialite': FBSOCIALITE_PAGES,
   'googlesocialite': GOOGLESOCIALITE_PAGES,
-  'marketing': MARKETING_PAGES
+  'marketing': MARKETING_PAGES,
+  'crm': CRM_PAGES
 };
 
 // Log available pages for each module

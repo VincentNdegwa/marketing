@@ -79,7 +79,17 @@ watch(
         <Toast :baseZIndex="9999" />
 
         <AppLayout :breadcrumbs="breadcrumbs">
-            <slot />
+            <template #page-title>
+                <slot name="page-title"></slot>
+            </template>
+
+            <template #page-actions>
+                <slot name="page-actions"></slot>
+            </template>
+
+            <div class=" p-4">
+                <slot />
+            </div>
         </AppLayout>
     </div>
 </template>

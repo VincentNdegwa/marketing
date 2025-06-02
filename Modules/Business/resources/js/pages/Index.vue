@@ -155,20 +155,25 @@ const toggle = (event: Event, data: Business) => {
 </script>
 
 <template>
+
   <Head title="Businesses" />
-  
+
   <AppLayout :breadcrumbs="breadcrumbs">
-    <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-      <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl font-bold">Businesses</h1>
-        <Link 
-          v-permission="'business.create'" 
-          :href="route('business.create')" 
-          class="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center rounded-sm px-3 py-2 shadow-xs"
-        >
-          <span>Add Business</span>
-        </Link>
-      </div>
+
+    <template #page-title>
+      Businesses
+     </template>
+
+    <template #page-actions>
+
+      <Link v-permission="'business.create'" :href="route('business.create')"
+        class="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center rounded-sm px-3 py-2 shadow-xs">
+      <span>Add Business</span>
+      </Link>
+
+    </template>
+
+    <div class="flex h-full flex-1 flex-col gap-4 rounded-xl">
 
       <div class="mb-4">
         <div class="flex flex-row gap-1 md:w-60 w-full items-center">
@@ -176,19 +181,11 @@ const toggle = (event: Event, data: Business) => {
         </div>
       </div>
 
-      <DataTable 
-        :value="businesses" 
-        :paginator="true" 
-        :rows="10" 
-        :rowsPerPageOptions="[5, 10, 25, 50]" 
-        :filters="filters"
-        filterDisplay="menu" 
-        responsiveLayout="scroll"
+      <DataTable :value="businesses" :paginator="true" :rows="10" :rowsPerPageOptions="[5, 10, 25, 50]"
+        :filters="filters" filterDisplay="menu" responsiveLayout="scroll"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} businesses" 
-        class="p-datatable-sm"
-        v-if="businesses.length > 0"
-      >
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} businesses" class="p-datatable-sm"
+        v-if="businesses.length > 0">
         <Column field="name" header="Name" sortable style="min-width: 12rem"></Column>
         <Column field="email" header="Email" sortable style="min-width: 14rem"></Column>
         <Column field="phone" header="Phone" sortable style="min-width: 10rem">
@@ -209,8 +206,8 @@ const toggle = (event: Event, data: Business) => {
         <Column header="Actions" style="min-width: 8rem">
           <template #body="{ data }">
             <div class="flex gap-2">
-              <Button v-can="['business.edit', 'business.delete', 'business.manage']" type="button" severity="contrast" size="sm" @click="toggle($event, data)" aria-haspopup="true"
-                aria-controls="overlay_menu">
+              <Button v-can="['business.edit', 'business.delete', 'business.manage']" type="button" severity="contrast"
+                size="sm" @click="toggle($event, data)" aria-haspopup="true" aria-controls="overlay_menu">
                 <i class="pi pi-ellipsis-v"></i>
               </Button>
             </div>

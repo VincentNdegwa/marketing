@@ -118,15 +118,20 @@ const formatPermissions = (permissions:string[]) => {
   <Head title="Role Management" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
+    <template #page-title>
+      Roles
+    </template>
+
+    <!-- Page actions slot -->
+    <template #page-actions>
+      <Link v-permission="'role.create'" :href="route('user-role.create')"
+        class="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center rounded-sm px-3 py-2 shadow-xs"
+        preserve-scroll>
+      <span>Add Role</span>
+      </Link>
+    </template>
     <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-      <div class="mb-4 flex items-center justify-between">
-        <h1 class="text-2xl font-bold">Roles</h1>
-        <Link v-permission="'role.create'"  :href="route('user-role.create')"
-          class="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center rounded-sm px-3 py-2 shadow-xs"
-          preserve-scroll>
-        <span>Add Role</span>
-        </Link>
-      </div>
+
 
       <div class="mb-4">
         <div class="flex w-full flex-row items-center gap-1 md:w-60">
@@ -160,8 +165,9 @@ const formatPermissions = (permissions:string[]) => {
         <Column header="Actions" style="min-width: 8rem">
           <template #body="{ data }">
             <div class="flex gap-2">
-              <Button v-can="['role.edit', 'role.delete', 'role.manage']" v-if="(data.name != 'admin' && data.name != 'superadmin')" type="button" severity="contrast" size="sm" @click="toggle($event, data)" aria-haspopup="true"
-                aria-controls="overlay_menu">
+              <Button v-can="['role.edit', 'role.delete', 'role.manage']"
+                v-if="(data.name != 'admin' && data.name != 'superadmin')" type="button" severity="contrast" size="sm"
+                @click="toggle($event, data)" aria-haspopup="true" aria-controls="overlay_menu">
                 <i class="pi pi-ellipsis-v"></i>
               </Button>
             </div>

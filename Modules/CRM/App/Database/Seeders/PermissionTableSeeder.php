@@ -22,29 +22,171 @@ class PermissionTableSeeder extends Seeder
 
         // Define module permissions
         $permissions = [
-            // Example permission format - add your module permissions here
-            /*
+            // Module level permissions
+            [
+                'name' => 'crm.manage',
+                'display_name' => 'Manage CRM',
+                'description' => 'Can manage CRM module'
+            ],
             [
                 'name' => 'crm.view',
-                'display_name' => 'View CRM',
-                'description' => 'Can view CRM module'
+                'display_name' => 'View CRM Dashboard',
+                'description' => 'Can view CRM dashboard and reports'
+            ],
+            
+            // Contacts permissions
+            [
+                'name' => 'crm.contacts.view',
+                'display_name' => 'View Contacts',
+                'description' => 'Can view contacts in CRM'
             ],
             [
-                'name' => 'crm.create',
-                'display_name' => 'Create CRM',
-                'description' => 'Can create in CRM module'
+                'name' => 'crm.contacts.create',
+                'display_name' => 'Create Contacts',
+                'description' => 'Can create new contacts in CRM'
             ],
             [
-                'name' => 'crm.edit',
-                'display_name' => 'Edit CRM',
-                'description' => 'Can edit in CRM module'
+                'name' => 'crm.contacts.edit',
+                'display_name' => 'Edit Contacts',
+                'description' => 'Can edit existing contacts in CRM'
             ],
             [
-                'name' => 'crm.delete',
-                'display_name' => 'Delete CRM',
-                'description' => 'Can delete in CRM module'
-            ]
-            */
+                'name' => 'crm.contacts.delete',
+                'display_name' => 'Delete Contacts',
+                'description' => 'Can delete contacts in CRM'
+            ],
+            
+            // Companies permissions
+            [
+                'name' => 'crm.companies.view',
+                'display_name' => 'View Companies',
+                'description' => 'Can view companies in CRM'
+            ],
+            [
+                'name' => 'crm.companies.create',
+                'display_name' => 'Create Companies',
+                'description' => 'Can create new companies in CRM'
+            ],
+            [
+                'name' => 'crm.companies.edit',
+                'display_name' => 'Edit Companies',
+                'description' => 'Can edit existing companies in CRM'
+            ],
+            [
+                'name' => 'crm.companies.delete',
+                'display_name' => 'Delete Companies',
+                'description' => 'Can delete companies in CRM'
+            ],
+            
+            // Deals permissions
+            [
+                'name' => 'crm.deals.view',
+                'display_name' => 'View Deals',
+                'description' => 'Can view deals in CRM'
+            ],
+            [
+                'name' => 'crm.deals.create',
+                'display_name' => 'Create Deals',
+                'description' => 'Can create new deals in CRM'
+            ],
+            [
+                'name' => 'crm.deals.edit',
+                'display_name' => 'Edit Deals',
+                'description' => 'Can edit existing deals in CRM'
+            ],
+            [
+                'name' => 'crm.deals.delete',
+                'display_name' => 'Delete Deals',
+                'description' => 'Can delete deals in CRM'
+            ],
+            
+            // Activities permissions
+            [
+                'name' => 'crm.activities.view',
+                'display_name' => 'View Activities',
+                'description' => 'Can view activities in CRM'
+            ],
+            [
+                'name' => 'crm.activities.create',
+                'display_name' => 'Create Activities',
+                'description' => 'Can create new activities in CRM'
+            ],
+            [
+                'name' => 'crm.activities.edit',
+                'display_name' => 'Edit Activities',
+                'description' => 'Can edit existing activities in CRM'
+            ],
+            [
+                'name' => 'crm.activities.delete',
+                'display_name' => 'Delete Activities',
+                'description' => 'Can delete activities in CRM'
+            ],
+            [
+                'name' => 'crm.activities.complete',
+                'display_name' => 'Complete Activities',
+                'description' => 'Can mark activities as completed in CRM'
+            ],
+            
+            // Tasks permissions
+            [
+                'name' => 'crm.tasks.view',
+                'display_name' => 'View Tasks',
+                'description' => 'Can view tasks in CRM'
+            ],
+            [
+                'name' => 'crm.tasks.create',
+                'display_name' => 'Create Tasks',
+                'description' => 'Can create new tasks in CRM'
+            ],
+            [
+                'name' => 'crm.tasks.edit',
+                'display_name' => 'Edit Tasks',
+                'description' => 'Can edit existing tasks in CRM'
+            ],
+            [
+                'name' => 'crm.tasks.delete',
+                'display_name' => 'Delete Tasks',
+                'description' => 'Can delete tasks in CRM'
+            ],
+            [
+                'name' => 'crm.tasks.complete',
+                'display_name' => 'Complete Tasks',
+                'description' => 'Can mark tasks as completed in CRM'
+            ],
+            
+            // Notes permissions
+            [
+                'name' => 'crm.notes.view',
+                'display_name' => 'View Notes',
+                'description' => 'Can view notes in CRM'
+            ],
+            [
+                'name' => 'crm.notes.create',
+                'display_name' => 'Create Notes',
+                'description' => 'Can create new notes in CRM'
+            ],
+            [
+                'name' => 'crm.notes.edit',
+                'display_name' => 'Edit Notes',
+                'description' => 'Can edit existing notes in CRM'
+            ],
+            [
+                'name' => 'crm.notes.delete',
+                'display_name' => 'Delete Notes',
+                'description' => 'Can delete notes in CRM'
+            ],
+            
+            // Reports permissions
+            [
+                'name' => 'crm.reports.view',
+                'display_name' => 'View Reports',
+                'description' => 'Can view CRM reports and analytics'
+            ],
+            [
+                'name' => 'crm.reports.export',
+                'display_name' => 'Export Reports',
+                'description' => 'Can export CRM reports and data'
+            ],
         ];
 
         $superadminRole = Role::where('name', 'superadmin')->first();

@@ -9,6 +9,7 @@ export interface Auth {
 export interface BreadcrumbItem {
     title: string;
     href: string;
+    params?: Record<string, any>;
 }
 
 export interface NavItem {

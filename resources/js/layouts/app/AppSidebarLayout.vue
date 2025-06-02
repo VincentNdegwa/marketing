@@ -19,6 +19,17 @@ withDefaults(defineProps<Props>(), {
         <AppSidebar />
         <AppContent variant="sidebar">
             <AppSidebarHeader :breadcrumbs="breadcrumbs" />
+            <div class="p-4">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold">
+                        <slot name="page-title"></slot>
+                    </h1>
+
+                    <div class=" flex justify-end items-center gap-1" >
+                        <slot name="page-actions"></slot>
+                    </div>
+                </div>
+            </div>
             <slot />
         </AppContent>
     </AppShell>

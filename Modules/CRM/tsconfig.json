@@ -13,5 +13,5 @@
     "Resources/js/**/*.ts",
     "Resources/js/**/*.d.ts",
     "Resources/js/**/*.vue"
-  ]
+, "../../resources/js/components/PrimePaginator.vue"  ]
 }

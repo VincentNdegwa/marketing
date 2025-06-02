@@ -119,15 +119,22 @@ const toggle = (event: Event, data: UserData) => {
   <Head title="User Management" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
+
+    <template #page-title>
+      Users
+    </template>
+
+    <!-- Page actions slot -->
+    <template #page-actions>
+      <Link v-permission="'usermanagement.create'" :href="route('usermanagement.create')"
+        class="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center rounded-sm px-3 py-2 shadow-xs"
+        preserve-scroll>
+      <span>Add User</span>
+      </Link>
+    </template>
+    
     <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-      <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl font-bold">Users</h1>
-        <Link v-permission="'usermanagement.create'" :href="route('usermanagement.create')"
-          class="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center rounded-sm px-3 py-2 shadow-xs"
-          preserve-scroll>
-        <span>Add User</span>
-        </Link>
-      </div>
+
 
       <div class="mb-4">
         <div class="flex flex-row gap-1 md:w-60 w-full items-center">
@@ -167,8 +174,9 @@ const toggle = (event: Event, data: UserData) => {
         <Column header="Actions" style="min-width: 8rem">
           <template #body="{ data }">
             <div class="flex gap-2">
-              <Button v-can="['usermanagement.edit', 'usermanagement.delete', 'usermanagement.manage']" v-if="!data.is_admin" type="button" severity="contrast" size="sm" @click="toggle($event, data)" aria-haspopup="true"
-                aria-controls="overlay_menu">
+              <Button v-can="['usermanagement.edit', 'usermanagement.delete', 'usermanagement.manage']"
+                v-if="!data.is_admin" type="button" severity="contrast" size="sm" @click="toggle($event, data)"
+                aria-haspopup="true" aria-controls="overlay_menu">
                 <i class="pi pi-ellipsis-v"></i>
               </Button>
             </div>

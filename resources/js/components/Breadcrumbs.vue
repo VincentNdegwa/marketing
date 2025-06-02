@@ -5,6 +5,7 @@ import { Link } from '@inertiajs/vue3';
 interface BreadcrumbItem {
     title: string;
     href?: string;
+    params?: Record<string, any>;
 }
 
 defineProps<{
@@ -22,7 +23,7 @@ defineProps<{
                     </template>
                     <template v-else>
                         <BreadcrumbLink as-child>
-                            <Link :href="$route(item.href) ?? '#'">{{ item.title }}</Link>
+                            <Link :href="$route(item.href,item.params) ?? '#'">{{ item.title }}</Link>
                         </BreadcrumbLink>
                     </template>
                 </BreadcrumbItem>
