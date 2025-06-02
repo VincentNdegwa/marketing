@@ -4,21 +4,11 @@
       {{ pageTitle }}
     </template>
     <template #page-actions>
-      <div class="flex gap-2">
-        <ActionButton :href="route('crm.deals.edit', deal.id)">
-          Edit Deal
-        </ActionButton>
-        <ActionButton :href="route('crm.deals.index')">
-          Back to Deals
-        </ActionButton>
-        <Button
-          @click="confirmDeletion"
-          severity="danger"
-          icon="pi pi-trash"
-        >
-          Delete
-        </Button>
-      </div>
+      <ButtonGroup>
+        <Button size="small" label="Edit" severity="contrast"
+          @click="navigateTo(route('crm.deals.edit', deal.id))" />
+        <Button size="small" label="Delete" severity="danger" @click="confirmDeletion" />
+      </ButtonGroup>
     </template>
 
     <div>
@@ -34,19 +24,19 @@
                 <h4 class="text-sm font-medium text-gray-500">Title</h4>
                 <p class="mt-1 text-sm text-gray-900">{{ deal.title }}</p>
               </div>
-              
+
               <div class="mb-4">
                 <h4 class="text-sm font-medium text-gray-500">Description</h4>
                 <p class="mt-1 text-sm text-gray-900 whitespace-pre-line">{{ deal.description || 'No description provided' }}</p>
               </div>
-              
+
               <div class="mb-4">
                 <h4 class="text-sm font-medium text-gray-500">Value</h4>
                 <p class="mt-1 text-sm text-gray-900">
                   {{ formatCurrency(deal.value, deal.currency) }}
                 </p>
               </div>
-              
+
               <div class="mb-4">
                 <h4 class="text-sm font-medium text-gray-500">Probability</h4>
                 <p class="mt-1 text-sm text-gray-900">
@@ -54,35 +44,29 @@
                 </p>
               </div>
             </div>
-            
+
             <div>
               <div class="mb-4">
                 <h4 class="text-sm font-medium text-gray-500">Stage</h4>
                 <p class="mt-1">
-                  <Tag 
-                    :severity="getStageSeverity(deal.stage)"
-                    :value="stages[deal.stage]"
-                  />
+                  <Tag :severity="getStageSeverity(deal.stage)" :value="deal.stage" />
                 </p>
               </div>
-              
+
               <div class="mb-4">
                 <h4 class="text-sm font-medium text-gray-500">Status</h4>
                 <p class="mt-1">
-                  <Tag 
-                    :severity="getStatusSeverity(deal.status)"
-                    :value="statuses[deal.status]"
-                  />
+                  <Tag :severity="getStatusSeverity(deal.status)" :value="deal.status" />
                 </p>
               </div>
-              
+
               <div class="mb-4">
                 <h4 class="text-sm font-medium text-gray-500">Expected Close Date</h4>
                 <p class="mt-1 text-sm text-gray-900">
                   {{ deal.expected_close_date ? formatDate(deal.expected_close_date) : 'Not set' }}
                 </p>
               </div>
-              
+
               <div class="mb-4">
                 <h4 class="text-sm font-medium text-gray-500">Actual Close Date</h4>
                 <p class="mt-1 text-sm text-gray-900">
@@ -105,14 +89,9 @@
               <h4 class="text-sm font-medium text-gray-500 mb-2">Contact</h4>
               <div v-if="deal.contact" class="p-3 bg-gray-50 rounded-lg">
                 <div class="flex items-center">
-                  <Avatar 
-                    :image="deal.contact.avatar" 
-                    size="large" 
-                    shape="circle"
-                    :pt="{
+                  <Avatar :image="deal.contact.avatar" size="large" shape="circle" :pt="{
                       image: { class: 'w-10 h-10' }
-                    }"
-                  >
+                    }">
                     <template #icon>
                       <User class="w-6 h-6" />
                     </template>
@@ -123,29 +102,22 @@
                   </div>
                 </div>
                 <div class="mt-3">
-                  <Link 
-                    :href="route('crm.contacts.show', deal.contact.id)"
-                    class="text-sm text-indigo-600 hover:text-indigo-900"
-                  >
-                    View Contact
+                  <Link :href="route('crm.contacts.show', deal.contact.id)"
+                    class="text-sm text-indigo-600 hover:text-indigo-900">
+                  View Contact
                   </Link>
                 </div>
               </div>
               <p v-else class="text-sm text-gray-500">No contact associated</p>
             </div>
-            
+
             <div>
               <h4 class="text-sm font-medium text-gray-500 mb-2">Company</h4>
               <div v-if="deal.company" class="p-3 bg-gray-50 rounded-lg">
                 <div class="flex items-center">
-                  <Avatar 
-                    :image="deal.company.logo" 
-                    size="large" 
-                    shape="circle"
-                    :pt="{
+                  <Avatar :image="deal.company.logo" size="large" shape="circle" :pt="{
                       image: { class: 'w-10 h-10' }
-                    }"
-                  >
+                    }">
                     <template #icon>
                       <Building class="w-6 h-6" />
                     </template>
@@ -156,29 +128,22 @@
                   </div>
                 </div>
                 <div class="mt-3">
-                  <Link 
-                    :href="route('crm.companies.show', deal.company.id)"
-                    class="text-sm text-indigo-600 hover:text-indigo-900"
-                  >
-                    View Company
+                  <Link :href="route('crm.companies.show', deal.company.id)"
+                    class="text-sm text-indigo-600 hover:text-indigo-900">
+                  View Company
                   </Link>
                 </div>
               </div>
               <p v-else class="text-sm text-gray-500">No company associated</p>
             </div>
-            
+
             <div>
               <h4 class="text-sm font-medium text-gray-500 mb-2">Owner</h4>
               <div v-if="deal.user" class="p-3 bg-gray-50 rounded-lg">
                 <div class="flex items-center">
-                  <Avatar 
-                    :image="deal.user.profile_photo_url" 
-                    size="large" 
-                    shape="circle"
-                    :pt="{
+                  <Avatar :image="deal.user.profile_photo_url" size="large" shape="circle" :pt="{
                       image: { class: 'w-10 h-10' }
-                    }"
-                  >
+                    }">
                     <template #icon>
                       <UserCircle class="w-6 h-6" />
                     </template>
@@ -200,36 +165,27 @@
         <template #title>
           <div class="flex justify-between items-center">
             <span>Related Activities</span>
-            <Link
-              :href="route('crm.activities.create', { related_type: 'deal', related_id: deal.id })"
-              class="text-sm text-indigo-600 hover:text-indigo-900 flex items-center"
-            >
-              <Plus class="w-4 h-4 mr-1" />
-              Add Activity
+            <Link :href="route('crm.activities.create', { related_type: 'deal', related_id: deal.id })"
+              class="text-sm text-indigo-600 hover:text-indigo-900 flex items-center">
+            <Plus class="w-4 h-4 mr-1" />
+            Add Activity
             </Link>
           </div>
         </template>
         <template #content>
-          <div v-if="activities.length > 0" class="space-y-4">
+          <div v-if="activities && activities?.length > 0" class="space-y-4">
             <div v-for="activity in activities" :key="activity.id" class="p-3 bg-gray-50 rounded-lg">
               <div class="flex justify-between">
                 <div>
-                  <Link 
-                    :href="route('crm.activities.show', activity.id)"
-                    class="text-sm font-medium text-indigo-600 hover:text-indigo-900"
-                  >
-                    {{ activity.title }}
+                  <Link :href="route('crm.activities.show', activity.id)"
+                    class="text-sm font-medium text-indigo-600 hover:text-indigo-900">
+                  {{ activity.title }}
                   </Link>
                   <div class="mt-1 flex items-center space-x-2">
-                    <Tag 
-                      :severity="getActivityTypeSeverity(activity.type)"
-                      :value="activityTypes[activity.type]"
-                      :icon="getActivityTypeIcon(activity.type)"
-                    />
-                    <Tag 
-                      :severity="getActivityStatusSeverity(activity.status)"
-                      :value="activityStatuses[activity.status]"
-                    />
+                    <Tag :severity="getActivityTypeSeverity(activity.type)" :value="activityTypes[activity.type]"
+                      :icon="getActivityTypeIcon(activity.type)" />
+                    <Tag :severity="getActivityStatusSeverity(activity.status)"
+                      :value="activityStatuses[activity.status]" />
                   </div>
                   <div class="mt-2 text-sm text-gray-500">
                     {{ formatDate(activity.start_date) }}
@@ -239,11 +195,9 @@
                   </div>
                 </div>
                 <div>
-                  <Link 
-                    :href="route('crm.activities.edit', activity.id)"
-                    class="text-sm text-indigo-600 hover:text-indigo-900"
-                  >
-                    Edit
+                  <Link :href="route('crm.activities.edit', activity.id)"
+                    class="text-sm text-indigo-600 hover:text-indigo-900">
+                  Edit
                   </Link>
                 </div>
               </div>
@@ -260,46 +214,33 @@
         <template #title>
           <div class="flex justify-between items-center">
             <span>Related Tasks</span>
-            <Link
-              :href="route('crm.tasks.create', { related_type: 'deal', related_id: deal.id })"
-              class="text-sm text-indigo-600 hover:text-indigo-900 flex items-center"
-            >
-              <Plus class="w-4 h-4 mr-1" />
-              Add Task
+            <Link :href="route('crm.tasks.create', { related_type: 'deal', related_id: deal.id })"
+              class="text-sm text-indigo-600 hover:text-indigo-900 flex items-center">
+            <Plus class="w-4 h-4 mr-1" />
+            Add Task
             </Link>
           </div>
         </template>
         <template #content>
-          <div v-if="tasks.length > 0" class="space-y-4">
+          <div v-if=" tasks && tasks.length > 0" class="space-y-4">
             <div v-for="task in tasks" :key="task.id" class="p-3 bg-gray-50 rounded-lg">
               <div class="flex justify-between">
                 <div>
-                  <Link 
-                    :href="route('crm.tasks.show', task.id)"
-                    class="text-sm font-medium text-indigo-600 hover:text-indigo-900"
-                  >
-                    {{ task.title }}
+                  <Link :href="route('crm.tasks.show', task.id)"
+                    class="text-sm font-medium text-indigo-600 hover:text-indigo-900">
+                  {{ task.title }}
                   </Link>
                   <div class="mt-1 flex items-center space-x-2">
-                    <Tag 
-                      :severity="getTaskPrioritySeverity(task.priority)"
-                      :value="task.priority"
-                    />
-                    <Tag 
-                      :severity="getTaskStatusSeverity(task.status)"
-                      :value="taskStatuses[task.status]"
-                    />
+                    <Tag :severity="getTaskPrioritySeverity(task.priority)" :value="task.priority" />
+                    <Tag :severity="getTaskStatusSeverity(task.status)" :value="taskStatuses[task.status]" />
                   </div>
                   <div class="mt-2 text-sm text-gray-500">
                     Due: {{ formatDate(task.due_date) }}
                   </div>
                 </div>
                 <div>
-                  <Link 
-                    :href="route('crm.tasks.edit', task.id)"
-                    class="text-sm text-indigo-600 hover:text-indigo-900"
-                  >
-                    Edit
+                  <Link :href="route('crm.tasks.edit', task.id)" class="text-sm text-indigo-600 hover:text-indigo-900">
+                  Edit
                   </Link>
                 </div>
               </div>
@@ -315,18 +256,12 @@
       <Card>
         <template #title>
           <div class="flex justify-between items-center">
-            <span>Notes</span>
-            <Link
-              :href="route('crm.notes.create', { related_type: 'deal', related_id: deal.id })"
-              class="text-sm text-indigo-600 hover:text-indigo-900 flex items-center"
-            >
-              <Plus class="w-4 h-4 mr-1" />
-              Add Note
-            </Link>
+
           </div>
         </template>
+
         <template #content>
-          <div v-if="notes.length > 0" class="space-y-4">
+          <div v-if="notes && notes.length > 0" class="space-y-4">
             <div v-for="note in notes" :key="note.id" class="bg-gray-50 p-4 rounded-lg">
               <div class="flex justify-between">
                 <div>
@@ -336,11 +271,8 @@
                   <div class="text-sm whitespace-pre-line">{{ note.content }}</div>
                 </div>
                 <div>
-                  <Link
-                    :href="route('crm.notes.edit', note.id)"
-                    class="text-sm text-indigo-600 hover:text-indigo-900"
-                  >
-                    Edit
+                  <Link :href="route('crm.notes.edit', note.id)" class="text-sm text-indigo-600 hover:text-indigo-900">
+                  Edit
                   </Link>
                 </div>
               </div>
@@ -354,34 +286,18 @@
     </div>
 
     <!-- Delete Confirmation Dialog -->
-    <Dialog 
-      v-model:visible="confirmingDeletion" 
-      modal 
-      header="Delete Deal" 
-      :style="{ width: '450px' }"
-      :pt="{
+    <Dialog v-model:visible="confirmingDeletion" modal header="Delete Deal" :style="{ width: '450px' }" :pt="{
         root: { class: 'border rounded-lg shadow-lg' },
         header: { class: 'border-b p-4' },
         content: { class: 'p-4' },
         footer: { class: 'border-t p-4 flex justify-end gap-2' }
-      }"
-    >
+      }">
       <div class="mb-4">
         Are you sure you want to delete this deal? This action cannot be undone.
       </div>
       <template #footer>
-        <Button 
-          label="Cancel" 
-          @click="cancelDeletion" 
-          severity="secondary" 
-          outlined
-        />
-        <Button 
-          label="Delete" 
-          @click="deleteDeal" 
-          severity="danger" 
-          :loading="deleteForm.processing"
-        />
+        <Button label="Cancel" @click="cancelDeletion" severity="secondary" outlined />
+        <Button label="Delete" @click="deleteDeal" severity="danger" :loading="deleteForm.processing" />
       </template>
     </Dialog>
   </AppLayout>
@@ -392,17 +308,18 @@ import { ref } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import ActionButton from '@/components/ui/action-button/ActionButton.vue';
-import { Card } from 'primevue/card';
-import { Button } from 'primevue/button';
-import { Tag } from 'primevue/tag';
-import { Avatar } from 'primevue/avatar';
-import { Dialog } from 'primevue/dialog';
+import Card from 'primevue/card';
+import Button from 'primevue/button';
+import Tag from 'primevue/tag';
+import Avatar from 'primevue/avatar';
+import Dialog from 'primevue/dialog';
 import { 
   User, 
   Building, 
   UserCircle,
   Plus
 } from 'lucide-vue-next';
+import { route } from 'ziggy-js';
 
 // Types
 interface BreadcrumbItem {
@@ -541,7 +458,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 // State
 const confirmingDeletion = ref(false);
 const deleteForm = useForm({});
-
+const navigateTo = (path: string) => {
+  router.visit(path);
+};
 // Methods
 const formatCurrency = (value?: number, currency: string = 'USD'): string => {
   if (value === undefined || value === null) return 'Not set';

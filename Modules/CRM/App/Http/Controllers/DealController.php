@@ -19,7 +19,7 @@ class DealController extends Controller
     public function index(Request $request)
     {
         $query = Deal::query()
-            ->with(['user', 'contact', 'company'])
+            ->with(['assignedUser', 'contact', 'company'])
             ->withCount(['activities', 'tasks', 'notes']);
 
         // Handle search
@@ -72,7 +72,7 @@ class DealController extends Controller
             'cancelled' => 'Cancelled',
         ];
 
-        $users = User::select('id', 'name')->get();
+        $users = getCurrentBusinessUsers();
 
         return Inertia::module('crm/deals/Index', [
             'deals' => $deals,
@@ -99,8 +99,8 @@ class DealController extends Controller
             });
             
         $companies = Company::select('id', 'name')->get();
-        $users = User::select('id', 'name')->get();
-        
+        $users = getCurrentBusinessUsers();
+
         $stages = [
             'lead' => 'Lead',
             'qualification' => 'Qualification',
@@ -144,7 +144,7 @@ class DealController extends Controller
      */
     public function show(Deal $deal)
     {
-        $deal->load(['user', 'contact', 'company', 'activities', 'tasks', 'notes']);
+        $deal->load(['assignedUser', 'contact', 'company', 'activities', 'tasks', 'notes']);
 
         return Inertia::module('crm/deals/Show', [
             'deal' => $deal,
@@ -167,8 +167,8 @@ class DealController extends Controller
             });
             
         $companies = Company::select('id', 'name')->get();
-        $users = User::select('id', 'name')->get();
-        
+        $users = getCurrentBusinessUsers();
+
         $stages = [
             'lead' => 'Lead',
             'qualification' => 'Qualification',

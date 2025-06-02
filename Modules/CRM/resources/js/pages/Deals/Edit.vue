@@ -322,7 +322,8 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
   },
   {
     title: props.deal.name,
-    href: route('crm.deals.show', props.deal.id),
+    href: 'crm.deals.show',
+    params: { id: props.deal.id },
   },
   {
     title: 'Edit',
